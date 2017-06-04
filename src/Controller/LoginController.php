@@ -9,36 +9,51 @@ use Zend\View\Model\ViewModel;
 
 class LoginController extends OmekaLoginController
 {
+    const DIRECT_ADDR = 'REMOTE_ADDR';
+    const PROXY_ADDR = 'HTTP_X_FORWARDED_FOR';
+
     /**
      * Have we shown our stuff?
      *
      * @var bool
      */
-    private $my_error_shown = false;
+    private $myErrorShown = false;
 
     /**
      * Started this pageload?
      *
      * @var bool
      */
-    private $just_lockedout = false;
+    private $justLockedout = false;
 
     /**
-     * User and pwd nonempty.
+     * User and password non empty.
      *
      * @var bool
      */
-    private $nonempty_credentials = false;
+    private $hasCredentials = false;
 
+    /**
+     * Manage the login.
+     *
+     * Slightly adapted from the parent class.
+     *
+     * {@inheritDoc}
+     * @see \Omeka\Controller\LoginController::loginAction()
+     */
     public function loginAction()
     {
         if ($this->auth->hasIdentity()) {
             return $this->redirect()->toRoute('admin');
         }
 
+        $this->cleanupLockout();
+
         $form = $this->getForm(LoginForm::class);
 
-        if ($this->getRequest()->isPost()) {
+        if ($this->isLockout()) {
+            $this->disableForm($form);
+        } elseif ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost();
             $form->setData($data);
             if ($form->isValid()) {
@@ -52,12 +67,19 @@ class LoginController extends OmekaLoginController
                 if ($result->isValid()) {
                     $this->messenger()->addSuccess('Successfully logged in'); // @translate
                     $session = $sessionManager->getStorage();
+                    $this->resetLockout();
                     if ($redirectUrl = $session->offsetGet('redirect_url')) {
                         return $this->redirect()->toUrl($redirectUrl);
                     }
                     return $this->redirect()->toRoute('admin');
-                } else {
-                    $this->messenger()->addError('Email or password is invalid'); // @translate
+                }
+                $this->messenger()->addError('Email or password is invalid'); // @translate
+                $this->updateLockout($validatedData['email']);
+                $result = $this->checkLimitLogin();
+                if ($result === false) {
+                    $this->disableForm($form);
+                } elseif ($result !== true) {
+                    $this->messenger()->addWarning($result);
                 }
             } else {
                 $this->messenger()->addFormErrors($form);
@@ -65,19 +87,198 @@ class LoginController extends OmekaLoginController
         }
 
         $view = new ViewModel;
+        $view->setTemplate('omeka/login/login.phtml');
         $view->setVariable('form', $form);
         return $view;
     }
 
     /**
-     * Get correct remote address.
+     * Clean up old lockouts and retries, and save supplied arrays.
+     *
+     * @param array $retries
+     * @param array $lockouts
+     * @param array $valids
      */
-    function getAddress($typeName = '')
+    protected function cleanupLockout(array $retries = null, array $lockouts = null, array $valids = null)
+    {
+        $now = time();
+        if (is_null($lockouts)) {
+            $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        }
+
+        // Remove old lockouts.
+        foreach ($lockouts as $ip => $lockout) {
+            if ($lockout < $now) {
+                unset($lockouts[$ip]);
+            }
+        }
+        $this->settings()->set('limit_login_lockouts', $lockouts);
+
+        // Remove retries that are no longer valid.
+        if (is_null($valids)) {
+            $valids = $this->settings()->get('limit_login_valids', []);
+        }
+        if (is_null($retries)) {
+            $retries = $this->settings()->get('limit_login_retries', []);
+        }
+        if (!is_array($valids) || !is_array($retries)) {
+            return;
+        }
+
+        foreach ($valids as $ip => $lockout) {
+            if ($lockout < $now) {
+                unset($valids[$ip]);
+                unset($retries[$ip]);
+            }
+        }
+
+        // Go through retries directly, if for some reason they've gone out of sync.
+        foreach ($retries as $ip => $retry) {
+            if (!isset($valids[$ip])) {
+                unset($retries[$ip]);
+            }
+        }
+
+        $this->settings()->set('limit_login_valids', $valids);
+        $this->settings()->set('limit_login_retries', $retries);
+    }
+
+    /**
+     * Check if the ip is lockout.
+     *
+     * @return bool
+     */
+    protected function isLockout()
+    {
+        $ip = $this->getAddress();
+        if ($this->isIpWhitelisted($ip)) {
+            return true;
+        }
+
+        // Lockout active?
+        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        return is_array($lockouts)
+            && isset($lockouts[$ip])
+            && time() < $lockouts[$ip];
+    }
+
+    /**
+     * Reset the lockout for an ip (no check is done).
+     *
+     * @param string $ip
+     */
+    protected function resetLockout()
+    {
+        $ip = $this->getAddress();
+        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        unset($lockouts[$ip]);
+    }
+
+    /**
+     * Update the lockout for an ip when failed attempt.
+     *
+     * It increases the number of retries if needed, reset the valid value.
+     * It sets up lockout if number of retries are above threshold.
+     *
+     * A note on whitelist: retries and statistics are still counted and
+     * notifications done as usual, but no lockout is done.
+     *
+     * @param string $user
+     */
+    protected function updateLockout($user)
+    {
+        $now = time();
+        $ip = $this->getAddress();
+
+        // If currently locked-out, do not add to retries.
+        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        if (is_array($lockouts) && isset($lockouts[$ip]) && $now < $lockouts[$ip]) {
+            return;
+        }
+
+        // Get the arrays with retries and retries-valid information.
+        $valids = $this->settings()->get('limit_login_valids', []);
+        $retries = $this->settings()->get('limit_login_retries', []);
+
+        // Check validity and increment retries.
+        if (isset($retries[$ip]) && isset($valids[$ip]) && $now < $valids[$ip]) {
+            ++$retries[$ip];
+        } else {
+            $retries[$ip] = 1;
+        }
+        $valids[$ip] = $now + $this->settings()->get('limit_login_valid_duration');
+
+        // Lockout?
+        $allowedRetries = $this->settings()->get('limit_login_allowed_retries');
+        if ($retries[$ip] % $allowedRetries !== 0) {
+            // Not lockout (yet!).
+            // Do housecleaning (which also saves retry/valid values).
+            $this->cleanupLockout($retries, null, $valids);
+            return;
+        }
+
+        // Lockout!.
+        $whitelisted = $this->isIpWhitelisted($ip);
+        $retriesLong = $allowedRetries * $this->settings()->get('limit_login_allowed_lockouts');
+
+        // Note that retries and statistics are still counted and notifications
+        // done as usual for whitelisted ips , but no lockout is done.
+        if ($whitelisted) {
+            if ($retries[$ip] >= $retriesLong) {
+                unset($retries[$ip]);
+                unset($valids[$ip]);
+            }
+        } else {
+            $this->justLockedout = true;
+
+            // Setup lockout, reset retries as needed.
+            if ($retries[$ip] >= $retriesLong) {
+                // Long lockout.
+                $lockouts[$ip] = $now + $this->settings()->get('limit_login_long_duration');
+                unset($retries[$ip]);
+                unset($valids[$ip]);
+            } else {
+                // Normal lockout.
+                $lockouts[$ip] = $now + $this->settings()->get('limit_login_lockout_duration');
+            }
+        }
+
+        // Do housecleaning and save values.
+        $this->cleanupLockout($retries, $lockouts, $valids);
+
+        // Do any notification.
+        $this->notifyLockout($user);
+
+        // Increase statistics.
+        $total = $this->settings()->get('limit_login_lockouts_total', 0);
+        $this->settings()->set('limit_login_lockouts_total', ++$total);
+    }
+
+    /**
+     * Check if IP is whitelisted.
+     *
+     * @param string $ip
+     * @return bool
+     */
+    protected function isIpWhitelisted($ip = null)
+    {
+        if (is_null($ip)) {
+            $ip = $this->getAddress();
+        }
+        return in_array($ip, $this->settings()->get('limit_login_whitelist', []));
+    }
+
+    /**
+     * Get correct remote address.
+     *
+     * @param $typeName Direct address or proxy address.
+     * @return string
+     */
+    protected function getAddress($typeName = '')
     {
         $type = $typeName;
         if (empty($type)) {
-            $settings = $this->getServiceLocator()->get('Omeka\Settings');
-            $type = $settings->get('client_type');
+            $type = self::DIRECT_ADDR;
         }
 
         if (isset($_SERVER[$type])) {
@@ -87,7 +288,6 @@ class LoginController extends OmekaLoginController
         // Not found. Did we get proxy type from option?
         // If so, try to fall back to direct address.
         if (empty($type_name) && $type == self::PROXY_ADDR && isset($_SERVER[self::DIRECT_ADDR])) {
-
             // NOTE: Even though we fall back to direct address -- meaning you
             // can get a mostly working plugin when set to PROXY mode while in
             // fact directly connected to Internet it is not safe!
@@ -101,58 +301,268 @@ class LoginController extends OmekaLoginController
     }
 
     /**
-     * Check if IP is whitelisted.
+     * Return current (error) message to show, if any.
      *
-     * This function allow external ip whitelisting using a filter. Note that it can
-     * be called multiple times during the login process.
-     *
-     * Note that retries and statistics are still counted and notifications
-     * done as usual for whitelisted ips , but no lockout is done.
-     *
-     * Example:
-     * function my_ip_whitelist($allow, $ip) {
-     * return ($ip == 'my-ip') ? true : $allow;
-     * }
-     * add_filter('limit_login_whitelist_ip', 'my_ip_whitelist', 10, 2);
+     * @return string|bool If string, this is a warning. If true, login is
+     * allowed, else login is forbidden.
      */
-    function is_limit_login_ip_whitelisted($ip = null)
+    protected function checkLimitLogin()
     {
-        if (is_null($ip)) {
-            $ip = getAddress();
-        }
-        $whitelisted = apply_filters('limit_login_whitelist_ip', false, $ip);
-
-        return ($whitelisted === true);
-    }
-
-    /**
-     * Check if it is ok to login.
-     */
-    function is_limit_login_ok()
-    {
-        $ip = getAddress();
-
-        // Check external whitelist filter.
-        if (is_limit_login_ip_whitelisted($ip)) {
+        if ($this->isIpWhitelisted()) {
             return true;
         }
 
-        // lockout active?
-        $lockouts = get_option('limit_login_lockouts');
-        return (! is_array($lockouts) || ! isset($lockouts[$ip]) || time() >= $lockouts[$ip]);
+        if ($this->isLockout()) {
+            return false;
+        }
+
+        return $this->warnRemainingAttempts();
+    }
+
+    /**
+     * Add a warning for the retries remaining.
+     */
+    protected function warnRemainingAttempts()
+    {
+        $now = time();
+        $ip = $this->getAddress();
+        $retries = $this->settings()->get('limit_login_retries');
+        $valids = $this->settings()->get('limit_login_valids');
+
+        // Should we show retries remaining?
+        // No retries at all.
+        if (!is_array($retries) || !is_array($valids)) {
+            return '';
+        }
+        // No valid retries.
+        if (!isset($retries[$ip]) || !isset($valids[$ip]) || $now > $valids[$ip]) {
+            return '';
+        }
+        // Already been locked out for these retries.
+        if (($retries[$ip] % $this->settings()->get('limit_login_allowed_retries')) == 0) {
+            return '';
+        }
+
+        $remaining = max(
+            $this->settings()->get('limit_login_allowed_retries')
+                - ($retries[$ip] % $this->settings()->get('limit_login_allowed_retries')),
+            0);
+
+        $message = $remaining <= 1
+            ? sprintf('%s attempt remaining.', $remaining) // @translate
+            : sprintf('%s attempts remaining.', $remaining); // @translate
+
+        return $message;
+    }
+
+    /**
+     * Construct informative error message.
+     *
+     * @return string
+     */
+    protected function errorMsg()
+    {
+        $now = time();
+        $ip = $this->getAddress();
+        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+
+        $msg = 'Error: Too many failed login attempts.'; // @translate
+        $msg .= ' ';
+
+        // Huh? No timeout active?
+        if (!is_array($lockouts) || !isset($lockouts[$ip]) || $now >= $lockouts[$ip]) {
+            $msg .= 'Please try again later.'; // @translate
+        } else {
+            $when = ceil(($lockouts[$ip] - $now) / 60);
+            if ($when > 60) {
+                $when = ceil($when / 60);
+                $msg .= $when <= 1
+                    ? sprintf('Please try again in %d hour.', $when) // @translate
+                    : sprintf('Please try again in %d hours.', $when); // @translate;
+            } else {
+                $msg .= $when <= 1
+                    ? sprintf('Please try again in %d minute.', $when) // @translate
+                    : sprintf('Please try again in %d minutes.', $when); // @translate
+            }
+        }
+
+        return $msg;
+    }
+
+    /**
+     * Disable the elemens of the login form.
+     *
+     * @param LoginForm $form
+     */
+    protected function disableForm(LoginForm $form)
+    {
+        $this->messenger()->addError($this->errorMsg());
+        foreach (['email', 'password', 'submit'] as $element) {
+            $form->get($element)->setAttributes(['disabled' => 'disabled']);
+        }
+    }
+
+    /**
+     * Handle notification in event of lockout.
+     *
+     * @param string $user
+     */
+    protected function notifyLockout($user)
+    {
+        $args = $this->settings()->get('limit_login_lockout_notify', []);
+        if (empty($args)) {
+            return;
+        }
+
+        foreach ($args as $mode) {
+            switch ($mode) {
+                case 'log':
+                    $this->notifyLog($user);
+                    break;
+                case 'email':
+                    $this->notifyEmail($user);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Logging of lockout.
+     *
+     * @param string $user
+     */
+    protected function notifyLog($user)
+    {
+        $ip = $this->getAddress();
+        $logs = $option = $this->settings()->get('limit_login_logs', []);
+
+        // Can be written much simpler, if you do not mind php warnings.
+        if (isset($logs[$ip][$user])) {
+            ++$logs[$ip][$user];
+        } else {
+            $logs[$ip][$user] = 1;
+        }
+
+        $this->settings()->set('limit_login_logs', $logs);
+    }
+
+    /**
+     * Email notification of lockout to admin.
+     *
+     * @param string $user
+     */
+    protected function notifyEmail($user)
+    {
+        $ip = $this->getAddress();
+        $whitelisted = $this->isIpWhitelisted($ip);
+
+        $retries = $this->settings()->get('limit_login_retries', []);
+
+        // Check if we are at the right number to do notification.
+        if (isset($retries[$ip])
+            && (
+                ($retries[$ip] / $this->settings()->get('limit_login_allowed_retries', 1))
+                    % $this->settings()->get('limit_login_notify_email_after', 1)
+            ) != 0
+        ) {
+            return;
+        }
+
+        // Format message. First current lockout duration.
+        // Longer lockout.
+        if (! isset($retries[$ip])) {
+            $count = $this->settings()->get('limit_login_allowed_retries')
+                * $this->settings()->get('limit_login_allowed_lockouts');
+            $lockouts = $this->settings()->get('limit_login_allowed_lockouts');
+            $time = round($this->settings()->get('limit_login_long_duration') / 3600);
+            $when = $time <= 1 ? sprintf('%d hour', $time) : sprintf('%d hours', $time);
+        }
+        // Normal lockout.
+        else {
+            $count = $retries[$ip];
+            $lockouts = floor($count / $this->settings()->get('limit_login_allowed_retries'));
+            $time = round($this->settings()->get('limit_login_lockout_duration') / 60);
+            $when = $time <= 1 ? sprintf('%d minute', $time) : sprintf('%d minutes', $time);
+        }
+
+        $site = @$_SERVER['SERVER_NAME'] ?: sprintf('Server (%s)', @$_SERVER['SERVER_ADDR']);
+        if ($whitelisted) {
+            $subject = sprintf('[%s] Failed login attempts from whitelisted IP.', $site); // @translate
+        } else {
+            $subject = sprintf('[%s] Too many failed login attempts.', $site); // @translate
+        }
+
+        $body = sprintf('%d failed login attempts (%d lockout(s)) from IP: %s.', // @translate
+            $count, $lockouts, $ip) . "\r\n\r\n";
+        if (empty($user)) {
+            $body .= sprintf('Last user attempted: %s.', $user) . "\r\n\r\n"; // @translate
+        }
+        if ($whitelisted) {
+            $body .= __('IP was NOT blocked because of whitelist.'); // @translate
+        } else {
+            $body .= sprintf('IP was blocked for %s.', $when); // @translate
+        }
+
+        $adminEmail = $this->settings()->get('administrator_email');
+
+        $mailer = $this->mailer();
+        $message = $mailer->createMessage();
+        $message
+            ->addTo($adminEmail)
+            ->setSubject($subject)
+            ->setBody($body);
+        $mailer->send($message);
+    }
+
+    /*
+     * Unported or useless methods or cookies management.
+     * See properties too.
+     *
+     * @todo Port or remove (probably remove all).
+     */
+
+    /**
+     * Get options and setup filters & actions.
+     */
+    protected function limit_login_setup()
+    {
+        // Filters and actions.
+        add_action('wp_login_failed', 'limit_login_failed');
+        if (limit_login_option('cookies')) {
+            limit_login_handle_cookies();
+            add_action('auth_cookie_bad_username', 'limit_login_failed_cookie');
+
+            global $wp_version;
+
+            if (version_compare($wp_version, '3.0', '>=')) {
+                add_action('auth_cookie_bad_hash', 'limit_login_failed_cookie_hash');
+                add_action('auth_cookie_valid', 'limit_login_valid_cookie', 10, 2);
+            } else {
+                add_action('auth_cookie_bad_hash', 'limit_login_failed_cookie');
+            }
+        }
+        add_filter('wp_authenticate_user', 'limit_login_wp_authenticate_user', 99999, 2);
+        add_filter('shake_error_codes', 'limit_login_failure_shake');
+        add_action('login_head', 'limit_login_add_error_message');
+        add_action('login_errors', 'limit_login_fixup_error_messages');
+        add_action('admin_menu', 'limit_login_admin_menu');
+
+        // This action should really be changed to the 'authenticate' filter as
+        // it will probably be deprecated. That is however only available in
+        // later versions of WP.
+        add_action('wp_authenticate', 'limit_login_track_credentials', 10, 2);
     }
 
     /**
      * Filter: allow login attempt? (called from wp_authenticate()).
      */
-    function limit_login_wp_authenticate_user($user, $password)
+    protected function limit_login_wp_authenticate_user($user, $password)
     {
         if (is_wp_error($user) || is_limit_login_ok()) {
             return $user;
         }
 
-        global $limit_login_my_error_shown;
-        $limit_login_my_error_shown = true;
+        $this->my_error_shown = true;
 
         $error = new WP_Error();
         // This error should be the same as in "shake it" filter below.
@@ -163,7 +573,7 @@ class LoginController extends OmekaLoginController
     /**
      * Filter: add this failure to login page "Shake it!".
      */
-    function limit_login_failure_shake($error_codes)
+    protected function limit_login_failure_shake($error_codes)
     {
         $error_codes[] = 'too_many_retries';
         return $error_codes;
@@ -173,7 +583,7 @@ class LoginController extends OmekaLoginController
      * Must be called in plugin_loaded (really early) to make sure we do not allow
      * auth cookies while locked out.
      */
-    function limit_login_handle_cookies()
+    protected function limit_login_handle_cookies()
     {
         if (is_limit_login_ok()) {
             return;
@@ -189,7 +599,7 @@ class LoginController extends OmekaLoginController
      *
      * Requires WordPress version 3.0.0, previous versions use limit_login_failed_cookie()
      */
-    function limit_login_failed_cookie_hash($cookie_elements)
+    protected function limit_login_failed_cookie_hash($cookie_elements)
     {
         limit_login_clear_auth_cookie();
 
@@ -239,7 +649,7 @@ class LoginController extends OmekaLoginController
      *
      * Requires WordPress version 3.0.0, not used in previous versions
      */
-    function limit_login_valid_cookie($cookie_elements, $user)
+    protected function limit_login_valid_cookie($cookie_elements, $user)
     {
         // As all meta values get cached on user load this should not require
         // any extra work for the common case of no stored value.
@@ -251,7 +661,7 @@ class LoginController extends OmekaLoginController
     /**
      * Action: failed cookie login (calls limit_login_failed()).
      */
-    function limit_login_failed_cookie($cookie_elements)
+    protected function limit_login_failed_cookie($cookie_elements)
     {
         limit_login_clear_auth_cookie();
 
@@ -262,7 +672,7 @@ class LoginController extends OmekaLoginController
     /**
      * Make sure auth cookie really get cleared (for this session too).
      */
-    function limit_login_clear_auth_cookie()
+    protected function limit_login_clear_auth_cookie()
     {
         wp_clear_auth_cookie();
 
@@ -278,363 +688,36 @@ class LoginController extends OmekaLoginController
     }
 
     /**
-     * Action when login attempt failed.
-     *
-     * Increase nr of retries (if necessary). Reset valid value. Setup
-     * lockout if nr of retries are above threshold. And more!
-     *
-     * A note on external whitelist: retries and statistics are still counted and
-     * notifications done as usual, but no lockout is done.
-     */
-    function limit_login_failed($username)
-    {
-        $ip = getAddress();
-
-        // if currently locked-out, do not add to retries.
-        $lockouts = get_option('limit_login_lockouts');
-        if (! is_array($lockouts)) {
-            $lockouts = [];
-        }
-        if (isset($lockouts[$ip]) && time() < $lockouts[$ip]) {
-            return;
-        }
-
-        // Get the arrays with retries and retries-valid information.
-        $retries = get_option('limit_login_retries');
-        $valid = get_option('limit_login_retries_valid');
-        if (! is_array($retries)) {
-            $retries = [];
-            add_option('limit_login_retries', $retries, '', 'no');
-        }
-        if (! is_array($valid)) {
-            $valid = [];
-            add_option('limit_login_retries_valid', $valid, '', 'no');
-        }
-
-        // Check validity and add one to retries.
-        if (isset($retries[$ip]) && isset($valid[$ip]) && time() < $valid[$ip]) {
-            $retries[$ip] ++;
-        } else {
-            $retries[$ip] = 1;
-        }
-        $valid[$ip] = time() + limit_login_option('valid_duration');
-
-        // lockout?
-        if ($retries[$ip] % limit_login_option('allowed_retries') != 0) {
-            // Not lockout (yet!)
-            // Do housecleaning (which also saves retry/valid values).
-            limit_login_cleanup($retries, null, $valid);
-            return;
-        }
-
-        // lockout!.
-
-        $whitelisted = is_limit_login_ip_whitelisted($ip);
-
-        $retries_long = limit_login_option('allowed_retries') * limit_login_option('allowed_lockouts');
-
-        // Note that retries and statistics are still counted and notifications
-        // done as usual for whitelisted ips , but no lockout is done.
-        if ($whitelisted) {
-            if ($retries[$ip] >= $retries_long) {
-                unset($retries[$ip]);
-                unset($valid[$ip]);
-            }
-        } else {
-            global $limit_login_just_lockedout;
-            $limit_login_just_lockedout = true;
-
-            // Setup lockout, reset retries as needed.
-            if ($retries[$ip] >= $retries_long) {
-                /* long lockout */
-                $lockouts[$ip] = time() + limit_login_option('long_duration');
-                unset($retries[$ip]);
-                unset($valid[$ip]);
-            } else {
-                // normal lockout
-                $lockouts[$ip] = time() + limit_login_option('lockout_duration');
-            }
-        }
-
-        // Do housecleaning and save values.
-        limit_login_cleanup($retries, $lockouts, $valid);
-
-        // Do any notification.
-        limit_login_notify($username);
-
-        // Increase statistics.
-        $total = get_option('limit_login_lockouts_total');
-        if ($total === false || ! is_numeric($total)) {
-            add_option('limit_login_lockouts_total', 1, '', 'no');
-        } else {
-            update_option('limit_login_lockouts_total', $total + 1);
-        }
-    }
-
-    /**
-     * Clean up old lockouts and retries, and save supplied arrays.
-     */
-    function limit_login_cleanup($retries = null, $lockouts = null, $valid = null)
-    {
-        $now = time();
-        $lockouts = ! is_null($lockouts) ? $lockouts : get_option('limit_login_lockouts');
-
-        // Remove old lockouts.
-        if (is_array($lockouts)) {
-            foreach ($lockouts as $ip => $lockout) {
-                if ($lockout < $now) {
-                    unset($lockouts[$ip]);
-                }
-            }
-            update_option('limit_login_lockouts', $lockouts);
-        }
-
-        // Remove retries that are no longer valid.
-        $valid = ! is_null($valid) ? $valid : get_option('limit_login_retries_valid');
-        $retries = ! is_null($retries) ? $retries : get_option('limit_login_retries');
-        if (! is_array($valid) || ! is_array($retries)) {
-            return;
-        }
-
-        foreach ($valid as $ip => $lockout) {
-            if ($lockout < $now) {
-                unset($valid[$ip]);
-                unset($retries[$ip]);
-            }
-        }
-
-        // Go through retries directly, if for some reason they've gone out of sync.
-        foreach ($retries as $ip => $retry) {
-            if (! isset($valid[$ip])) {
-                unset($retries[$ip]);
-            }
-        }
-
-        update_option('limit_login_retries', $retries);
-        update_option('limit_login_retries_valid', $valid);
-    }
-
-    /**
-     * Is this WP Multisite?
-     */
-    function is_limit_login_multisite()
-    {
-        return function_exists('get_site_option') && function_exists('is_multisite') && is_multisite();
-    }
-
-    /**
-     * Email notification of lockout to admin (if configured)
-     */
-    function limit_login_notify_email($user)
-    {
-        $ip = getAddress();
-        $whitelisted = is_limit_login_ip_whitelisted($ip);
-
-        $retries = get_option('limit_login_retries');
-        if (! is_array($retries)) {
-            $retries = [];
-        }
-
-        // Check if we are at the right nr to do notification.
-        if (isset($retries[$ip]) && (($retries[$ip] / limit_login_option('allowed_retries')) % limit_login_option('notify_email_after')) != 0) {
-            return;
-        }
-
-        // Format message. First current lockout duration.
-        if (! isset($retries[$ip])) {
-            // Longer lockout.
-            $count = limit_login_option('allowed_retries') * limit_login_option('allowed_lockouts');
-            $lockouts = limit_login_option('allowed_lockouts');
-            $time = round(limit_login_option('long_duration') / 3600);
-            $when = sprintf(_n('%d hour', '%d hours', $time, 'limit-login-attempts'), $time);
-        } else {
-            // Normal lockout.
-            $count = $retries[$ip];
-            $lockouts = floor($count / limit_login_option('allowed_retries'));
-            $time = round(limit_login_option('lockout_duration') / 60);
-            $when = sprintf(_n('%d minute', '%d minutes', $time, 'limit-login-attempts'), $time);
-        }
-
-        $blogname = is_limit_login_multisite() ? get_site_option('site_name') : get_option('blogname');
-
-        if ($whitelisted) {
-            $subject = sprintf(__("[%s] Failed login attempts from whitelisted IP", 'limit-login-attempts'), $blogname);
-        } else {
-            $subject = sprintf(__("[%s] Too many failed login attempts", 'limit-login-attempts'), $blogname);
-        }
-
-        $message = sprintf(__("%d failed login attempts (%d lockout(s)) from IP: %s", 'limit-login-attempts') . "\r\n\r\n", $count, $lockouts, $ip);
-        if ($user != '') {
-            $message .= sprintf(__("Last user attempted: %s", 'limit-login-attempts') . "\r\n\r\n", $user);
-        }
-        if ($whitelisted) {
-            $message .= __("IP was NOT blocked because of external whitelist.", 'limit-login-attempts');
-        } else {
-            $message .= sprintf(__("IP was blocked for %s", 'limit-login-attempts'), $when);
-        }
-
-        $admin_email = is_limit_login_multisite() ? get_site_option('admin_email') : get_option('admin_email');
-
-        @wp_mail($admin_email, $subject, $message);
-    }
-
-    /**
-     * Logging of lockout (if configured).
-     */
-    function limit_login_notify_log($user)
-    {
-        $log = $option = get_option('limit_login_logged');
-        if (! is_array($log)) {
-            $log = [];
-        }
-        $ip = getAddress();
-
-        // Can be written much simpler, if you do not mind php warnings.
-        if (isset($log[$ip])) {
-            if (isset($log[$ip][$user])) {
-                $log[$ip][$user] ++;
-            } else {
-                $log[$ip][$user] = 1;
-            }
-        } else {
-            $log[$ip] = [
-                $user => 1,
-            ];
-        }
-
-        if ($option === false) {
-            // No autoload.
-            add_option('limit_login_logged', $log, '', 'no');
-        } else {
-            update_option('limit_login_logged', $log);
-        }
-    }
-
-    /**
-     * Handle notification in event of lockout.
-     */
-    function limit_login_notify($user)
-    {
-        $args = explode(',', limit_login_option('lockout_notify'));
-
-        if (empty($args)) {
-            return;
-        }
-
-        foreach ($args as $mode) {
-            switch (trim($mode)) {
-                case 'email':
-                    limit_login_notify_email($user);
-                    break;
-                case 'log':
-                    limit_login_notify_log($user);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Construct informative error message.
-     */
-    function limit_login_error_msg()
-    {
-        $ip = getAddress();
-        $lockouts = get_option('limit_login_lockouts');
-
-        $msg = __('<strong>ERROR</strong>: Too many failed login attempts.', 'limit-login-attempts') . ' ';
-
-        if (! is_array($lockouts) || ! isset($lockouts[$ip]) || time() >= $lockouts[$ip]) {
-            // Huh? No timeout active?
-            $msg .= __('Please try again later.', 'limit-login-attempts');
-            return $msg;
-        }
-
-        $when = ceil(($lockouts[$ip] - time()) / 60);
-        if ($when > 60) {
-            $when = ceil($when / 60);
-            $msg .= sprintf(_n('Please try again in %d hour.', 'Please try again in %d hours.', $when, 'limit-login-attempts'), $when);
-        } else {
-            $msg .= sprintf(_n('Please try again in %d minute.', 'Please try again in %d minutes.', $when, 'limit-login-attempts'), $when);
-        }
-
-        return $msg;
-    }
-
-    /**
-     * Construct retries remaining message.
-     */
-    function limit_login_retries_remaining_msg()
-    {
-        $ip = getAddress();
-        $retries = get_option('limit_login_retries');
-        $valid = get_option('limit_login_retries_valid');
-
-        // Should we show retries remaining?
-
-        if (! is_array($retries) || ! is_array($valid)) {
-            // No retries at all.
-            return '';
-        }
-        if (! isset($retries[$ip]) || ! isset($valid[$ip]) || time() > $valid[$ip]) {
-            // No: no valid retries.
-            return '';
-        }
-        if (($retries[$ip] % limit_login_option('allowed_retries')) == 0) {
-            // No: already been locked out for these retries.
-            return '';
-        }
-
-        $remaining = max((limit_login_option('allowed_retries') - ($retries[$ip] % limit_login_option('allowed_retries'))), 0);
-        return sprintf(_n("<strong>%d</strong> attempt remaining.", "<strong>%d</strong> attempts remaining.", $remaining, 'limit-login-attempts'), $remaining);
-    }
-
-    /**
-     * Return current (error) message to show, if any
-     */
-    function limit_login_get_message()
-    {
-        // Check external whitelist.
-        if (is_limit_login_ip_whitelisted()) {
-            return '';
-        }
-
-        // Is lockout in effect?
-        if (! is_limit_login_ok()) {
-            return limit_login_error_msg();
-        }
-
-        return limit_login_retries_remaining_msg();
-    }
-
-    /**
      * Should we show errors and messages on this page?.
      */
-    function should_limit_login_show_msg()
+    protected function should_limit_login_show_msg()
     {
         if (isset($_GET['key'])) {
-            // reset password.
+            // Reset password.
             return false;
         }
 
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 
-        return ($action != 'lostpassword' && $action != 'retrievepassword' && $action != 'resetpass' && $action != 'rp' && $action != 'register');
+        return $action != 'lostpassword'
+            && $action != 'retrievepassword'
+            && $action != 'resetpass'
+            && $action != 'rp'
+            && $action != 'register';
     }
 
     /**
      * Fix up the error message before showing it.
      */
-    function limit_login_fixup_error_messages($content)
+    protected function limit_login_fixup_error_messages($content)
     {
-        global $limit_login_just_lockedout, $limit_login_nonempty_credentials, $limit_login_my_error_shown;
-
         if (! should_limit_login_show_msg()) {
             return $content;
         }
 
         // During lockout we do not want to show any other error messages (like
         // unknown user or empty password).
-        if (! is_limit_login_ok() && ! $limit_login_just_lockedout) {
+        if (! is_limit_login_ok() && ! $this->just_lockedout) {
             return limit_login_error_msg();
         }
 
@@ -652,12 +735,12 @@ class LoginController extends OmekaLoginController
         }
 
         $count = count($msgs);
-        $my_warn_count = $limit_login_my_error_shown ? 1 : 0;
+        $my_warn_count = $this->my_error_shown ? 1 : 0;
 
-        if ($limit_login_nonempty_credentials && $count > $my_warn_count) {
+        if ($this->nonempty_credentials && $count > $my_warn_count) {
             // Replace error message, including ours if necessary.
-            $content = __('<strong>ERROR</strong>: Incorrect username or password.', 'limit-login-attempts') . "<br />\n";
-            if ($limit_login_my_error_shown) {
+            $content = sprintf('<strong>ERROR</strong>: Incorrect username or password.') . "<br />\n";
+            if ($this->my_error_shown) {
                 $content .= "<br />\n" . limit_login_get_message() . "<br />\n";
             }
             return $content;
@@ -679,19 +762,17 @@ class LoginController extends OmekaLoginController
     /**
      * Add a message to login page when necessary.
      */
-    function limit_login_add_error_message()
+    protected function limit_login_add_error_message()
     {
-        global $error, $limit_login_my_error_shown;
-
-        if (! should_limit_login_show_msg() || $limit_login_my_error_shown) {
+        if (! should_limit_login_show_msg() || $this->my_error_shown) {
             return;
         }
 
         $msg = limit_login_get_message();
 
-        if ($msg != '') {
-            $limit_login_my_error_shown = true;
-            $error .= $msg;
+        if ($msg) {
+            $this->my_error_shown = true;
+            $this->messenger()->addError($msg);
         }
 
         return;
@@ -700,10 +781,8 @@ class LoginController extends OmekaLoginController
     /**
      * Keep track of if user or password are empty, to filter errors correctly
      */
-    function limit_login_track_credentials($user, $password)
+    protected function limit_login_track_credentials($user, $password)
     {
-        global $limit_login_nonempty_credentials;
-
-        $limit_login_nonempty_credentials = (! empty($user) && ! empty($password));
+        $this->hasCredentials = !empty($user) && !empty($password);
     }
 }

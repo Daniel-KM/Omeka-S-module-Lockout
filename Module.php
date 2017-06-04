@@ -30,7 +30,7 @@ use Zend\View\Renderer\PhpRenderer;
 /**
  * Limit Login Attempts
  *
- * Limit rate of login attempts, including by way of cookies, for each IP.
+ * Limit rate of login attempts for each IP to avoid brute-force attacks.
  *
  * @copyright Johan Eenfeldt, 2008-2012
  * @copyright Daniel Berthereau, 2017
@@ -63,17 +63,21 @@ class Module extends AbstractModule
 
         // Also limit malformed/forged cookies?
         'limit_login_cookies' => true,
+        // Whitelist of ips.
+        'limit_login_whitelist' => [],
         // Notify on lockout. Values: '', 'log' and/or 'email'.
         'limit_login_lockout_notify' => ['log'],
         // If notify by email, do so after this number of lockouts.
         'limit_login_notify_email_after' => 4,
 
-        // Total lockouts.
-        'limit_login_lockouts_total' => 0,
         // Current lockouts.
         'limit_login_lockouts' => [],
+        'limit_login_valids' => [],
+        'limit_login_retries' => [],
+        // Total lockouts.
+        'limit_login_lockouts_total' => 0,
         // Logs.
-        'limit_login_logged' => [],
+        'limit_login_logs' => [],
     ];
 
     public function getConfig()
@@ -103,23 +107,22 @@ class Module extends AbstractModule
         $settings = $services->get('Omeka\Settings');
         $formElementManager = $services->get('FormElementManager');
 
-        // TODO $this->limit_login_cleanup();
-
         $formData = [];
         foreach ($this->settings as $name => $value) {
             $formData[$name] = $settings->get($name);
         }
+        $formData['limit_login_whitelist'] = implode("\n", $formData['limit_login_whitelist']);
 
         $form = $formElementManager->get(ConfigForm::class);
         $form->init();
         $form->setData($formData);
 
         $clientTypeGuess = $this->guessProxy();
-        if ($clientTypeGuess== self::DIRECT_ADDR) {
-            $clientTypeMessage = sprintf('It appears the site is reached directly (from your IP: %s)', // @translate
+        if ($clientTypeGuess == self::DIRECT_ADDR) {
+            $clientTypeMessage = sprintf('It appears the site is reached directly (from your IP: %s).', // @translate
                 '<strong>' . $this->getAddress(self::DIRECT_ADDR) . '</strong>');
         } else {
-            $clientTypeMessage = sprintf('It appears the site is reached through a proxy server (proxy IP: %s, your IP: %s)', // @translate
+            $clientTypeMessage = sprintf('It appears the site is reached through a proxy server (proxy IP: %s, your IP: %s).', // @translate
                 '<strong>' . $this->getAddress(self::PROXY_ADDR) . '</strong>',
                 '<strong>' . $this->getAddress(self::DIRECT_ADDR) . '</strong>');
         }
@@ -128,11 +131,11 @@ class Module extends AbstractModule
         $vars = [];
         $vars['form'] = $form;
 
-        $vars['lockout_total'] = $settings->get('limit_login_lockout_total', 0);
-        $vars['lockouts'] = $settings->get('llimit_login_lockouts', []);
+        $vars['lockout_total'] = $settings->get('limit_login_lockouts_total', 0);
+        $vars['lockouts'] = $settings->get('limit_login_lockouts', []);
         $vars['client_type_message'] = $clientTypeMessage;
         $vars['client_type_warning'] = $clientTypeGuess != $settings->get('limit_login_client_type', $this->settings['limit_login_client_type']);
-        $vars['log'] = $settings->get('limit_login_logged', []);
+        $vars['logs'] = $settings->get('limit_login_logs', []);
 
         return $renderer->render('limit-login-attempts/module/config.phtml', $vars);
     }
@@ -154,17 +157,17 @@ class Module extends AbstractModule
 
         if (!empty($params['limit_login_clear_total_lockouts'])) {
             $params['limit_login_lockouts_total'] = 0;
-            $controller->messenger()->addSuccess('Reset lockout count'); // @translate
+            $controller->messenger()->addSuccess('Reset lockout count.'); // @translate
         }
 
         if (!empty($params['limit_login_clear_current_lockouts'])) {
             $params['limit_login_lockouts_total'] = [];
-            $controller->messenger()->addSuccess('Cleared current lockouts'); // @translate
+            $controller->messenger()->addSuccess('Cleared current lockouts.'); // @translate
         }
 
-        if (!empty($params['limit_login_clear_log'])) {
-            $params['limit_login_logged'] = [];
-            $controller->messenger()->addSuccess('Cleared IP log'); // @translate
+        if (!empty($params['limit_login_clear_logs'])) {
+            $params['limit_login_logs'] = [];
+            $controller->messenger()->addSuccess('Cleared IP log.'); // @translate
         }
 
         // Clean params.
@@ -175,8 +178,8 @@ class Module extends AbstractModule
         $params['limit_login_long_duration'] = (int) $params['limit_login_long_duration'];
         $params['limit_login_cookies'] = (bool) $params['limit_login_cookies'];
         $params['limit_login_notify_email_after'] = (int) $params['limit_login_notify_email_after'];
-        $params['limit_login_notify_email_after'] = (int) $params['limit_login_notify_email_after'];
         $params['limit_login_lockout_notify'] = array_intersect($params['limit_login_lockout_notify'], ['log', 'email']);
+        $params['limit_login_whitelist'] = array_filter(array_map('trim', explode("\n", $params['limit_login_whitelist'])));
         if (!in_array($params['limit_login_client_type'], [self::DIRECT_ADDR, self::PROXY_ADDR])) {
             $params['limit_login_client_type'] = self::DIRECT_ADDR;
         }
@@ -190,8 +193,11 @@ class Module extends AbstractModule
 
     /**
      * Get correct remote address.
+     *
+     * @param $typeName Direct address or proxy address.
+     * @return string
      */
-    function getAddress($typeName = '')
+    public function getAddress($typeName = '')
     {
         $type = $typeName;
         if (empty($type)) {
@@ -205,7 +211,6 @@ class Module extends AbstractModule
         // Not found. Did we get proxy type from option?
         // If so, try to fall back to direct address.
         if (empty($type_name) && $type == self::PROXY_ADDR && isset($_SERVER[self::DIRECT_ADDR])) {
-
             // NOTE: Even though we fall back to direct address -- meaning you
             // can get a mostly working plugin when set to PROXY mode while in
             // fact directly connected to Internet it is not safe!
@@ -221,7 +226,7 @@ class Module extends AbstractModule
     /**
      * Make a guess if we are behind a proxy or not.
      */
-    function guessProxy()
+    public function guessProxy()
     {
         return isset($_SERVER[self::PROXY_ADDR])
             ? self::PROXY_ADDR

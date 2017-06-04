@@ -13,7 +13,7 @@ class Config extends Form
             'name' => 'limit_login_clear_total_lockouts',
             'type' => 'Checkbox',
             'options' => [
-                'label' => 'Reset total lockouts', // @translate
+                'label' => 'Reset counter', // @translate
             ],
             'attributes' => [
                 'value' => false,
@@ -32,7 +32,7 @@ class Config extends Form
         ]);
 
         $this->add([
-            'name' => 'limit_login_clear_log',
+            'name' => 'limit_login_clear_logs',
             'type' => 'Checkbox',
             'options' => [
                 'label' => 'Clear IP log', // @translate
@@ -84,6 +84,17 @@ class Config extends Form
             ],
         ]);
 
+        $this->add([
+            'name' => 'limit_login_whitelist',
+            'type' => 'Textarea',
+            'options' => [
+                'label' => 'Whitelist of IPs', // @translate
+            ],
+            'attributes' => [
+                'placeholder' => 'One IP by line (ipv4 or ipv6)',  // @translate
+            ],
+        ]);
+
         // Site connection.
 
         $this->add([
@@ -93,11 +104,12 @@ class Config extends Form
                 'label' => 'Client type', // @translate
                 'value_options' => [
                     \LimitLoginAttempts\Module::DIRECT_ADDR => 'Direct connection', // @translate
-                    \LimitLoginAttempts\Module::PROXY_ADDR => 'From behind a reversy proxy', // @translate
+                    \LimitLoginAttempts\Module::PROXY_ADDR => 'From behind a reverse proxy', // @translate
                 ],
             ],
         ]);
 
+        /*
         $this->add([
             'name' => 'limit_login_cookies',
             'type' => 'Checkbox',
@@ -105,6 +117,7 @@ class Config extends Form
                 'label' => 'Handle cookie login', // @translate
             ],
         ]);
+        */
 
         // Notification.
 

@@ -23,10 +23,10 @@ $form->prepare();
 if (empty($lockout_total)):
     echo $this->translate('No lockouts yet.');
 else:
-    if ($lockout_total == 1):
-        echo sprintf($this->translate('%d lockout since last reset', $lockout_total));
+    if ($lockout_total <= 1):
+        echo sprintf($this->translate('%d lockout since last reset.'), $lockout_total);
     else:
-        echo sprintf($this->translate('%d lockouts since last reset', $lockout_total));
+        echo sprintf($this->translate('%d lockouts since last reset.'), $lockout_total);
     endif;
     echo $this->formRow($form->get('limit_login_clear_total_lockouts'));
 endif;
@@ -37,10 +37,10 @@ $activeLockouts = count($lockouts);
 if (empty($activeLockouts)):
     echo $this->translate('No active lockout.');
 else:
-    if ($activeLockouts == 1):
-        echo sprintf($this->translate('%d IP is currently blocked from trying to log in.', $activeLockouts));
-    elseif ($activeLockouts > 1):
-        echo sprintf($this->translate('%d IPs are currently blocked from trying to log in.', $activeLockouts));
+    if ($activeLockouts <= 1):
+        echo sprintf($this->translate('%d IP is currently blocked from trying to log in.'), $activeLockouts);
+    else:
+        echo sprintf($this->translate('%d IPs are currently blocked from trying to log in.'), $activeLockouts);
     endif;
     echo $this->formRow($form->get('limit_login_clear_current_lockouts'));
 endif;
@@ -53,6 +53,7 @@ endif;
 <?php echo $this->formRow($form->get('limit_login_allowed_lockouts')); ?>
 <?php echo $this->formRow($form->get('limit_login_long_duration')); ?>
 <?php echo $this->formRow($form->get('limit_login_valid_duration')); ?>
+<?php echo $this->formRow($form->get('limit_login_whitelist')); ?>
 
 <h4><?php echo $this->translate('Site connection'); ?></h4>
 <?php echo $client_type_message; ?>
@@ -63,17 +64,17 @@ endif;
 <?php echo $this->translate('Please make sure it is correct.'); ?>
 <?php echo sprintf($this->translate('Further information can be found in %sreadme%s.'), '<a href="https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts" title="readme" target="_blank">', '</a>'); ?>
 <?php endif; ?>
-<?php echo $this->formRow($form->get('limit_login_cookies')); ?>
+<?php // echo $this->formRow($form->get('limit_login_cookies')); ?>
 
 <h4><?php echo $this->translate('Notification'); ?></h4>
 <?php echo $this->formRow($form->get('limit_login_lockout_notify')); ?>
 <?php echo $this->formRow($form->get('limit_login_notify_email_after')); ?>
 
 <h3><?php echo $this->translate('Lockout log'); ?></h3>
-<?php if (empty($log)): ?>
+<?php if (empty($logs)): ?>
 <p><?php echo $this->translate('No log currently.'); ?></p>
 <?php else:
-echo $this->formRow($form->get('limit_login_clear_log')); ?>
+echo $this->formRow($form->get('limit_login_clear_logs')); ?>
 <div class="limit-login-log">
     <table class="form-table">
         <thead>
@@ -83,15 +84,15 @@ echo $this->formRow($form->get('limit_login_clear_log')); ?>
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($log as $ip => $arr): ?>
+        <?php foreach ($logs as $ip => $arr): ?>
             <tr>
                 <td class="limit-login-ip"><?php echo $ip; ?></td>
                 <td class="limit-login-max">
                 <?php $first = true;
                 foreach ($arr as $user => $count):
                     $count_desc = $count <= 1
-                        ? sprintf($this->translate('%d lockout', $count))
-                        : sprintf($this->translate('%d lockouts', $count));
+                        ? sprintf($this->translate('%d lockout'), $count)
+                        : sprintf($this->translate('%d lockouts'), $count);
                     if ($first):
                         echo $user . ' (' . $count_desc . ')';
                         $first = false;

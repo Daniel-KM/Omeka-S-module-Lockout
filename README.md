@@ -1,8 +1,8 @@
 Limit Login Attempts (module for Omeka S)
 =========================================
 
-[Limit Login Attempts] is a module for [Omeka S] that limit rate of login
-attempts, including by way of cookies, for each IP. it is fully customizable.
+[Limit Login Attempts] is a module for [Omeka S] that limits the rate of login
+attempts for each IP (not by auth cookie) in order to avoid brute-force attacks.
 
 This module is a full rewrite of a [plugin for WordPress], create by Johan Eenfeldt (johanee).
 
@@ -10,12 +10,11 @@ This module is a full rewrite of a [plugin for WordPress], create by Johan Eenfe
 Description
 -----------
 
-Limit the number of login attempts possible both through normal login as well as
-using auth cookies.
+Limit the number of login attempts possible both through normal login.
 
 By default Omeka S allows unlimited login attempts either through the login
-page or by sending special cookies. This allows passwords (or hashes) to be
-brute-force cracked with relative ease.
+page. This allows passwords (or hashes) to be brute-force cracked with relative
+ease.
 
 Limit Login Attempts blocks an Internet address from making further attempts
 after a specified limit on retries is reached, making a brute-force attack
@@ -23,25 +22,32 @@ difficult or impossible.
 
 ## Features
 
-* Limit the number of retry attempts when logging in (for each IP). Fully
-  customizable
-* Limit the number of attempts to log in using auth cookies in same way
+* Limit the number of retry attempts when logging in (for each IP)
+* Fully customizable
 * Informs user about remaining retries or lockout time on login page
-* Optional logging, optional email notification
+* Optional logging and optional email notification
 * Handles server behind reverse proxy
-* It is possible to whitelist IPs using a filter. But you probably shouldn't. :-)
+* It is possible to whitelist IPs, but you probably shouldn't. :-)
 
 Translations: Bulgarian, Brazilian Portuguese, Catalan, Chinese (Traditional),
 Czech, Dutch, Finnish, French, German, Hungarian, Norwegian, Persian, Romanian,
-Russian, Spanish, Swedish, Turkish
+Russian, Spanish, Swedish, Turkish.
 
 The module uses standard actions and filters only.
 
 ## Screenshots
 
-1. Loginscreen after failed login with retries remaining
-2. Loginscreen during lockout
+1. Login screen after failed login with retries remaining.
+
+  ![Login screen after failed login](https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/blob/master/data/readme/lockout_attempt.png)
+
+2. Login screen during lockout.
+
+  ![Login screen during lockout](https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/blob/master/data/readme/lockout_blocked.png)
+
 3. Administration interface in Omeka S
+
+  ![administration interface](https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/blob/master/data/readme/lockout_config.png)
 
 
 Installation
@@ -81,14 +87,6 @@ option page. Set the option using this unless you are sure you know better.
 First please consider if you really need this. Generally speaking it is not a
 good idea to have exceptions to your security policies.
 
-That said, there is now a filter which allows you to do it: "limit_login_whitelist_ip".
-
-Example:
-function my_ip_whitelist($allow, $ip) {
-	 return ($ip == 'my-ip') ? true : $allow;
-}
-add_filter('limit_login_whitelist_ip', 'my_ip_whitelist', 10, 2);
-
 Note that we still do notification and logging as usual. This is meant to allow
 you to be aware of any suspicious activity from whitelisted IPs.
 
@@ -106,6 +104,7 @@ increase the version number in the `config/module.ini`, so it will deactivate it
 If you have access to the database (for example through phpMyAdmin) you can clear
 the limit_login_lockouts option in the Omeka S `setting` table. The sql for a
 standard install is: `UPDATE setting SET value = '' WHERE id = 'limit_login_lockouts';`
+You can disable the module too: `UPDATE module SET is_active = 0 WHERE id = 'LimitLoginAttempts';`.
 
 
 Warning
