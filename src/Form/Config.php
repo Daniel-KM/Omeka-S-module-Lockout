@@ -10,10 +10,10 @@ class Config extends Form
         // Resets.
 
         $this->add([
-            'name' => 'lockout_clear_total_lockouts',
+            'name' => 'lockout_clear_current_lockouts',
             'type' => 'Checkbox',
             'options' => [
-                'label' => 'Reset counter', // @translate
+                'label' => 'Clear current lockouts', // @translate
             ],
             'attributes' => [
                 'value' => false,
@@ -21,10 +21,10 @@ class Config extends Form
         ]);
 
         $this->add([
-            'name' => 'lockout_clear_current_lockouts',
+            'name' => 'lockout_clear_total_lockouts',
             'type' => 'Checkbox',
             'options' => [
-                'label' => 'Clear current lockouts', // @translate
+                'label' => 'Reset counter', // @translate
             ],
             'attributes' => [
                 'value' => false,
@@ -64,7 +64,7 @@ class Config extends Form
             'name' => 'lockout_allowed_lockouts',
             'type' => 'Text',
             'options' => [
-                'label' => 'Allowed retries', // @translate
+                'label' => 'Allowed lockouts before long lockout', // @translate
             ],
         ]);
 

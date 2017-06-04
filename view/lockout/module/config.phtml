@@ -20,19 +20,6 @@ $form->prepare();
 <h3><?php echo $this->translate('Statistics'); ?></h3>
 
 <p><?php
-if (empty($lockout_total)):
-    echo $this->translate('No lockouts yet.');
-else:
-    if ($lockout_total <= 1):
-        echo sprintf($this->translate('%d lockout since last reset.'), $lockout_total);
-    else:
-        echo sprintf($this->translate('%d lockouts since last reset.'), $lockout_total);
-    endif;
-    echo $this->formRow($form->get('lockout_clear_total_lockouts'));
-endif;
-?></p>
-
-<p><?php
 $activeLockouts = count($lockouts);
 if (empty($activeLockouts)):
     echo $this->translate('No active lockout.');
@@ -43,6 +30,19 @@ else:
         echo sprintf($this->translate('%d IPs are currently blocked from trying to log in.'), $activeLockouts);
     endif;
     echo $this->formRow($form->get('lockout_clear_current_lockouts'));
+endif;
+?></p>
+
+<p><?php
+if (empty($lockout_total)):
+    echo $this->translate('No lockouts yet.');
+else:
+    if ($lockout_total <= 1):
+        echo sprintf($this->translate('%d lockout since last reset.'), $lockout_total);
+    else:
+        echo sprintf($this->translate('%d lockouts since last reset.'), $lockout_total);
+    endif;
+    echo $this->formRow($form->get('lockout_clear_total_lockouts'));
 endif;
 ?></p>
 

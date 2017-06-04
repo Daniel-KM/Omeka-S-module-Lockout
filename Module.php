@@ -155,14 +155,14 @@ class Module extends AbstractModule
         //     return false;
         // }
 
+        if (!empty($params['lockout_clear_current_lockouts'])) {
+            $params['lockout_lockouts'] = [];
+            $controller->messenger()->addSuccess('Cleared current lockouts.'); // @translate
+        }
+
         if (!empty($params['lockout_clear_total_lockouts'])) {
             $params['lockout_lockouts_total'] = 0;
             $controller->messenger()->addSuccess('Reset lockout count.'); // @translate
-        }
-
-        if (!empty($params['lockout_clear_current_lockouts'])) {
-            $params['lockout_lockouts_total'] = [];
-            $controller->messenger()->addSuccess('Cleared current lockouts.'); // @translate
         }
 
         if (!empty($params['lockout_clear_logs'])) {
