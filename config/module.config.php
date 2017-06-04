@@ -7,6 +7,12 @@ return [
             OMEKA_PATH . '/modules/LimitLoginAttempts/view',
         ],
     ],
+    'controllers' => [
+        'factories' => [
+            // Override the standard Omeka login controller.
+            'Omeka\Controller\Login' => Service\Controller\LoginControllerFactory::class,
+        ],
+    ],
     'form_elements' => [
         'invokables' => [
             'LimitLoginAttempts\Form\Config' => Form\Config::class,
