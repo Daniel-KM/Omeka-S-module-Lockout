@@ -1,0 +1,108 @@
+<?php
+$this->headStyle()->appendStyle('
+.limit-login-log th {
+    font-weight: bold;
+}
+.limit-login-log td,
+.limit-login-log th {
+    padding: 1px 5px 1px 5px;
+}
+td.limit-login-ip {
+    font-family:  "Courier New", Courier, monospace;
+    vertical-align: top;
+}
+td.limit-login-max {
+    width: 100%;
+}
+');
+$form->prepare();
+?>
+<h3><?php echo $this->translate('Statistics'); ?></h3>
+
+<p><?php
+if (empty($lockout_total)):
+    echo $this->translate('No lockouts yet.');
+else:
+    if ($lockout_total == 1):
+        echo sprintf($this->translate('%d lockout since last reset', $lockout_total));
+    else:
+        echo sprintf($this->translate('%d lockouts since last reset', $lockout_total));
+    endif;
+    echo $this->formRow($form->get('limit_login_clear_total_lockouts'));
+endif;
+?></p>
+
+<p><?php
+$activeLockouts = count($lockouts);
+if (empty($activeLockouts)):
+    echo $this->translate('No active lockout.');
+else:
+    if ($activeLockouts == 1):
+        echo sprintf($this->translate('%d IP is currently blocked from trying to log in.', $activeLockouts));
+    elseif ($activeLockouts > 1):
+        echo sprintf($this->translate('%d IPs are currently blocked from trying to log in.', $activeLockouts));
+    endif;
+    echo $this->formRow($form->get('limit_login_clear_current_lockouts'));
+endif;
+?></p>
+
+<h3><?php echo $this->translate('Options'); ?></h3>
+<h4><?php echo $this->translate('Lockout'); ?></h4>
+<?php echo $this->formRow($form->get('limit_login_allowed_retries')); ?>
+<?php echo $this->formRow($form->get('limit_login_lockout_duration')); ?>
+<?php echo $this->formRow($form->get('limit_login_allowed_lockouts')); ?>
+<?php echo $this->formRow($form->get('limit_login_long_duration')); ?>
+<?php echo $this->formRow($form->get('limit_login_valid_duration')); ?>
+
+<h4><?php echo $this->translate('Site connection'); ?></h4>
+<?php echo $client_type_message; ?>
+<?php echo $this->formRow($form->get('limit_login_client_type')); ?>
+<?php if ($client_type_warning): ?>
+<p>
+<strong><?php echo $this->translate('Current setting appears to be invalid.'); ?></strong>
+<?php echo $this->translate('Please make sure it is correct.'); ?>
+<?php echo sprintf($this->translate('Further information can be found in %sreadme%s.'), '<a href="https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts" title="readme" target="_blank">', '</a>'); ?>
+<?php endif; ?>
+<?php echo $this->formRow($form->get('limit_login_cookies')); ?>
+
+<h4><?php echo $this->translate('Notification'); ?></h4>
+<?php echo $this->formRow($form->get('limit_login_lockout_notify')); ?>
+<?php echo $this->formRow($form->get('limit_login_notify_email_after')); ?>
+
+<h3><?php echo $this->translate('Lockout log'); ?></h3>
+<?php if (empty($log)): ?>
+<p><?php echo $this->translate('No log currently.'); ?></p>
+<?php else:
+echo $this->formRow($form->get('limit_login_clear_log')); ?>
+<div class="limit-login-log">
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th scope="col"><?php echo $this->translate('IP'); ?></th>
+                <th scope="col"><?php echo $this->translate('Tried to log in as'); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($log as $ip => $arr): ?>
+            <tr>
+                <td class="limit-login-ip"><?php echo $ip; ?></td>
+                <td class="limit-login-max">
+                <?php $first = true;
+                foreach ($arr as $user => $count):
+                    $count_desc = $count <= 1
+                        ? sprintf($this->translate('%d lockout', $count))
+                        : sprintf($this->translate('%d lockouts', $count));
+                    if ($first):
+                        echo $user . ' (' . $count_desc . ')';
+                        $first = false;
+                    else:
+                        echo ', ' . $user . ' (' . $count_desc . ')';
+                    endif;
+                endforeach;
+                ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>
