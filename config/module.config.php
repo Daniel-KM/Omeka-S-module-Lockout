@@ -1,10 +1,10 @@
 <?php
-namespace LimitLoginAttempts;
+namespace Lockout;
 
 return [
     'view_manager' => [
         'template_path_stack' => [
-            OMEKA_PATH . '/modules/LimitLoginAttempts/view',
+            OMEKA_PATH . '/modules/Lockout/view',
         ],
     ],
     'controllers' => [
@@ -15,7 +15,7 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
-            'LimitLoginAttempts\Form\Config' => Form\Config::class,
+            'Lockout\Form\Config' => Form\Config::class,
         ],
     ],
     'translator' => [

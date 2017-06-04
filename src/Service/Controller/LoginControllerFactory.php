@@ -1,8 +1,8 @@
 <?php
-namespace LimitLoginAttempts\Service\Controller;
+namespace Lockout\Service\Controller;
 
 use Interop\Container\ContainerInterface;
-use LimitLoginAttempts\Controller\LoginController;
+use Lockout\Controller\LoginController;
 use Zend\ServiceManager\Factory\FactoryInterface;
 
 class LoginControllerFactory implements FactoryInterface

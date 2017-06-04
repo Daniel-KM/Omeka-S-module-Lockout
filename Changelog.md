@@ -2,7 +2,7 @@ Changelog
 =========
 
 = 3.2 =
-Port for Omeka S. See commits for next logs.
+Ported to Omeka S and renamed "Lockout". See commits for next logs.
 
 = 1.7.1 =
 This version fixes a security bug in version 1.6.2 and 1.7.0. Please upgrade immediately.

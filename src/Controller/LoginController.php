@@ -1,5 +1,5 @@
 <?php
-namespace LimitLoginAttempts\Controller;
+namespace Lockout\Controller;
 
 use Omeka\Controller\LoginController as OmekaLoginController;
 use Omeka\Form\LoginForm;
@@ -103,7 +103,7 @@ class LoginController extends OmekaLoginController
     {
         $now = time();
         if (is_null($lockouts)) {
-            $lockouts = $this->settings()->get('limit_login_lockouts', []);
+            $lockouts = $this->settings()->get('lockout_lockouts', []);
         }
 
         // Remove old lockouts.
@@ -112,14 +112,14 @@ class LoginController extends OmekaLoginController
                 unset($lockouts[$ip]);
             }
         }
-        $this->settings()->set('limit_login_lockouts', $lockouts);
+        $this->settings()->set('lockout_lockouts', $lockouts);
 
         // Remove retries that are no longer valid.
         if (is_null($valids)) {
-            $valids = $this->settings()->get('limit_login_valids', []);
+            $valids = $this->settings()->get('lockout_valids', []);
         }
         if (is_null($retries)) {
-            $retries = $this->settings()->get('limit_login_retries', []);
+            $retries = $this->settings()->get('lockout_retries', []);
         }
         if (!is_array($valids) || !is_array($retries)) {
             return;
@@ -139,8 +139,8 @@ class LoginController extends OmekaLoginController
             }
         }
 
-        $this->settings()->set('limit_login_valids', $valids);
-        $this->settings()->set('limit_login_retries', $retries);
+        $this->settings()->set('lockout_valids', $valids);
+        $this->settings()->set('lockout_retries', $retries);
     }
 
     /**
@@ -156,7 +156,7 @@ class LoginController extends OmekaLoginController
         }
 
         // Lockout active?
-        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        $lockouts = $this->settings()->get('lockout_lockouts', []);
         return is_array($lockouts)
             && isset($lockouts[$ip])
             && time() < $lockouts[$ip];
@@ -170,7 +170,7 @@ class LoginController extends OmekaLoginController
     protected function resetLockout()
     {
         $ip = $this->getAddress();
-        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        $lockouts = $this->settings()->get('lockout_lockouts', []);
         unset($lockouts[$ip]);
     }
 
@@ -191,14 +191,14 @@ class LoginController extends OmekaLoginController
         $ip = $this->getAddress();
 
         // If currently locked-out, do not add to retries.
-        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        $lockouts = $this->settings()->get('lockout_lockouts', []);
         if (is_array($lockouts) && isset($lockouts[$ip]) && $now < $lockouts[$ip]) {
             return;
         }
 
         // Get the arrays with retries and retries-valid information.
-        $valids = $this->settings()->get('limit_login_valids', []);
-        $retries = $this->settings()->get('limit_login_retries', []);
+        $valids = $this->settings()->get('lockout_valids', []);
+        $retries = $this->settings()->get('lockout_retries', []);
 
         // Check validity and increment retries.
         if (isset($retries[$ip]) && isset($valids[$ip]) && $now < $valids[$ip]) {
@@ -206,10 +206,10 @@ class LoginController extends OmekaLoginController
         } else {
             $retries[$ip] = 1;
         }
-        $valids[$ip] = $now + $this->settings()->get('limit_login_valid_duration');
+        $valids[$ip] = $now + $this->settings()->get('lockout_valid_duration');
 
         // Lockout?
-        $allowedRetries = $this->settings()->get('limit_login_allowed_retries');
+        $allowedRetries = $this->settings()->get('lockout_allowed_retries');
         if ($retries[$ip] % $allowedRetries !== 0) {
             // Not lockout (yet!).
             // Do housecleaning (which also saves retry/valid values).
@@ -219,7 +219,7 @@ class LoginController extends OmekaLoginController
 
         // Lockout!.
         $whitelisted = $this->isIpWhitelisted($ip);
-        $retriesLong = $allowedRetries * $this->settings()->get('limit_login_allowed_lockouts');
+        $retriesLong = $allowedRetries * $this->settings()->get('lockout_allowed_lockouts');
 
         // Note that retries and statistics are still counted and notifications
         // done as usual for whitelisted ips , but no lockout is done.
@@ -234,12 +234,12 @@ class LoginController extends OmekaLoginController
             // Setup lockout, reset retries as needed.
             if ($retries[$ip] >= $retriesLong) {
                 // Long lockout.
-                $lockouts[$ip] = $now + $this->settings()->get('limit_login_long_duration');
+                $lockouts[$ip] = $now + $this->settings()->get('lockout_long_duration');
                 unset($retries[$ip]);
                 unset($valids[$ip]);
             } else {
                 // Normal lockout.
-                $lockouts[$ip] = $now + $this->settings()->get('limit_login_lockout_duration');
+                $lockouts[$ip] = $now + $this->settings()->get('lockout_lockout_duration');
             }
         }
 
@@ -250,8 +250,8 @@ class LoginController extends OmekaLoginController
         $this->notifyLockout($user);
 
         // Increase statistics.
-        $total = $this->settings()->get('limit_login_lockouts_total', 0);
-        $this->settings()->set('limit_login_lockouts_total', ++$total);
+        $total = $this->settings()->get('lockout_lockouts_total', 0);
+        $this->settings()->set('lockout_lockouts_total', ++$total);
     }
 
     /**
@@ -265,7 +265,7 @@ class LoginController extends OmekaLoginController
         if (is_null($ip)) {
             $ip = $this->getAddress();
         }
-        return in_array($ip, $this->settings()->get('limit_login_whitelist', []));
+        return in_array($ip, $this->settings()->get('lockout_whitelist', []));
     }
 
     /**
@@ -326,8 +326,8 @@ class LoginController extends OmekaLoginController
     {
         $now = time();
         $ip = $this->getAddress();
-        $retries = $this->settings()->get('limit_login_retries');
-        $valids = $this->settings()->get('limit_login_valids');
+        $retries = $this->settings()->get('lockout_retries');
+        $valids = $this->settings()->get('lockout_valids');
 
         // Should we show retries remaining?
         // No retries at all.
@@ -339,13 +339,13 @@ class LoginController extends OmekaLoginController
             return '';
         }
         // Already been locked out for these retries.
-        if (($retries[$ip] % $this->settings()->get('limit_login_allowed_retries')) == 0) {
+        if (($retries[$ip] % $this->settings()->get('lockout_allowed_retries')) == 0) {
             return '';
         }
 
         $remaining = max(
-            $this->settings()->get('limit_login_allowed_retries')
-                - ($retries[$ip] % $this->settings()->get('limit_login_allowed_retries')),
+            $this->settings()->get('lockout_allowed_retries')
+                - ($retries[$ip] % $this->settings()->get('lockout_allowed_retries')),
             0);
 
         $message = $remaining <= 1
@@ -364,7 +364,7 @@ class LoginController extends OmekaLoginController
     {
         $now = time();
         $ip = $this->getAddress();
-        $lockouts = $this->settings()->get('limit_login_lockouts', []);
+        $lockouts = $this->settings()->get('lockout_lockouts', []);
 
         $msg = 'Error: Too many failed login attempts.'; // @translate
         $msg .= ' ';
@@ -409,7 +409,7 @@ class LoginController extends OmekaLoginController
      */
     protected function notifyLockout($user)
     {
-        $args = $this->settings()->get('limit_login_lockout_notify', []);
+        $args = $this->settings()->get('lockout_lockout_notify', []);
         if (empty($args)) {
             return;
         }
@@ -434,16 +434,15 @@ class LoginController extends OmekaLoginController
     protected function notifyLog($user)
     {
         $ip = $this->getAddress();
-        $logs = $option = $this->settings()->get('limit_login_logs', []);
+        $logs = $this->settings()->get('lockout_logs', []);
 
-        // Can be written much simpler, if you do not mind php warnings.
         if (isset($logs[$ip][$user])) {
             ++$logs[$ip][$user];
         } else {
             $logs[$ip][$user] = 1;
         }
 
-        $this->settings()->set('limit_login_logs', $logs);
+        $this->settings()->set('lockout_logs', $logs);
     }
 
     /**
@@ -456,13 +455,13 @@ class LoginController extends OmekaLoginController
         $ip = $this->getAddress();
         $whitelisted = $this->isIpWhitelisted($ip);
 
-        $retries = $this->settings()->get('limit_login_retries', []);
+        $retries = $this->settings()->get('lockout_retries', []);
 
         // Check if we are at the right number to do notification.
         if (isset($retries[$ip])
             && (
-                ($retries[$ip] / $this->settings()->get('limit_login_allowed_retries', 1))
-                    % $this->settings()->get('limit_login_notify_email_after', 1)
+                ($retries[$ip] / $this->settings()->get('lockout_allowed_retries', 1))
+                    % $this->settings()->get('lockout_notify_email_after', 1)
             ) != 0
         ) {
             return;
@@ -471,17 +470,17 @@ class LoginController extends OmekaLoginController
         // Format message. First current lockout duration.
         // Longer lockout.
         if (! isset($retries[$ip])) {
-            $count = $this->settings()->get('limit_login_allowed_retries')
-                * $this->settings()->get('limit_login_allowed_lockouts');
-            $lockouts = $this->settings()->get('limit_login_allowed_lockouts');
-            $time = round($this->settings()->get('limit_login_long_duration') / 3600);
+            $count = $this->settings()->get('lockout_allowed_retries')
+                * $this->settings()->get('lockout_allowed_lockouts');
+            $lockouts = $this->settings()->get('lockout_allowed_lockouts');
+            $time = round($this->settings()->get('lockout_long_duration') / 3600);
             $when = $time <= 1 ? sprintf('%d hour', $time) : sprintf('%d hours', $time);
         }
         // Normal lockout.
         else {
             $count = $retries[$ip];
-            $lockouts = floor($count / $this->settings()->get('limit_login_allowed_retries'));
-            $time = round($this->settings()->get('limit_login_lockout_duration') / 60);
+            $lockouts = floor($count / $this->settings()->get('lockout_allowed_retries'));
+            $time = round($this->settings()->get('lockout_lockout_duration') / 60);
             $when = $time <= 1 ? sprintf('%d minute', $time) : sprintf('%d minutes', $time);
         }
 
@@ -524,41 +523,41 @@ class LoginController extends OmekaLoginController
     /**
      * Get options and setup filters & actions.
      */
-    protected function limit_login_setup()
+    protected function lockout_setup()
     {
         // Filters and actions.
-        add_action('wp_login_failed', 'limit_login_failed');
-        if (limit_login_option('cookies')) {
-            limit_login_handle_cookies();
-            add_action('auth_cookie_bad_username', 'limit_login_failed_cookie');
+        add_action('wp_login_failed', 'lockout_failed');
+        if (lockout_option('cookies')) {
+            lockout_handle_cookies();
+            add_action('auth_cookie_bad_username', 'lockout_failed_cookie');
 
             global $wp_version;
 
             if (version_compare($wp_version, '3.0', '>=')) {
-                add_action('auth_cookie_bad_hash', 'limit_login_failed_cookie_hash');
-                add_action('auth_cookie_valid', 'limit_login_valid_cookie', 10, 2);
+                add_action('auth_cookie_bad_hash', 'lockout_failed_cookie_hash');
+                add_action('auth_cookie_valid', 'lockout_valid_cookie', 10, 2);
             } else {
-                add_action('auth_cookie_bad_hash', 'limit_login_failed_cookie');
+                add_action('auth_cookie_bad_hash', 'lockout_failed_cookie');
             }
         }
-        add_filter('wp_authenticate_user', 'limit_login_wp_authenticate_user', 99999, 2);
-        add_filter('shake_error_codes', 'limit_login_failure_shake');
-        add_action('login_head', 'limit_login_add_error_message');
-        add_action('login_errors', 'limit_login_fixup_error_messages');
-        add_action('admin_menu', 'limit_login_admin_menu');
+        add_filter('wp_authenticate_user', 'lockout_wp_authenticate_user', 99999, 2);
+        add_filter('shake_error_codes', 'lockout_failure_shake');
+        add_action('login_head', 'lockout_add_error_message');
+        add_action('login_errors', 'lockout_fixup_error_messages');
+        add_action('admin_menu', 'lockout_admin_menu');
 
         // This action should really be changed to the 'authenticate' filter as
         // it will probably be deprecated. That is however only available in
         // later versions of WP.
-        add_action('wp_authenticate', 'limit_login_track_credentials', 10, 2);
+        add_action('wp_authenticate', 'lockout_track_credentials', 10, 2);
     }
 
     /**
      * Filter: allow login attempt? (called from wp_authenticate()).
      */
-    protected function limit_login_wp_authenticate_user($user, $password)
+    protected function lockout_wp_authenticate_user($user, $password)
     {
-        if (is_wp_error($user) || is_limit_login_ok()) {
+        if (is_wp_error($user) || is_lockout_ok()) {
             return $user;
         }
 
@@ -566,14 +565,14 @@ class LoginController extends OmekaLoginController
 
         $error = new WP_Error();
         // This error should be the same as in "shake it" filter below.
-        $error->add('too_many_retries', limit_login_error_msg());
+        $error->add('too_many_retries', lockout_error_msg());
         return $error;
     }
 
     /**
      * Filter: add this failure to login page "Shake it!".
      */
-    protected function limit_login_failure_shake($error_codes)
+    protected function lockout_failure_shake($error_codes)
     {
         $error_codes[] = 'too_many_retries';
         return $error_codes;
@@ -583,13 +582,13 @@ class LoginController extends OmekaLoginController
      * Must be called in plugin_loaded (really early) to make sure we do not allow
      * auth cookies while locked out.
      */
-    protected function limit_login_handle_cookies()
+    protected function lockout_handle_cookies()
     {
-        if (is_limit_login_ok()) {
+        if (is_lockout_ok()) {
             return;
         }
 
-        limit_login_clear_auth_cookie();
+        lockout_clear_auth_cookie();
     }
 
     /**
@@ -597,11 +596,11 @@ class LoginController extends OmekaLoginController
      *
      * Make sure same invalid cookie doesn't get counted more than once.
      *
-     * Requires WordPress version 3.0.0, previous versions use limit_login_failed_cookie()
+     * Requires WordPress version 3.0.0, previous versions use lockout_failed_cookie()
      */
-    protected function limit_login_failed_cookie_hash($cookie_elements)
+    protected function lockout_failed_cookie_hash($cookie_elements)
     {
-        limit_login_clear_auth_cookie();
+        lockout_clear_auth_cookie();
 
         // Under some conditions an invalid auth cookie will be used multiple
         // times, which results in multiple failed attempts from that one
@@ -622,11 +621,11 @@ class LoginController extends OmekaLoginController
         $user = get_userdatabylogin($username);
         if (! $user) {
             // "shouldn't happen" for this action
-            limit_login_failed($username);
+            lockout_failed($username);
             return;
         }
 
-        $previous_cookie = get_user_meta($user->ID, 'limit_login_previous_cookie', true);
+        $previous_cookie = get_user_meta($user->ID, 'lockout_previous_cookie', true);
         if ($previous_cookie && $previous_cookie == $cookie_elements) {
             // Identical cookies, ignore this attempt
             return;
@@ -634,12 +633,12 @@ class LoginController extends OmekaLoginController
 
         // Store cookie
         if ($previous_cookie) {
-            update_user_meta($user->ID, 'limit_login_previous_cookie', $cookie_elements);
+            update_user_meta($user->ID, 'lockout_previous_cookie', $cookie_elements);
         } else {
-            add_user_meta($user->ID, 'limit_login_previous_cookie', $cookie_elements, true);
+            add_user_meta($user->ID, 'lockout_previous_cookie', $cookie_elements, true);
         }
 
-        limit_login_failed($username);
+        lockout_failed($username);
     }
 
     /**
@@ -649,30 +648,30 @@ class LoginController extends OmekaLoginController
      *
      * Requires WordPress version 3.0.0, not used in previous versions
      */
-    protected function limit_login_valid_cookie($cookie_elements, $user)
+    protected function lockout_valid_cookie($cookie_elements, $user)
     {
         // As all meta values get cached on user load this should not require
         // any extra work for the common case of no stored value.
-        if (get_user_meta($user->ID, 'limit_login_previous_cookie')) {
-            delete_user_meta($user->ID, 'limit_login_previous_cookie');
+        if (get_user_meta($user->ID, 'lockout_previous_cookie')) {
+            delete_user_meta($user->ID, 'lockout_previous_cookie');
         }
     }
 
     /**
-     * Action: failed cookie login (calls limit_login_failed()).
+     * Action: failed cookie login (calls lockout_failed()).
      */
-    protected function limit_login_failed_cookie($cookie_elements)
+    protected function lockout_failed_cookie($cookie_elements)
     {
-        limit_login_clear_auth_cookie();
+        lockout_clear_auth_cookie();
 
         // Invalid username gets counted every time.
-        limit_login_failed($cookie_elements['username']);
+        lockout_failed($cookie_elements['username']);
     }
 
     /**
      * Make sure auth cookie really get cleared (for this session too).
      */
-    protected function limit_login_clear_auth_cookie()
+    protected function lockout_clear_auth_cookie()
     {
         wp_clear_auth_cookie();
 
@@ -690,7 +689,7 @@ class LoginController extends OmekaLoginController
     /**
      * Should we show errors and messages on this page?.
      */
-    protected function should_limit_login_show_msg()
+    protected function should_lockout_show_msg()
     {
         if (isset($_GET['key'])) {
             // Reset password.
@@ -709,16 +708,16 @@ class LoginController extends OmekaLoginController
     /**
      * Fix up the error message before showing it.
      */
-    protected function limit_login_fixup_error_messages($content)
+    protected function lockout_fixup_error_messages($content)
     {
-        if (! should_limit_login_show_msg()) {
+        if (! should_lockout_show_msg()) {
             return $content;
         }
 
         // During lockout we do not want to show any other error messages (like
         // unknown user or empty password).
-        if (! is_limit_login_ok() && ! $this->just_lockedout) {
-            return limit_login_error_msg();
+        if (! is_lockout_ok() && ! $this->just_lockedout) {
+            return lockout_error_msg();
         }
 
         // We want to filter the messages 'Invalid username' and
@@ -741,7 +740,7 @@ class LoginController extends OmekaLoginController
             // Replace error message, including ours if necessary.
             $content = sprintf('<strong>ERROR</strong>: Incorrect username or password.') . "<br />\n";
             if ($this->my_error_shown) {
-                $content .= "<br />\n" . limit_login_get_message() . "<br />\n";
+                $content .= "<br />\n" . lockout_get_message() . "<br />\n";
             }
             return $content;
         } elseif ($count <= 1) {
@@ -762,13 +761,13 @@ class LoginController extends OmekaLoginController
     /**
      * Add a message to login page when necessary.
      */
-    protected function limit_login_add_error_message()
+    protected function lockout_add_error_message()
     {
-        if (! should_limit_login_show_msg() || $this->my_error_shown) {
+        if (! should_lockout_show_msg() || $this->my_error_shown) {
             return;
         }
 
-        $msg = limit_login_get_message();
+        $msg = lockout_get_message();
 
         if ($msg) {
             $this->my_error_shown = true;
@@ -781,7 +780,7 @@ class LoginController extends OmekaLoginController
     /**
      * Keep track of if user or password are empty, to filter errors correctly
      */
-    protected function limit_login_track_credentials($user, $password)
+    protected function lockout_track_credentials($user, $password)
     {
         $this->hasCredentials = !empty($user) && !empty($password);
     }

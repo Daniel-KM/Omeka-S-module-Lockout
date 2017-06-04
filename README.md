@@ -1,10 +1,11 @@
-Limit Login Attempts (module for Omeka S)
-=========================================
+Lockout (module for Omeka S)
+============================
 
-[Limit Login Attempts] is a module for [Omeka S] that limits the rate of login
-attempts for each IP (not by auth cookie) in order to avoid brute-force attacks.
+[Lockout] is a module for [Omeka S] that limits the rate of login attempts for
+each IP (not by auth cookie) in order to avoid brute-force attacks.
 
-This module is a full rewrite of a [plugin for WordPress], create by Johan Eenfeldt (johanee).
+This module is a full rewrite of the plugin [Limit Login Attempts] for WordPress
+created by Johan Eenfeldt (johanee).
 
 
 Description
@@ -16,9 +17,9 @@ By default Omeka S allows unlimited login attempts either through the login
 page. This allows passwords (or hashes) to be brute-force cracked with relative
 ease.
 
-Limit Login Attempts blocks an Internet address from making further attempts
-after a specified limit on retries is reached, making a brute-force attack
-difficult or impossible.
+The module blocks an Internet address from making further attempts after a
+specified limit on retries is reached, making a brute-force attack difficult or
+impossible.
 
 ## Features
 
@@ -39,21 +40,21 @@ The module uses standard actions and filters only.
 
 1. Login screen after failed login with retries remaining.
 
-  ![Login screen after failed login](https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/blob/master/data/readme/lockout_attempt.png)
+  ![Login screen after failed login](https://github.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_attempt.png)
 
 2. Login screen during lockout.
 
-  ![Login screen during lockout](https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/blob/master/data/readme/lockout_blocked.png)
+  ![Login screen during lockout](https://github.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_blocked.png)
 
 3. Administration interface in Omeka S
 
-  ![administration interface](https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/blob/master/data/readme/lockout_config.png)
+  ![administration interface](https://github.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_config.png)
 
 
 Installation
 ------------
 
-Uncompress files in the module directory and rename module folder `LimitLoginAttempts`.
+Uncompress files in the module directory and rename module folder `Lockout`.
 
 Then install it like any other Omeka module and follow the config instructions.
 
@@ -102,9 +103,9 @@ If you have ftp / ssh access to the site, remove the folder of the module or
 increase the version number in the `config/module.ini`, so it will deactivate it.
 
 If you have access to the database (for example through phpMyAdmin) you can clear
-the limit_login_lockouts option in the Omeka S `setting` table. The sql for a
-standard install is: `UPDATE setting SET value = '' WHERE id = 'limit_login_lockouts';`
-You can disable the module too: `UPDATE module SET is_active = 0 WHERE id = 'LimitLoginAttempts';`.
+the lockout_lockouts option in the Omeka S `setting` table. The sql for a
+standard install is: `UPDATE setting SET value = '' WHERE id = 'lockout_lockouts';`
+You can disable the module too: `UPDATE module SET is_active = 0 WHERE id = 'Lockout';`.
 
 
 Warning
@@ -158,10 +159,10 @@ Copyright
 Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress).
 
 
-[Limit Login Attempts]: https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts
+[Lockout]: https://github.com/Daniel-KM/Omeka-S-module-Lockout
 [Omeka S]: https://omeka.org/s
-[plugin for WordPress]: https://wordpress.org/plugins/limit-login-attempts
-[module issues]: https://github.com/Daniel-KM/Omeka-S-module-LimitLoginAttempts/issues
+[Limit Login Attempts]: https://wordpress.org/plugins/limit-login-attempts
+[module issues]: https://github.com/Daniel-KM/Omeka-S-module-Lockout/issues
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [WordPress page]: https://translate.wordpress.org/projects/wp-plugins/limit-login-attempts/contributors
 [Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"

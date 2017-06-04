@@ -1,5 +1,5 @@
 <?php
-namespace LimitLoginAttempts;
+namespace Lockout;
 
 /*
  * Copyright Johan Eenfeldt, 2008-2012
@@ -21,14 +21,14 @@ namespace LimitLoginAttempts;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-use LimitLoginAttempts\Form\Config as ConfigForm;
+use Lockout\Form\Config as ConfigForm;
 use Omeka\Module\AbstractModule;
 use Zend\Mvc\Controller\AbstractController;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Renderer\PhpRenderer;
 
 /**
- * Limit Login Attempts
+ * Lockout
  *
  * Limit rate of login attempts for each IP to avoid brute-force attacks.
  *
@@ -48,36 +48,36 @@ class Module extends AbstractModule
      */
     protected $settings = [
         // Are we behind a proxy?
-        'limit_login_client_type' => self::DIRECT_ADDR,
+        'lockout_client_type' => self::DIRECT_ADDR,
 
         // Lock out after this many tries.
-        'limit_login_allowed_retries' => 4,
+        'lockout_allowed_retries' => 4,
         // Lock out for this many seconds (default is 20 minutes).
-        'limit_login_lockout_duration' => 1200,
+        'lockout_lockout_duration' => 1200,
         // Long lock out after this many lockouts.
-        'limit_login_allowed_lockouts' => 4,
+        'lockout_allowed_lockouts' => 4,
         // Long lock out for this many seconds (default is 24 hours).
-        'limit_login_long_duration' => 86400,
+        'lockout_long_duration' => 86400,
         // Reset failed attempts after this many seconds (defaul is 12 hours).
-        'limit_login_valid_duration' => 43200,
+        'lockout_valid_duration' => 43200,
 
         // Also limit malformed/forged cookies?
-        'limit_login_cookies' => true,
+        'lockout_cookies' => true,
         // Whitelist of ips.
-        'limit_login_whitelist' => [],
+        'lockout_whitelist' => [],
         // Notify on lockout. Values: '', 'log' and/or 'email'.
-        'limit_login_lockout_notify' => ['log'],
+        'lockout_lockout_notify' => ['log'],
         // If notify by email, do so after this number of lockouts.
-        'limit_login_notify_email_after' => 4,
+        'lockout_notify_email_after' => 4,
 
         // Current lockouts.
-        'limit_login_lockouts' => [],
-        'limit_login_valids' => [],
-        'limit_login_retries' => [],
+        'lockout_lockouts' => [],
+        'lockout_valids' => [],
+        'lockout_retries' => [],
         // Total lockouts.
-        'limit_login_lockouts_total' => 0,
+        'lockout_lockouts_total' => 0,
         // Logs.
-        'limit_login_logs' => [],
+        'lockout_logs' => [],
     ];
 
     public function getConfig()
@@ -111,7 +111,7 @@ class Module extends AbstractModule
         foreach ($this->settings as $name => $value) {
             $formData[$name] = $settings->get($name);
         }
-        $formData['limit_login_whitelist'] = implode("\n", $formData['limit_login_whitelist']);
+        $formData['lockout_whitelist'] = implode("\n", $formData['lockout_whitelist']);
 
         $form = $formElementManager->get(ConfigForm::class);
         $form->init();
@@ -131,13 +131,13 @@ class Module extends AbstractModule
         $vars = [];
         $vars['form'] = $form;
 
-        $vars['lockout_total'] = $settings->get('limit_login_lockouts_total', 0);
-        $vars['lockouts'] = $settings->get('limit_login_lockouts', []);
+        $vars['lockout_total'] = $settings->get('lockout_lockouts_total', 0);
+        $vars['lockouts'] = $settings->get('lockout_lockouts', []);
         $vars['client_type_message'] = $clientTypeMessage;
-        $vars['client_type_warning'] = $clientTypeGuess != $settings->get('limit_login_client_type', $this->settings['limit_login_client_type']);
-        $vars['logs'] = $settings->get('limit_login_logs', []);
+        $vars['client_type_warning'] = $clientTypeGuess != $settings->get('lockout_client_type', $this->settings['lockout_client_type']);
+        $vars['logs'] = $settings->get('lockout_logs', []);
 
-        return $renderer->render('limit-login-attempts/module/config.phtml', $vars);
+        return $renderer->render('lockout/module/config.phtml', $vars);
     }
 
     public function handleConfigForm(AbstractController $controller)
@@ -155,33 +155,33 @@ class Module extends AbstractModule
         //     return false;
         // }
 
-        if (!empty($params['limit_login_clear_total_lockouts'])) {
-            $params['limit_login_lockouts_total'] = 0;
+        if (!empty($params['lockout_clear_total_lockouts'])) {
+            $params['lockout_lockouts_total'] = 0;
             $controller->messenger()->addSuccess('Reset lockout count.'); // @translate
         }
 
-        if (!empty($params['limit_login_clear_current_lockouts'])) {
-            $params['limit_login_lockouts_total'] = [];
+        if (!empty($params['lockout_clear_current_lockouts'])) {
+            $params['lockout_lockouts_total'] = [];
             $controller->messenger()->addSuccess('Cleared current lockouts.'); // @translate
         }
 
-        if (!empty($params['limit_login_clear_logs'])) {
-            $params['limit_login_logs'] = [];
+        if (!empty($params['lockout_clear_logs'])) {
+            $params['lockout_logs'] = [];
             $controller->messenger()->addSuccess('Cleared IP log.'); // @translate
         }
 
         // Clean params.
-        $params['limit_login_allowed_retries'] = (int) $params['limit_login_allowed_retries'];
-        $params['limit_login_lockout_duration'] = (int) $params['limit_login_lockout_duration'];
-        $params['limit_login_valid_duration'] = (int) $params['limit_login_valid_duration'];
-        $params['limit_login_allowed_lockouts'] = (int) $params['limit_login_allowed_lockouts'];
-        $params['limit_login_long_duration'] = (int) $params['limit_login_long_duration'];
-        $params['limit_login_cookies'] = (bool) $params['limit_login_cookies'];
-        $params['limit_login_notify_email_after'] = (int) $params['limit_login_notify_email_after'];
-        $params['limit_login_lockout_notify'] = array_intersect($params['limit_login_lockout_notify'], ['log', 'email']);
-        $params['limit_login_whitelist'] = array_filter(array_map('trim', explode("\n", $params['limit_login_whitelist'])));
-        if (!in_array($params['limit_login_client_type'], [self::DIRECT_ADDR, self::PROXY_ADDR])) {
-            $params['limit_login_client_type'] = self::DIRECT_ADDR;
+        $params['lockout_allowed_retries'] = (int) $params['lockout_allowed_retries'];
+        $params['lockout_lockout_duration'] = (int) $params['lockout_lockout_duration'];
+        $params['lockout_valid_duration'] = (int) $params['lockout_valid_duration'];
+        $params['lockout_allowed_lockouts'] = (int) $params['lockout_allowed_lockouts'];
+        $params['lockout_long_duration'] = (int) $params['lockout_long_duration'];
+        $params['lockout_cookies'] = (bool) $params['lockout_cookies'];
+        $params['lockout_notify_email_after'] = (int) $params['lockout_notify_email_after'];
+        $params['lockout_lockout_notify'] = array_intersect($params['lockout_lockout_notify'], ['log', 'email']);
+        $params['lockout_whitelist'] = array_filter(array_map('trim', explode("\n", $params['lockout_whitelist'])));
+        if (!in_array($params['lockout_client_type'], [self::DIRECT_ADDR, self::PROXY_ADDR])) {
+            $params['lockout_client_type'] = self::DIRECT_ADDR;
         }
 
         foreach ($params as $name => $value) {
