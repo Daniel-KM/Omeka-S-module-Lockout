@@ -349,8 +349,8 @@ class LoginController extends OmekaLoginController
             0);
 
         $message = $remaining <= 1
-            ? sprintf('%s attempt remaining.', $remaining) // @translate
-            : sprintf('%s attempts remaining.', $remaining); // @translate
+            ? sprintf('%d attempt remaining.', $remaining) // @translate
+            : sprintf('%d attempts remaining.', $remaining); // @translate
 
         return $message;
     }
@@ -481,7 +481,9 @@ class LoginController extends OmekaLoginController
             $count = $retries[$ip];
             $lockouts = floor($count / $this->settings()->get('lockout_allowed_retries'));
             $time = round($this->settings()->get('lockout_lockout_duration') / 60);
-            $when = $time <= 1 ? sprintf('%d minute', $time) : sprintf('%d minutes', $time);
+            $when = $time <= 1
+                ? sprintf('%d minute', $time) // @translate
+                : sprintf('%d minutes', $time); // @translate
         }
 
         $site = @$_SERVER['SERVER_NAME'] ?: sprintf('Server (%s)', @$_SERVER['SERVER_ADDR']);
@@ -497,7 +499,7 @@ class LoginController extends OmekaLoginController
             $body .= sprintf('Last user attempted: %s.', $user) . "\r\n\r\n"; // @translate
         }
         if ($whitelisted) {
-            $body .= __('IP was NOT blocked because of whitelist.'); // @translate
+            $body .= sprintf('IP was NOT blocked because of whitelist.'); // @translate
         } else {
             $body .= sprintf('IP was blocked for %s.', $when); // @translate
         }

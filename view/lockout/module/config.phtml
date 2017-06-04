@@ -24,11 +24,10 @@ $activeLockouts = count($lockouts);
 if (empty($activeLockouts)):
     echo $this->translate('No active lockout.');
 else:
-    if ($activeLockouts <= 1):
-        echo sprintf($this->translate('%d IP is currently blocked from trying to log in.'), $activeLockouts);
-    else:
-        echo sprintf($this->translate('%d IPs are currently blocked from trying to log in.'), $activeLockouts);
-    endif;
+    echo sprintf($this->translatePlural(
+        '%d IP is currently blocked from trying to log in.',
+        '%d IPs are currently blocked from trying to log in.',
+        $activeLockouts), $activeLockouts);
     echo $this->formRow($form->get('lockout_clear_current_lockouts'));
 endif;
 ?></p>
@@ -37,11 +36,10 @@ endif;
 if (empty($lockout_total)):
     echo $this->translate('No lockouts yet.');
 else:
-    if ($lockout_total <= 1):
-        echo sprintf($this->translate('%d lockout since last reset.'), $lockout_total);
-    else:
-        echo sprintf($this->translate('%d lockouts since last reset.'), $lockout_total);
-    endif;
+    echo sprintf($this->translatePlural(
+        '%d lockout since last reset.',
+        '%d lockouts since last reset.',
+        $lockout_total), $lockout_total);
     echo $this->formRow($form->get('lockout_clear_total_lockouts'));
 endif;
 ?></p>
@@ -62,7 +60,9 @@ endif;
 <p>
 <strong><?php echo $this->translate('Current setting appears to be invalid.'); ?></strong>
 <?php echo $this->translate('Please make sure it is correct.'); ?>
-<?php echo sprintf($this->translate('Further information can be found in %sreadme%s.'), '<a href="https://github.com/Daniel-KM/Omeka-S-module-Lockout" title="readme" target="_blank">', '</a>'); ?>
+<?php echo sprintf($this->translate(
+    'Further information can be found <a href="%s" title="README">here</a>.'),
+    'https://github.com/Daniel-KM/Omeka-S-module-Lockout'); ?>
 <?php endif; ?>
 <?php // echo $this->formRow($form->get('lockout_cookies')); ?>
 
@@ -88,17 +88,14 @@ echo $this->formRow($form->get('lockout_clear_logs')); ?>
             <tr>
                 <td class="lockout-ip"><?php echo $ip; ?></td>
                 <td class="lockout-max">
-                <?php $first = true;
+                <?php $next = false;
                 foreach ($arr as $user => $count):
-                    $count_desc = $count <= 1
-                        ? sprintf($this->translate('%d lockout'), $count)
-                        : sprintf($this->translate('%d lockouts'), $count);
-                    if ($first):
-                        echo $user . ' (' . $count_desc . ')';
-                        $first = false;
+                    if ($next):
+                        echo ', ';
                     else:
-                        echo ', ' . $user . ' (' . $count_desc . ')';
+                        $next = true;
                     endif;
+                    echo $user . ' (' . sprintf($this->translatePlural('%d lockout', '%d lockouts', $count), $count) . ')';
                 endforeach;
                 ?></td>
             </tr>
