@@ -6,273 +6,285 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/limit-login-attempts\n"
-"POT-Creation-Date: 2009-01-28 17:17+0000\n"
-"PO-Revision-Date: 2009-06-11 18:42+0200\n"
-"Last-Translator: Hristo Chakarov <mail@ickata.net>\n"
+"Report-Msgid-Bugs-To: https://github.com/Daniel-KM/Omeka-S-module-Lockout\n"
+"POT-Creation-Date: 2017-06-08 10:49+0200\n"
+"PO-Revision-Date: 2017-06-08 11:05+0200\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: iNetStudio <mail@ickata.net>\n"
+"Language: bg_BG\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: Bulgarian\n"
-"X-Poedit-Country: BULGARIA\n"
 "X-Poedit-KeywordsList: __;_e;_ngettext:1,2\n"
+"X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:372
-#, php-format
+#: limit-login-attempts.php:522
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d час"
 msgstr[1] "%d часа"
 
-#: limit-login-attempts.php:378
-#, php-format
+#: limit-login-attempts.php:528
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d минута"
 msgstr[1] "%d минути"
 
-#: limit-login-attempts.php:381
-#, php-format
-msgid "[%s] Too many failed login attempts"
-msgstr "[%s] Твърде много грешни опити за вход"
+#: limit-login-attempts.php:534
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] Твърде много грешни опити за вход from whitelisted IP."
 
-#: limit-login-attempts.php:383
-#, php-format
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s"
-msgstr "%d грешни опити за вход (%d заключвания) от IP: %s"
+#: limit-login-attempts.php:538
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] Твърде много грешни опити за вход."
 
-#: limit-login-attempts.php:387
-#, php-format
-msgid "Last user attempted: %s"
-msgstr "Последно потребителя е опитал: %s"
+#: limit-login-attempts.php:543
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d грешни опити за вход (%d заключвания) от IP: %s."
 
-#: limit-login-attempts.php:390
-#, php-format
-msgid "IP was blocked for %s"
+#: limit-login-attempts.php:547
+msgid "Last user attempted: %s."
+msgstr "Последно потребителя е опитал: %s."
+
+#: limit-login-attempts.php:551
+msgid "IP was NOT blocked because of external whitelist."
+msgstr ""
+
+#: limit-login-attempts.php:553
+msgid "IP was blocked for %s."
 msgstr "IP е блокирано за %s."
 
-#: limit-login-attempts.php:445
-msgid "<strong>ERROR</strong>: Too many failed login attempts."
-msgstr "<strong>ГРЕШКА</strong>: Твърде много грешни опита за вход."
+#: limit-login-attempts.php:615
+msgid "Error: Too many failed login attempts."
+msgstr "Грешка: Твърде много грешни опита за вход."
 
-#: limit-login-attempts.php:449
+#: limit-login-attempts.php:619
 msgid "Please try again later."
 msgstr "Моля, опитайте отново по-късно."
 
-#: limit-login-attempts.php:456
-#, php-format
+#: limit-login-attempts.php:626
 msgid "Please try again in %d hour."
 msgid_plural "Please try again in %d hours."
 msgstr[0] "Моля, опитайте пак след %d час."
 msgstr[1] "Моля, опитайте пак след %d часа."
 
-#: limit-login-attempts.php:458
-#, php-format
+#: limit-login-attempts.php:628
 msgid "Please try again in %d minute."
 msgid_plural "Please try again in %d minutes."
 msgstr[0] "Моля, опитайте пак след %d минута."
 msgstr[1] "Моля, опитайте пак след %d минути."
 
-#: limit-login-attempts.php:487
-#, php-format
-msgid "<strong>%d</strong> attempt remaining."
-msgid_plural "<strong>%d</strong> attempts remaining."
-msgstr[0] "Имате право на <strong>само %d</strong> опит!"
-msgstr[1] "Имате право на още <strong>%d</strong> опита."
+#: limit-login-attempts.php:657
+msgid "%d attempt remaining."
+msgid_plural "%d attempts remaining."
+msgstr[0] "Имате право на само %d опит."
+msgstr[1] "Имате право на още %d опита."
 
-#: limit-login-attempts.php:551
-msgid "<strong>ERROR</strong>: Incorrect username or password."
-msgstr "<strong>ГРЕШКА</strong>: Грешно потребителско име или парола."
+#: limit-login-attempts.php:728
+msgid "Error: Incorrect username or password."
+msgstr "Грешка: Грешно потребителско име или парола."
 
-#: limit-login-attempts.php:714
-msgid "IP|Internet address"
-msgstr "IP"
+#: limit-login-attempts.php:896
+msgctxt "Internet address"
+msgid "IP"
+msgstr ""
 
-#: limit-login-attempts.php:714
+#: limit-login-attempts.php:896
 msgid "Tried to log in as"
 msgstr "Опитва да влезе като"
 
-#: limit-login-attempts.php:719
-#, php-format
+#: limit-login-attempts.php:901
 msgid "%d lockout"
 msgid_plural "%d lockouts"
 msgstr[0] "%d заключване"
 msgstr[1] "%d заключвания"
 
-#: limit-login-attempts.php:743
-msgid "Cleared IP log"
-msgstr "IP логът беше зачистен"
+#: limit-login-attempts.php:930
+msgid "Cleared IP log."
+msgstr "IP логът беше зачистен."
 
-#: limit-login-attempts.php:751
-msgid "Reset lockout count"
-msgstr "Нулирай броя заключвания"
+#: limit-login-attempts.php:938
+msgid "Reset lockout count."
+msgstr "Нулирай броя заключвания."
 
-#: limit-login-attempts.php:759
-msgid "Cleared current lockouts"
-msgstr "Заключванията са изчистени"
+#: limit-login-attempts.php:946
+msgid "Cleared current lockouts."
+msgstr "Заключванията са изчистени."
 
-#: limit-login-attempts.php:788
+#: limit-login-attempts.php:975
 msgid "Options changed"
 msgstr "Настройките са запазени"
 
-#: limit-login-attempts.php:799
-msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-msgstr "<strong>ЗАБЕЛЕЖКА:</strong> Работи само с WordPress версия 2.7+"
+#: limit-login-attempts.php:993
+msgid "It appears the site is reached directly (from your IP: %s)."
+msgstr "Изглежда сайтът е достъпен директно (от IP: %s)."
 
-#: limit-login-attempts.php:815
-#, php-format
-msgid "It appears the site is reached directly (from your IP: %s)"
-msgstr "Изглежда сайтът е достъпен директно (от IP: %s)"
+#: limit-login-attempts.php:995
+msgid ""
+"It appears the site is reached through a proxy server (proxy IP: %s, your "
+"IP: %s)."
+msgstr ""
+"Изглежда сайтът е достъпен през прокси сървър (IP на прокси сървъра: %s, IP "
+"на сайта: %s)."
 
-#: limit-login-attempts.php:817
-#, php-format
-msgid "It appears the site is reached through a proxy server (proxy IP: %s, your IP: %s)"
-msgstr "Изглежда сайтът е достъпен през прокси сървър (IP на прокси сървъра: %s, IP на сайта: %s)"
+#: limit-login-attempts.php:1003
+msgid "Current setting appears to be invalid."
+msgstr "Настройките са невалидни."
 
-#: limit-login-attempts.php:825
-#, php-format
-msgid "<strong>Current setting appears to be invalid</strong>. Please make sure it is correct. Further information can be found <a href=\"%s\" title=\"FAQ\">here</a>"
-msgstr "<strong>Настройките са невалидни</strong>. Повече информация <a href=\"%s\" title=\"FAQ\">тук</a>"
+#: limit-login-attempts.php:1003
+msgid "Please make sure it  is correct."
+msgstr ""
 
-#: limit-login-attempts.php:833
+#: limit-login-attempts.php:1003
+msgid ""
+"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
+msgstr "Повече информация <a href=\"%s\" title=\"README\">тук</a>."
+
+#: limit-login-attempts.php:1011
 msgid "Limit Login Attempts Settings"
 msgstr "Limit Login Attempts Настройки"
 
-#: limit-login-attempts.php:834
+#: limit-login-attempts.php:1012
 msgid "Statistics"
 msgstr "Статистики"
 
-#: limit-login-attempts.php:838
+#: limit-login-attempts.php:1017
 msgid "Total lockouts"
 msgstr "Общо заключвания"
 
-#: limit-login-attempts.php:841
+#: limit-login-attempts.php:1020
 msgid "Reset Counter"
 msgstr "Нулирай брояча"
 
-#: limit-login-attempts.php:842
-#, php-format
-msgid "%d lockout since last reset"
-msgid_plural "%d lockouts since last reset"
-msgstr[0] "%d заключване от последното нулиране"
-msgstr[1] "%d заключвания от последното нулиране"
+#: limit-login-attempts.php:1021
+msgid "%d lockout since last reset."
+msgid_plural "%d lockouts since last reset."
+msgstr[0] "%d заключване от последното нулиране."
+msgstr[1] "%d заключвания от последното нулиране."
 
-#: limit-login-attempts.php:843
-msgid "No lockouts yet"
-msgstr "Няма заключвания досега"
+#: limit-login-attempts.php:1022
+msgid "No lockouts yet."
+msgstr "Няма заключвания досега."
 
-#: limit-login-attempts.php:848
+#: limit-login-attempts.php:1027
 msgid "Active lockouts"
 msgstr "Активни заключвания"
 
-#: limit-login-attempts.php:850
+#: limit-login-attempts.php:1029
 msgid "Restore Lockouts"
 msgstr "Поднови заключванията"
 
-#: limit-login-attempts.php:851
-#, php-format
-msgid "%d IP is currently blocked from trying to log in"
-msgstr "%d IP е блокирано"
+#: limit-login-attempts.php:1030
+msgid "%d IP is currently blocked from trying to log in."
+msgid_plural "%d IPs are currently blocked from trying to log in."
+msgstr[0] "%d IP е блокирано."
+msgstr[1] "%d IP е блокирано."
 
-#: limit-login-attempts.php:857
+#: limit-login-attempts.php:1036
 msgid "Options"
 msgstr "Настройки"
 
-#: limit-login-attempts.php:861
+#: limit-login-attempts.php:1041
 msgid "Lockout"
 msgstr "Заключване"
 
-#: limit-login-attempts.php:863
+#: limit-login-attempts.php:1043
 msgid "allowed retries"
 msgstr "позволени опити"
 
-#: limit-login-attempts.php:864
+#: limit-login-attempts.php:1044
 msgid "minutes lockout"
 msgstr "минути заключване"
 
-#: limit-login-attempts.php:865
+#: limit-login-attempts.php:1045
 msgid "lockouts increase lockout time to"
 msgstr "заключвания увеличават времето на заключване на "
 
-#: limit-login-attempts.php:865
+#: limit-login-attempts.php:1045
 msgid "hours"
 msgstr "часа"
 
-#: limit-login-attempts.php:866
+#: limit-login-attempts.php:1046
 msgid "hours until retries are reset"
 msgstr "часа грешните опити се нулират"
 
-#: limit-login-attempts.php:870
+#: limit-login-attempts.php:1050
 msgid "Site connection"
 msgstr "Връзка към сайта"
 
-#: limit-login-attempts.php:876
+#: limit-login-attempts.php:1056
 msgid "Direct connection"
 msgstr "Директна връзка"
 
-#: limit-login-attempts.php:881
-msgid "From behind a reversy proxy"
+#: limit-login-attempts.php:1061
+msgid "From behind a reverse proxy"
 msgstr "През Прокси сървър"
 
-#: limit-login-attempts.php:887
+#: limit-login-attempts.php:1067
 msgid "Handle cookie login"
 msgstr "Наблюдавай cookie login"
 
-#: limit-login-attempts.php:889
+#: limit-login-attempts.php:1069
 msgid "Yes"
 msgstr "Да"
 
-#: limit-login-attempts.php:889
+#: limit-login-attempts.php:1069
 msgid "No"
 msgstr "Не"
 
-#: limit-login-attempts.php:894
+#: limit-login-attempts.php:1073
 msgid "Notify on lockout"
 msgstr "Уведомявай при заключване"
 
-#: limit-login-attempts.php:896
+#: limit-login-attempts.php:1075
 msgid "Log IP"
 msgstr "Log IP"
 
-#: limit-login-attempts.php:897
+#: limit-login-attempts.php:1076
 msgid "Email to admin after"
 msgstr "Прати Email до администратора след"
 
-#: limit-login-attempts.php:897
+#: limit-login-attempts.php:1076
 msgid "lockouts"
 msgstr "заключвания"
 
-#: limit-login-attempts.php:902
+#: limit-login-attempts.php:1081
 msgid "Change Options"
 msgstr "Обнови настройки"
 
-#: limit-login-attempts.php:910
+#: limit-login-attempts.php:1089
 msgid "Lockout log"
 msgstr "Лог на заключванията"
 
-#: limit-login-attempts.php:914
+#: limit-login-attempts.php:1094
 msgid "Clear Log"
 msgstr "Изчисти лог"
 
-#. Plugin Name of an extension
+#. Plugin Name of the plugin/theme
 msgid "Limit Login Attempts"
 msgstr "Limit Login Attempts"
 
-#. Plugin URI of an extension
+#. Plugin URI of the plugin/theme
 msgid "http://devel.kostdoktorn.se/limit-login-attempts"
 msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
 
-#. Description of an extension
+#. Description of the plugin/theme
 msgid "Limit rate of login attempts, including by way of cookies, for each IP."
-msgstr "Ограничава броя на опитите за вход, включително тези от cookies, за всяко различно IP."
+msgstr ""
+"Ограничава броя на опитите за вход, включително тези от cookies, за всяко "
+"различно IP."
 
-#. Author of an extension
+#. Author of the plugin/theme
 msgid "Johan Eenfeldt"
 msgstr "Johan Eenfeldt"
 
-#. Author URI of an extension
+#. Author URI of the plugin/theme
 msgid "http://devel.kostdoktorn.se"
 msgstr "http://devel.kostdoktorn.se"
 
+#~ msgid "IP|Internet address"
+#~ msgstr "IP"
+
+#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
+#~ msgstr "<strong>ЗАБЕЛЕЖКА:</strong> Работи само с WordPress версия 2.7+"
