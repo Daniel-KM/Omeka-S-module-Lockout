@@ -486,7 +486,7 @@ class LoginController extends OmekaLoginController
                 : sprintf('%d minutes', $time); // @translate
         }
 
-        $site = @$_SERVER['SERVER_NAME'] ?: sprintf('Server (%s)', @$_SERVER['SERVER_ADDR']);
+        $site = @$_SERVER['SERVER_NAME'] ?: sprintf('Server (%s)', @$_SERVER['SERVER_ADDR']); // @translate
         if ($whitelisted) {
             $subject = sprintf('[%s] Failed login attempts from whitelisted IP.', $site); // @translate
         } else {
