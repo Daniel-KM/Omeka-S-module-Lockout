@@ -87,7 +87,7 @@ class LoginController extends OmekaLoginController
         }
 
         $view = new ViewModel;
-        $view->setTemplate('omeka/login/login.phtml');
+        $view->setTemplate('omeka/login/login');
         $view->setVariable('form', $form);
         return $view;
     }
@@ -271,7 +271,7 @@ class LoginController extends OmekaLoginController
     /**
      * Get correct remote address.
      *
-     * @param $typeName Direct address or proxy address.
+     * @param string $typeName Direct address or proxy address.
      * @return string
      */
     protected function getAddress($typeName = '')
@@ -565,10 +565,11 @@ class LoginController extends OmekaLoginController
 
         $this->my_error_shown = true;
 
-        $error = new WP_Error();
-        // This error should be the same as in "shake it" filter below.
-        $error->add('too_many_retries', lockout_error_msg());
-        return $error;
+        $this->messenger()->addError('Too many retries.'); // @translate
+        // $error = new WP_Error();
+        // // This error should be the same as in "shake it" filter below.
+        // $error->add('too_many_retries', lockout_error_msg());
+        // return $error;
     }
 
     /**
@@ -576,8 +577,9 @@ class LoginController extends OmekaLoginController
      */
     protected function lockout_failure_shake($error_codes)
     {
-        $error_codes[] = 'too_many_retries';
-        return $error_codes;
+        $this->messenger()->addError('Too many retries.'); // @translate
+        // $error_codes[] = 'too_many_retries';
+        // return $error_codes;
     }
 
     /**

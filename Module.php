@@ -3,7 +3,7 @@ namespace Lockout;
 
 /*
  * Copyright Johan Eenfeldt, 2008-2012
- * Copyright Daniel Berthereau, 2017
+ * Copyright Daniel Berthereau, 2017-2018
  *
  * Licenced under the GNU GPL:
  * This program is free software; you can redistribute it and/or modify
@@ -33,52 +33,13 @@ use Zend\View\Renderer\PhpRenderer;
  * Limit rate of login attempts for each IP to avoid brute-force attacks.
  *
  * @copyright Johan Eenfeldt, 2008-2012
- * @copyright Daniel Berthereau, 2017
+ * @copyright Daniel Berthereau, 2017-2018
  * @license Gnu/Gpl v3
  */
 class Module extends AbstractModule
 {
     const DIRECT_ADDR = 'REMOTE_ADDR';
     const PROXY_ADDR = 'HTTP_X_FORWARDED_FOR';
-
-    /**
-     * Settings and their default values.
-     *
-     * @var array
-     */
-    protected $settings = [
-        // Are we behind a proxy?
-        'lockout_client_type' => self::DIRECT_ADDR,
-
-        // Lock out after this many tries.
-        'lockout_allowed_retries' => 4,
-        // Lock out for this many seconds (default is 20 minutes).
-        'lockout_lockout_duration' => 1200,
-        // Long lock out after this many lockouts.
-        'lockout_allowed_lockouts' => 4,
-        // Long lock out for this many seconds (default is 24 hours).
-        'lockout_long_duration' => 86400,
-        // Reset failed attempts after this many seconds (defaul is 12 hours).
-        'lockout_valid_duration' => 43200,
-
-        // Also limit malformed/forged cookies?
-        'lockout_cookies' => true,
-        // Whitelist of ips.
-        'lockout_whitelist' => [],
-        // Notify on lockout. Values: '', 'log' and/or 'email'.
-        'lockout_lockout_notify' => ['log'],
-        // If notify by email, do so after this number of lockouts.
-        'lockout_notify_email_after' => 4,
-
-        // Current lockouts.
-        'lockout_lockouts' => [],
-        'lockout_valids' => [],
-        'lockout_retries' => [],
-        // Total lockouts.
-        'lockout_lockouts_total' => 0,
-        // Logs.
-        'lockout_logs' => [],
-    ];
 
     public function getConfig()
     {
@@ -87,35 +48,47 @@ class Module extends AbstractModule
 
     public function install(ServiceLocatorInterface $serviceLocator)
     {
-        $settings = $serviceLocator->get('Omeka\Settings');
-        foreach ($this->settings as $name => $value) {
-            $settings->set($name, $value);
-        }
+        $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'install');
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
-        $settings = $serviceLocator->get('Omeka\Settings');
-        foreach ($this->settings as $name => $value) {
-            $settings->delete($name);
+        $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'uninstall');
+    }
+
+    protected function manageSettings($settings, $process, $key = 'config')
+    {
+        $config = require __DIR__ . '/config/module.config.php';
+        $defaultSettings = $config[strtolower(__NAMESPACE__)][$key];
+        foreach ($defaultSettings as $name => $value) {
+            switch ($process) {
+                case 'install':
+                    $settings->set($name, $value);
+                    break;
+                case 'uninstall':
+                    $settings->delete($name);
+                    break;
+            }
         }
     }
 
     public function getConfigForm(PhpRenderer $renderer)
     {
         $services = $this->getServiceLocator();
+        $config = $services->get('Config');
         $settings = $services->get('Omeka\Settings');
         $formElementManager = $services->get('FormElementManager');
 
-        $formData = [];
-        foreach ($this->settings as $name => $value) {
-            $formData[$name] = $settings->get($name);
+        $data = [];
+        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
+        foreach ($defaultSettings as $name => $value) {
+            $data[$name] = $settings->get($name);
         }
-        $formData['lockout_whitelist'] = implode("\n", $formData['lockout_whitelist']);
+        $data['lockout_whitelist'] = implode("\n", $data['lockout_whitelist']);
 
         $form = $formElementManager->get(ConfigForm::class);
         $form->init();
-        $form->setData($formData);
+        $form->setData($data);
 
         $clientTypeGuess = $this->guessProxy();
         if ($clientTypeGuess == self::DIRECT_ADDR) {
@@ -134,26 +107,30 @@ class Module extends AbstractModule
         $vars['lockout_total'] = $settings->get('lockout_lockouts_total', 0);
         $vars['lockouts'] = $settings->get('lockout_lockouts', []);
         $vars['client_type_message'] = $clientTypeMessage;
-        $vars['client_type_warning'] = $clientTypeGuess != $settings->get('lockout_client_type', $this->settings['lockout_client_type']);
+        $vars['client_type_warning'] = $clientTypeGuess != $settings->get('lockout_client_type', $defaultSettings['lockout_client_type']);
         $vars['logs'] = $settings->get('lockout_logs', []);
 
-        return $renderer->render('lockout/module/config.phtml', $vars);
+        return $renderer->render('lockout/module/config', $vars);
     }
 
     public function handleConfigForm(AbstractController $controller)
     {
         $services = $this->getServiceLocator();
+        $config = $services->get('Config');
         $settings = $services->get('Omeka\Settings');
 
         $params = $controller->getRequest()->getPost();
 
-        // $form = new ConfigForm;
-        // $form->init();
-        // $form->setData($params);
-        // if (!$form->isValid()) {
-        //     $controller->messenger()->addErrors($form->getMessages());
-        //     return false;
-        // }
+        $form = $this->getServiceLocator()->get('FormElementManager')
+            ->get(ConfigForm::class);
+        $form->init();
+        $form->setData($params);
+        if (!$form->isValid()) {
+            $controller->messenger()->addErrors($form->getMessages());
+            return false;
+        }
+
+        // TODO Move the post-checks into the form.
 
         if (!empty($params['lockout_clear_current_lockouts'])) {
             $params['lockout_lockouts'] = [];
@@ -184,8 +161,9 @@ class Module extends AbstractModule
             $params['lockout_client_type'] = self::DIRECT_ADDR;
         }
 
+        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
         foreach ($params as $name => $value) {
-            if (isset($this->settings[$name])) {
+            if (isset($defaultSettings[$name])) {
                 $settings->set($name, $value);
             }
         }
@@ -194,7 +172,7 @@ class Module extends AbstractModule
     /**
      * Get correct remote address.
      *
-     * @param $typeName Direct address or proxy address.
+     * @param string $typeName Direct address or proxy address.
      * @return string
      */
     public function getAddress($typeName = '')
