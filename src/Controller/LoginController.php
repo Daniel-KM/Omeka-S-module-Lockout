@@ -92,6 +92,24 @@ class LoginController extends OmekaLoginController
         return $view;
     }
 
+    public function createPasswordAction()
+    {
+        $result = parent::createPasswordAction();
+        if (is_object($result) && $result instanceof ViewModel) {
+            $result->setTemplate('omeka/login/create-password');
+        }
+        return $result;
+    }
+
+    public function forgotPasswordAction()
+    {
+        $result = parent::forgotPasswordAction();
+        if (is_object($result) && $result instanceof ViewModel) {
+            $result->setTemplate('omeka/login/forgot-password');
+        }
+        return $result;
+    }
+
     /**
      * Clean up old lockouts and retries, and save supplied arrays.
      *
