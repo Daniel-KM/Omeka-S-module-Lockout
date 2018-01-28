@@ -140,5 +140,13 @@ class Config extends Form
                 'label' => 'Email to admin after attempts', // @translate
             ],
         ]);
+
+        $inputFilter = $this->getInputFilter();
+        foreach ($this as $element) {
+            $inputFilter->add([
+                'name' => $element->getName(),
+                'required' => false,
+            ]);
+        }
     }
 }
