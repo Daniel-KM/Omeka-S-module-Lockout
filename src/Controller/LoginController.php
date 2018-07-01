@@ -65,6 +65,8 @@ class LoginController extends OmekaLoginController
                 $result = $this->auth->authenticate();
                 if ($result->isValid()) {
                     $this->messenger()->addSuccess('Successfully logged in'); // @translate
+                    $eventManager = $this->getEventManager();
+                    $eventManager->trigger('user.login', $this->auth->getIdentity());
                     $session = $sessionManager->getStorage();
                     $this->resetLockout();
                     if ($redirectUrl = $session->offsetGet('redirect_url')) {
