@@ -397,7 +397,7 @@ class LoginController extends OmekaLoginController
                 $when = ceil($when / 60);
                 $msg .= $when <= 1
                     ? sprintf('Please try again in %d hour.', $when) // @translate
-                    : sprintf('Please try again in %d hours.', $when); // @translate;
+                    : sprintf('Please try again in %d hours.', $when); // @translate
             } else {
                 $msg .= $when <= 1
                     ? sprintf('Please try again in %d minute.', $when) // @translate

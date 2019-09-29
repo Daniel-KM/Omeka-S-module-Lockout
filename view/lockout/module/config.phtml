@@ -1,4 +1,5 @@
 <?php
+$translate = $this->plugin('translate');
 $this->headStyle()->appendStyle('
 .lockout-log th {
     font-weight: bold;
@@ -17,12 +18,12 @@ td.lockout-max {
 ');
 $form->prepare();
 ?>
-<h3><?php echo $this->translate('Statistics'); ?></h3>
+<h3><?php echo $translate('Statistics'); ?></h3>
 
 <p><?php
 $activeLockouts = count($lockouts);
 if (empty($activeLockouts)):
-    echo $this->translate('No active lockout.');
+    echo $translate('No active lockout.');
 else:
     echo sprintf($this->translatePlural(
         '%d IP is currently blocked from trying to log in.',
@@ -34,7 +35,7 @@ endif;
 
 <p><?php
 if (empty($lockout_total)):
-    echo $this->translate('No lockouts yet.');
+    echo $translate('No lockouts yet.');
 else:
     echo sprintf($this->translatePlural(
         '%d lockout since last reset.',
@@ -44,8 +45,8 @@ else:
 endif;
 ?></p>
 
-<h3><?php echo $this->translate('Options'); ?></h3>
-<h4><?php echo $this->translate('Lockout'); ?></h4>
+<h3><?php echo $translate('Options'); ?></h3>
+<h4><?php echo $translate('Lockout'); ?></h4>
 <?php echo $this->formRow($form->get('lockout_allowed_retries')); ?>
 <?php echo $this->formRow($form->get('lockout_lockout_duration')); ?>
 <?php echo $this->formRow($form->get('lockout_allowed_lockouts')); ?>
@@ -53,34 +54,34 @@ endif;
 <?php echo $this->formRow($form->get('lockout_valid_duration')); ?>
 <?php echo $this->formRow($form->get('lockout_whitelist')); ?>
 
-<h4><?php echo $this->translate('Site connection'); ?></h4>
+<h4><?php echo $translate('Site connection'); ?></h4>
 <?php echo $client_type_message; ?>
 <?php echo $this->formRow($form->get('lockout_client_type')); ?>
 <?php if ($client_type_warning): ?>
 <p>
-<strong><?php echo $this->translate('Current setting appears to be invalid.'); ?></strong>
-<?php echo $this->translate('Please make sure it is correct.'); ?>
+<strong><?php echo $translate('Current setting appears to be invalid.'); ?></strong>
+<?php echo $translate('Please make sure it is correct.'); ?>
 <?php echo sprintf(
-    $this->translate('Further information can be found <a href="%s" title="README">here</a>.'),
+    $translate('Further information can be found <a href="%s" title="README">here</a>.'),
     'https://github.com/Daniel-KM/Omeka-S-module-Lockout'); ?>
 <?php endif; ?>
 <?php // echo $this->formRow($form->get('lockout_cookies')); ?>
 
-<h4><?php echo $this->translate('Notification'); ?></h4>
+<h4><?php echo $translate('Notification'); ?></h4>
 <?php echo $this->formRow($form->get('lockout_lockout_notify')); ?>
 <?php echo $this->formRow($form->get('lockout_notify_email_after')); ?>
 
-<h3><?php echo $this->translate('Lockout log'); ?></h3>
+<h3><?php echo $translate('Lockout log'); ?></h3>
 <?php if (empty($logs)): ?>
-<p><?php echo $this->translate('No log currently.'); ?></p>
+<p><?php echo $translate('No log currently.'); ?></p>
 <?php else:
 echo $this->formRow($form->get('lockout_clear_logs')); ?>
 <div class="lockout-log">
     <table class="form-table">
         <thead>
             <tr>
-                <th scope="col"><?php echo $this->translate('IP'); ?></th>
-                <th scope="col"><?php echo $this->translate('Tried to log in as'); ?></th>
+                <th scope="col"><?php echo $translate('IP'); ?></th>
+                <th scope="col"><?php echo $translate('Tried to log in as'); ?></th>
             </tr>
         </thead>
         <tbody>
