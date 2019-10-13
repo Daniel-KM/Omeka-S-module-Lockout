@@ -493,7 +493,9 @@ class LoginController extends OmekaLoginController
                 * $this->settings()->get('lockout_allowed_lockouts');
             $lockouts = $this->settings()->get('lockout_allowed_lockouts');
             $time = round($this->settings()->get('lockout_long_duration') / 3600);
-            $when = $time <= 1 ? sprintf('%d hour', $time) : sprintf('%d hours', $time);
+            $when = $time <= 1
+                ? sprintf('%d hour', $time) // @translate
+                : sprintf('%d hours', $time); // @translate
         }
         // Normal lockout.
         else {
@@ -515,7 +517,8 @@ class LoginController extends OmekaLoginController
         $body = sprintf('%d failed login attempts (%d lockout(s)) from IP: %s.', // @translate
             $count, $lockouts, $ip) . "\r\n\r\n";
         if (empty($user)) {
-            $body .= sprintf('Last user attempted: %s.', $user) . "\r\n\r\n"; // @translate
+            $body .= sprintf('Last user attempted: %s.', $user) // @translate
+                . "\r\n\r\n";
         }
         if ($whitelisted) {
             $body .= sprintf('IP was NOT blocked because of whitelist.'); // @translate
@@ -749,7 +752,7 @@ class LoginController extends OmekaLoginController
         //
         // Also, if more than one error message, put an extra <br /> tag between
         // them.
-        $msgs = explode("<br />\n", $content);
+        $msgs = explode("<br/>\n", $content);
 
         if (strlen(end($msgs)) == 0) {
             // Remove last entry empty string.
@@ -761,9 +764,10 @@ class LoginController extends OmekaLoginController
 
         if ($this->nonempty_credentials && $count > $my_warn_count) {
             // Replace error message, including ours if necessary.
-            $content = sprintf('<strong>ERROR</strong>: Incorrect username or password.') . "<br />\n";
+            $content = '<strong>ERROR</strong>: Incorrect username or password.' // @translate
+                . "<br/>\n";
             if ($this->my_error_shown) {
-                $content .= "<br />\n" . lockout_get_message() . "<br />\n";
+                $content .= "<br/>\n" . lockout_get_message() . "<br/>\n";
             }
             return $content;
         } elseif ($count <= 1) {
@@ -772,9 +776,9 @@ class LoginController extends OmekaLoginController
 
         $new = '';
         while ($count -- > 0) {
-            $new .= array_shift($msgs) . "<br />\n";
+            $new .= array_shift($msgs) . "<br/>\n";
             if ($count > 0) {
-                $new .= "<br />\n";
+                $new .= "<br/>\n";
             }
         }
 
