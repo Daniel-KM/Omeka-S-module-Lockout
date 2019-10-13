@@ -1,272 +1,260 @@
-# Copyright (C) 2012 Limit Login Attempts
-# This file is distributed under the same license as the Limit Login Attempts package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Lockout 3.2\n"
-"Report-Msgid-Bugs-To: https://github.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-05 00:00:00+00:00\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-14 00:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: YE-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
+#: view/lockout/module/config.phtml:21
+msgid "Statistics"
 msgstr ""
 
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
+#: view/lockout/module/config.phtml:26
+msgid "No active lockout."
 msgstr ""
 
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+#: view/lockout/module/config.phtml:38
+msgid "No lockouts yet."
 msgstr ""
 
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
+#: view/lockout/module/config.phtml:49
+msgid "Lockout"
 msgstr ""
 
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
+#: view/lockout/module/config.phtml:57
+msgid "Site connection"
 msgstr ""
 
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
+#: view/lockout/module/config.phtml:62
+msgid "Current setting appears to be invalid."
 msgstr ""
 
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
+#: view/lockout/module/config.phtml:63
+msgid "Please make sure it is correct."
 msgstr ""
 
-#: limit-login-attempts.php:619
-msgid "Please try again later."
+#: view/lockout/module/config.phtml:65
+#, php-format
+msgid ""
+"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
 msgstr ""
 
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
+#: view/lockout/module/config.phtml:70
+msgid "Notification"
 msgstr ""
 
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
+#: view/lockout/module/config.phtml:74
+msgid "Lockout log"
+msgstr ""
+
+#: view/lockout/module/config.phtml:76
+msgid "No log currently."
+msgstr ""
+
+#: view/lockout/module/config.phtml:83
 msgid "IP"
 msgstr ""
 
-#: limit-login-attempts.php:896
+#: view/lockout/module/config.phtml:84
 msgid "Tried to log in as"
 msgstr ""
 
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr ""
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr ""
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr ""
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr ""
-
-#: limit-login-attempts.php:993
+#: Module.php:94
+#, php-format
 msgid "It appears the site is reached directly (from your IP: %s)."
 msgstr ""
 
-#: limit-login-attempts.php:995
+#: Module.php:97
+#, php-format
 msgid ""
 "It appears the site is reached through a proxy server (proxy IP: %s, your "
 "IP: %s)."
 msgstr ""
 
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
+#: Module.php:135
+msgid "Cleared current lockouts."
 msgstr ""
 
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
+#: Module.php:140
+msgid "Reset lockout count."
 msgstr ""
 
-#: limit-login-attempts.php:1003
-msgid "Further information can be found <a href=\"%s\" title=\"README\">here</a>."
+#: Module.php:145
+msgid "Cleared IP log."
 msgstr ""
 
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
+#: src/Form/Config.php:16
+msgid "Clear current lockouts"
 msgstr ""
 
-#: limit-login-attempts.php:1012
-msgid "Statistics"
+#: src/Form/Config.php:27
+msgid "Reset counter"
 msgstr ""
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
+#: src/Form/Config.php:38
+msgid "Clear IP log"
 msgstr ""
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
+#: src/Form/Config.php:51
+msgid "Allowed retries"
 msgstr ""
 
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:1022
-msgid "No lockouts yet."
+#: src/Form/Config.php:59
+msgid "Lockout duration (seconds)"
 msgstr ""
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
+#: src/Form/Config.php:67
+msgid "Allowed lockouts before long lockout"
 msgstr ""
 
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
+#: src/Form/Config.php:75
+msgid "Long lock out (seconds)"
 msgstr ""
 
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] ""
-msgstr[1] ""
-
-#: limit-login-attempts.php:1036
-msgid "Options"
+#: src/Form/Config.php:83
+msgid "Valid duration (seconds)"
 msgstr ""
 
-#: limit-login-attempts.php:1041
-msgid "Lockout"
+#: src/Form/Config.php:91
+msgid "Whitelist of IPs"
 msgstr ""
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
+#: src/Form/Config.php:94
+msgid "One IP by line (ipv4 or ipv6)"
 msgstr ""
 
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
+#: src/Form/Config.php:104
+msgid "Client type"
 msgstr ""
 
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr ""
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr ""
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr ""
-
-#: limit-login-attempts.php:1050
-msgid "Site connection"
-msgstr ""
-
-#: limit-login-attempts.php:1056
+#: src/Form/Config.php:106
 msgid "Direct connection"
 msgstr ""
 
-#: limit-login-attempts.php:1061
+#: src/Form/Config.php:107
 msgid "From behind a reverse proxy"
 msgstr ""
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr ""
-
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr ""
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr ""
-
-#: limit-login-attempts.php:1073
+#: src/Form/Config.php:128
 msgid "Notify on lockout"
 msgstr ""
 
-#: limit-login-attempts.php:1075
+#: src/Form/Config.php:130
 msgid "Log IP"
 msgstr ""
 
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
+#: src/Form/Config.php:140
+msgid "Email to admin after attempts"
 msgstr ""
 
-#: limit-login-attempts.php:1076
-msgid "lockouts"
+#: src/Controller/LoginController.php:371
+#, php-format
+msgid "%d attempt remaining."
 msgstr ""
 
-#: limit-login-attempts.php:1081
-msgid "Change Options"
+#: src/Controller/LoginController.php:372
+#, php-format
+msgid "%d attempts remaining."
 msgstr ""
 
-#: limit-login-attempts.php:1089
-msgid "Lockout log"
+#: src/Controller/LoginController.php:388
+msgid "Error: Too many failed login attempts."
 msgstr ""
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
+#: src/Controller/LoginController.php:393
+msgid "Please try again later."
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
+#: src/Controller/LoginController.php:399
+#, php-format
+msgid "Please try again in %d hour."
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
+#: src/Controller/LoginController.php:400
+#, php-format
+msgid "Please try again in %d hours."
 msgstr ""
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: src/Controller/LoginController.php:403
+#, php-format
+msgid "Please try again in %d minute."
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
+#: src/Controller/LoginController.php:404
+#, php-format
+msgid "Please try again in %d minutes."
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
+#: src/Controller/LoginController.php:497
+#, php-format
+msgid "%d hour"
+msgstr ""
+
+#: src/Controller/LoginController.php:498
+#, php-format
+msgid "%d hours"
+msgstr ""
+
+#: src/Controller/LoginController.php:506
+#, php-format
+msgid "%d minute"
+msgstr ""
+
+#: src/Controller/LoginController.php:507
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#: src/Controller/LoginController.php:510
+msgid "SERVER_ADDR"
+msgstr ""
+
+#: src/Controller/LoginController.php:512
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr ""
+
+#: src/Controller/LoginController.php:514
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr ""
+
+#: src/Controller/LoginController.php:517
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr ""
+
+#: src/Controller/LoginController.php:520
+#, php-format
+msgid "Last user attempted: %s."
+msgstr ""
+
+#: src/Controller/LoginController.php:524
+msgid "IP was NOT blocked because of whitelist."
+msgstr ""
+
+#: src/Controller/LoginController.php:526
+#, php-format
+msgid "IP was blocked for %s."
+msgstr ""
+
+#: src/Controller/LoginController.php:590
+#: src/Controller/LoginController.php:602
+msgid "Too many retries."
+msgstr ""
+
+#: src/Controller/LoginController.php:767
+msgid "<strong>ERROR</strong>: Incorrect username or password."
 msgstr ""
