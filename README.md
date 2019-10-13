@@ -152,8 +152,8 @@ Contacts
 Copyright
 ---------
 
-* Copright Johan Eenfeldt, 2008-2012
-* Copright Daniel Berthereau, 2017
+* Copyright Johan Eenfeldt, 2008-2012
+* Copyright Daniel Berthereau, 2017-2019
 * Translations: see the [WordPress page]
 
 Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress).

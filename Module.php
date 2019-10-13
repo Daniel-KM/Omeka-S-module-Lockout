@@ -3,7 +3,7 @@ namespace Lockout;
 
 /*
  * Copyright Johan Eenfeldt, 2008-2012
- * Copyright Daniel Berthereau, 2017-2018
+ * Copyright Daniel Berthereau, 2017-2019
  *
  * Licenced under the GNU GPL:
  * This program is free software; you can redistribute it and/or modify
