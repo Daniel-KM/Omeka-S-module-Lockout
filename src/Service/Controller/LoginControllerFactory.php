@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 namespace Lockout\Service\Controller;
 
 use Interop\Container\ContainerInterface;
-use Lockout\Controller\LoginController;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Lockout\Controller\LoginController;
 
 class LoginControllerFactory implements FactoryInterface
 {

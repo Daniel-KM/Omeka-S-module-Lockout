@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Lockout;
 
 /*
@@ -21,11 +21,11 @@ namespace Lockout;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-use Lockout\Form\Config as ConfigForm;
-use Omeka\Module\AbstractModule;
 use Laminas\Mvc\Controller\AbstractController;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
+use Lockout\Form\Config as ConfigForm;
+use Omeka\Module\AbstractModule;
 
 /**
  * Lockout
@@ -46,17 +46,17 @@ class Module extends AbstractModule
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function install(ServiceLocatorInterface $serviceLocator)
+    public function install(ServiceLocatorInterface $serviceLocator): void
     {
         $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'install');
     }
 
-    public function uninstall(ServiceLocatorInterface $serviceLocator)
+    public function uninstall(ServiceLocatorInterface $serviceLocator): void
     {
         $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'uninstall');
     }
 
-    protected function manageSettings($settings, $process, $key = 'config')
+    protected function manageSettings($settings, $process, $key = 'config'): void
     {
         $config = require __DIR__ . '/config/module.config.php';
         $defaultSettings = $config[strtolower(__NAMESPACE__)][$key];

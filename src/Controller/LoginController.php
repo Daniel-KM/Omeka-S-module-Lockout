@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 namespace Lockout\Controller;
 
-use Omeka\Controller\LoginController as OmekaLoginController;
-use Omeka\Form\LoginForm;
 use Laminas\Session\Container;
 use Laminas\View\Model\ViewModel;
+use Omeka\Controller\LoginController as OmekaLoginController;
+use Omeka\Form\LoginForm;
 
 class LoginController extends OmekaLoginController
 {
@@ -118,7 +118,7 @@ class LoginController extends OmekaLoginController
      * @param array $lockouts
      * @param array $valids
      */
-    protected function cleanupLockout(array $retries = null, array $lockouts = null, array $valids = null)
+    protected function cleanupLockout(array $retries = null, array $lockouts = null, array $valids = null): void
     {
         $now = time();
         if (is_null($lockouts)) {
@@ -186,7 +186,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $ip
      */
-    protected function resetLockout()
+    protected function resetLockout(): void
     {
         $ip = $this->getAddress();
         $lockouts = $this->settings()->get('lockout_lockouts', []);
@@ -204,7 +204,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function updateLockout($user)
+    protected function updateLockout($user): void
     {
         $now = time();
         $ip = $this->getAddress();
@@ -413,7 +413,7 @@ class LoginController extends OmekaLoginController
      *
      * @param LoginForm $form
      */
-    protected function disableForm(LoginForm $form)
+    protected function disableForm(LoginForm $form): void
     {
         $this->messenger()->addError($this->errorMsg());
         foreach (['email', 'password', 'submit'] as $element) {
@@ -426,7 +426,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function notifyLockout($user)
+    protected function notifyLockout($user): void
     {
         $args = $this->settings()->get('lockout_lockout_notify', []);
         if (empty($args)) {
@@ -450,7 +450,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function notifyLog($user)
+    protected function notifyLog($user): void
     {
         $ip = $this->getAddress();
         $logs = $this->settings()->get('lockout_logs', []);
@@ -469,7 +469,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function notifyEmail($user)
+    protected function notifyEmail($user): void
     {
         $ip = $this->getAddress();
         $whitelisted = $this->isIpWhitelisted($ip);
@@ -547,7 +547,7 @@ class LoginController extends OmekaLoginController
     /**
      * Get options and setup filters & actions.
      */
-    protected function lockout_setup()
+    protected function lockout_setup(): void
     {
         // Filters and actions.
         add_action('wp_login_failed', 'lockout_failed');
@@ -597,7 +597,7 @@ class LoginController extends OmekaLoginController
     /**
      * Filter: add this failure to login page "Shake it!".
      */
-    protected function lockout_failure_shake($error_codes)
+    protected function lockout_failure_shake($error_codes): void
     {
         $this->messenger()->addError('Too many retries.'); // @translate
         // $error_codes[] = 'too_many_retries';
@@ -608,7 +608,7 @@ class LoginController extends OmekaLoginController
      * Must be called in plugin_loaded (really early) to make sure we do not allow
      * auth cookies while locked out.
      */
-    protected function lockout_handle_cookies()
+    protected function lockout_handle_cookies(): void
     {
         if (is_lockout_ok()) {
             return;
@@ -624,7 +624,7 @@ class LoginController extends OmekaLoginController
      *
      * Requires WordPress version 3.0.0, previous versions use lockout_failed_cookie()
      */
-    protected function lockout_failed_cookie_hash($cookie_elements)
+    protected function lockout_failed_cookie_hash($cookie_elements): void
     {
         lockout_clear_auth_cookie();
 
@@ -674,7 +674,7 @@ class LoginController extends OmekaLoginController
      *
      * Requires WordPress version 3.0.0, not used in previous versions
      */
-    protected function lockout_valid_cookie($cookie_elements, $user)
+    protected function lockout_valid_cookie($cookie_elements, $user): void
     {
         // As all meta values get cached on user load this should not require
         // any extra work for the common case of no stored value.
@@ -686,7 +686,7 @@ class LoginController extends OmekaLoginController
     /**
      * Action: failed cookie login (calls lockout_failed()).
      */
-    protected function lockout_failed_cookie($cookie_elements)
+    protected function lockout_failed_cookie($cookie_elements): void
     {
         lockout_clear_auth_cookie();
 
@@ -697,7 +697,7 @@ class LoginController extends OmekaLoginController
     /**
      * Make sure auth cookie really get cleared (for this session too).
      */
-    protected function lockout_clear_auth_cookie()
+    protected function lockout_clear_auth_cookie(): void
     {
         wp_clear_auth_cookie();
 
@@ -722,7 +722,7 @@ class LoginController extends OmekaLoginController
             return false;
         }
 
-        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+        $action = $_REQUEST['action'] ?? '';
 
         return $action != 'lostpassword'
             && $action != 'retrievepassword'
@@ -788,7 +788,7 @@ class LoginController extends OmekaLoginController
     /**
      * Add a message to login page when necessary.
      */
-    protected function lockout_add_error_message()
+    protected function lockout_add_error_message(): void
     {
         if (! should_lockout_show_msg() || $this->my_error_shown) {
             return;
@@ -807,7 +807,7 @@ class LoginController extends OmekaLoginController
     /**
      * Keep track of if user or password are empty, to filter errors correctly
      */
-    protected function lockout_track_credentials($user, $password)
+    protected function lockout_track_credentials($user, $password): void
     {
         $this->hasCredentials = !empty($user) && !empty($password);
     }

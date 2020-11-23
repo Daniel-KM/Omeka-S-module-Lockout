@@ -1,11 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 namespace Lockout\Form;
 
 use Laminas\Form\Form;
 
 class Config extends Form
 {
-    public function init()
+    public function init(): void
     {
         // Resets.
 
