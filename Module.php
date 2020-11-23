@@ -23,9 +23,9 @@ namespace Lockout;
 
 use Lockout\Form\Config as ConfigForm;
 use Omeka\Module\AbstractModule;
-use Zend\Mvc\Controller\AbstractController;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\Mvc\Controller\AbstractController;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\View\Renderer\PhpRenderer;
 
 /**
  * Lockout

@@ -3,8 +3,8 @@ namespace Lockout\Controller;
 
 use Omeka\Controller\LoginController as OmekaLoginController;
 use Omeka\Form\LoginForm;
-use Zend\Session\Container;
-use Zend\View\Model\ViewModel;
+use Laminas\Session\Container;
+use Laminas\View\Model\ViewModel;
 
 class LoginController extends OmekaLoginController
 {

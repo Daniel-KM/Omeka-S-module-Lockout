@@ -1,7 +1,7 @@
 <?php
 namespace Lockout\Form;
 
-use Zend\Form\Form;
+use Laminas\Form\Form;
 
 class Config extends Form
 {

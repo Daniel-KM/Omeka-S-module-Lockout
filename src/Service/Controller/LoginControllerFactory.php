@@ -3,7 +3,7 @@ namespace Lockout\Service\Controller;
 
 use Interop\Container\ContainerInterface;
 use Lockout\Controller\LoginController;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class LoginControllerFactory implements FactoryInterface
 {
