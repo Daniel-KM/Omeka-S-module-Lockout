@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Lockout 3.2\n"
-"Report-Msgid-Bugs-To: https://github.com/Daniel-KM/Omeka-S-module-Lockout\n"
+"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
 "POT-Creation-Date: 2017-06-05 00:00:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

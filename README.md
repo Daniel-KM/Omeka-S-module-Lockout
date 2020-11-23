@@ -43,15 +43,15 @@ The module uses standard actions and filters only.
 
 1. Login screen after failed login with retries remaining.
 
-  ![Login screen after failed login](https://github.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_attempt.png)
+  ![Login screen after failed login](https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_attempt.png)
 
 2. Login screen during lockout.
 
-  ![Login screen during lockout](https://github.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_blocked.png)
+  ![Login screen during lockout](https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_blocked.png)
 
 3. Administration interface in Omeka S
 
-  ![administration interface](https://github.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_config.png)
+  ![administration interface](https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_config.png)
 
 
 Installation
@@ -123,7 +123,7 @@ your archives regularly so you can roll back if needed.
 Troubleshooting
 ---------------
 
-See online issues on the [module issues] page on GitHub.
+See online issues on the [module issues] page on GitLab.
 
 
 License
@@ -149,7 +149,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts
 --------
 
-* Daniel Berthereau (see [Daniel-KM] on GitHub)
+* Daniel Berthereau (see [Daniel-KM] on GitLab)
 
 
 Copyright
@@ -162,11 +162,11 @@ Copyright
 Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress).
 
 
-[Lockout]: https://github.com/Daniel-KM/Omeka-S-module-Lockout
+[Lockout]: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout
 [Omeka S]: https://omeka.org/s
 [Limit Login Attempts]: https://wordpress.org/plugins/limit-login-attempts
-[module issues]: https://github.com/Daniel-KM/Omeka-S-module-Lockout/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/-/issues
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [WordPress page]: https://translate.wordpress.org/projects/wp-plugins/limit-login-attempts/contributors
 [GitLab]: https://gitlab.com/Daniel-KM
-[Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"
+[Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
