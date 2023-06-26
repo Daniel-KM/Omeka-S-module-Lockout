@@ -3,7 +3,7 @@ namespace Lockout;
 
 /*
  * Copyright Johan Eenfeldt, 2008-2012
- * Copyright Daniel Berthereau, 2017-2019
+ * Copyright Daniel Berthereau, 2017-2023
  *
  * Licenced under the GNU GPL:
  * This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@ use Omeka\Module\AbstractModule;
  * Limit rate of login attempts for each IP to avoid brute-force attacks.
  *
  * @copyright Johan Eenfeldt, 2008-2012
- * @copyright Daniel Berthereau, 2017-2018
+ * @copyright Daniel Berthereau, 2017-2023
  * @license Gnu/Gpl v3
  */
 class Module extends AbstractModule

@@ -2,7 +2,8 @@ Lockout (module for Omeka S)
 ============================
 
 > __New versions of this module and support for Omeka S version 3.0 and above
-> are available on [GitLab], which seems to respect users and privacy better.__
+> are available on [GitLab], which seems to respect users and privacy better
+> than the previous repository.__
 
 [Lockout] is a module for [Omeka S] that limits the rate of login attempts for
 each IP (not by auth cookie) in order to avoid brute-force attacks.
@@ -156,7 +157,7 @@ Copyright
 ---------
 
 * Copyright Johan Eenfeldt, 2008-2012
-* Copyright Daniel Berthereau, 2017-2019
+* Copyright Daniel Berthereau, 2017-2023
 * Translations: see the [WordPress page]
 
 Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress).
