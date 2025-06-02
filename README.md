@@ -157,7 +157,7 @@ Copyright
 ---------
 
 * Copyright Johan Eenfeldt, 2008-2012
-* Copyright Daniel Berthereau, 2017-2023
+* Copyright Daniel Berthereau, 2017-2025
 * Translations: see the [WordPress page]
 
 Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress).
