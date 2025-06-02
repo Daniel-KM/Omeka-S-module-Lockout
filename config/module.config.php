@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Lockout;
 
 return [
@@ -7,15 +8,15 @@ return [
             dirname(__DIR__) . '/view',
         ],
     ],
+    'form_elements' => [
+        'invokables' => [
+            Form\ConfigForm::class => Form\ConfigForm::class,
+        ],
+    ],
     'controllers' => [
         'factories' => [
             // Override the standard Omeka login controller.
             'Omeka\Controller\Login' => Service\Controller\LoginControllerFactory::class,
-        ],
-    ],
-    'form_elements' => [
-        'invokables' => [
-            Form\Config::class => Form\Config::class,
         ],
     ],
     'translator' => [

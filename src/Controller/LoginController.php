@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Lockout\Controller;
 
 use Laminas\Session\Container;
@@ -99,9 +100,14 @@ class LoginController extends OmekaLoginController
      */
     protected function cleanupLockout(array $retries = null, array $lockouts = null, array $valids = null): void
     {
+        /**
+         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
+         */
+        $settings = $this->settings();
+
         $now = time();
         if (is_null($lockouts)) {
-            $lockouts = $this->settings()->get('lockout_lockouts', []);
+            $lockouts = $settings->get('lockout_lockouts', []);
         }
 
         // Remove old lockouts.
@@ -110,14 +116,14 @@ class LoginController extends OmekaLoginController
                 unset($lockouts[$ip]);
             }
         }
-        $this->settings()->set('lockout_lockouts', $lockouts);
+        $settings->set('lockout_lockouts', $lockouts);
 
         // Remove retries that are no longer valid.
         if (is_null($valids)) {
-            $valids = $this->settings()->get('lockout_valids', []);
+            $valids = $settings->get('lockout_valids', []);
         }
         if (is_null($retries)) {
-            $retries = $this->settings()->get('lockout_retries', []);
+            $retries = $settings->get('lockout_retries', []);
         }
         if (!is_array($valids) || !is_array($retries)) {
             return;
@@ -131,14 +137,14 @@ class LoginController extends OmekaLoginController
         }
 
         // Go through retries directly, if for some reason they've gone out of sync.
-        foreach ($retries as $ip => $retry) {
+        foreach (array_keys($retries) as $ip) {
             if (!isset($valids[$ip])) {
                 unset($retries[$ip]);
             }
         }
 
-        $this->settings()->set('lockout_valids', $valids);
-        $this->settings()->set('lockout_retries', $retries);
+        $settings->set('lockout_valids', $valids);
+        $settings->set('lockout_retries', $retries);
     }
 
     /**
@@ -185,18 +191,23 @@ class LoginController extends OmekaLoginController
      */
     protected function updateLockout($user): void
     {
+        /**
+         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
+         */
+        $settings = $this->settings();
+
         $now = time();
         $ip = $this->getAddress();
 
         // If currently locked-out, do not add to retries.
-        $lockouts = $this->settings()->get('lockout_lockouts', []);
+        $lockouts = $settings->get('lockout_lockouts', []);
         if (is_array($lockouts) && isset($lockouts[$ip]) && $now < $lockouts[$ip]) {
             return;
         }
 
         // Get the arrays with retries and retries-valid information.
-        $valids = $this->settings()->get('lockout_valids', []);
-        $retries = $this->settings()->get('lockout_retries', []);
+        $valids = $settings->get('lockout_valids', []);
+        $retries = $settings->get('lockout_retries', []);
 
         // Check validity and increment retries.
         if (isset($retries[$ip]) && isset($valids[$ip]) && $now < $valids[$ip]) {
@@ -204,10 +215,10 @@ class LoginController extends OmekaLoginController
         } else {
             $retries[$ip] = 1;
         }
-        $valids[$ip] = $now + $this->settings()->get('lockout_valid_duration');
+        $valids[$ip] = $now + $settings->get('lockout_valid_duration');
 
         // Lockout?
-        $allowedRetries = $this->settings()->get('lockout_allowed_retries');
+        $allowedRetries = $settings->get('lockout_allowed_retries');
         if ($retries[$ip] % $allowedRetries !== 0) {
             // Not lockout (yet!).
             // Do housecleaning (which also saves retry/valid values).
@@ -217,7 +228,7 @@ class LoginController extends OmekaLoginController
 
         // Lockout!.
         $whitelisted = $this->isIpWhitelisted($ip);
-        $retriesLong = $allowedRetries * $this->settings()->get('lockout_allowed_lockouts');
+        $retriesLong = $allowedRetries * $settings->get('lockout_allowed_lockouts');
 
         // Note that retries and statistics are still counted and notifications
         // done as usual for whitelisted ips , but no lockout is done.
@@ -230,12 +241,12 @@ class LoginController extends OmekaLoginController
             // Setup lockout, reset retries as needed.
             if ($retries[$ip] >= $retriesLong) {
                 // Long lockout.
-                $lockouts[$ip] = $now + $this->settings()->get('lockout_long_duration');
+                $lockouts[$ip] = $now + $settings->get('lockout_long_duration');
                 unset($retries[$ip]);
                 unset($valids[$ip]);
             } else {
                 // Normal lockout.
-                $lockouts[$ip] = $now + $this->settings()->get('lockout_lockout_duration');
+                $lockouts[$ip] = $now + $settings->get('lockout_lockout_duration');
             }
         }
 
@@ -246,8 +257,8 @@ class LoginController extends OmekaLoginController
         $this->notifyLockout($user);
 
         // Increase statistics.
-        $total = $this->settings()->get('lockout_lockouts_total', 0);
-        $this->settings()->set('lockout_lockouts_total', ++$total);
+        $total = $settings->get('lockout_lockouts_total', 0);
+        $settings->set('lockout_lockouts_total', ++$total);
     }
 
     /**
@@ -283,7 +294,10 @@ class LoginController extends OmekaLoginController
 
         // Not found. Did we get proxy type from option?
         // If so, try to fall back to direct address.
-        if (empty($type_name) && $type == self::PROXY_ADDR && isset($_SERVER[self::DIRECT_ADDR])) {
+        if (empty($typeName)
+            && $type == self::PROXY_ADDR
+            && isset($_SERVER[self::DIRECT_ADDR])
+        ) {
             // NOTE: Even though we fall back to direct address -- meaning you
             // can get a mostly working plugin when set to PROXY mode while in
             // fact directly connected to Internet it is not safe!
@@ -320,10 +334,16 @@ class LoginController extends OmekaLoginController
      */
     protected function warnRemainingAttempts()
     {
+        /**
+         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
+         */
+        $settings = $this->settings();
+
         $now = time();
         $ip = $this->getAddress();
-        $retries = $this->settings()->get('lockout_retries');
-        $valids = $this->settings()->get('lockout_valids');
+
+        $retries = $settings->get('lockout_retries');
+        $valids = $settings->get('lockout_valids');
 
         // Should we show retries remaining?
         // No retries at all.
@@ -335,13 +355,13 @@ class LoginController extends OmekaLoginController
             return '';
         }
         // Already been locked out for these retries.
-        if (($retries[$ip] % $this->settings()->get('lockout_allowed_retries')) == 0) {
+        if (($retries[$ip] % $settings->get('lockout_allowed_retries')) == 0) {
             return '';
         }
 
         $remaining = max(
-            $this->settings()->get('lockout_allowed_retries')
-                - ($retries[$ip] % $this->settings()->get('lockout_allowed_retries')),
+            $settings->get('lockout_allowed_retries')
+                - ($retries[$ip] % $settings->get('lockout_allowed_retries')),
             0);
 
         $message = $remaining <= 1
@@ -360,7 +380,7 @@ class LoginController extends OmekaLoginController
     {
         $now = time();
         $ip = $this->getAddress();
-        $lockouts = $this->settings()->get('lockout_lockouts', []);
+        $lockouts = $settings->get('lockout_lockouts', []);
 
         $msg = 'Error: Too many failed login attempts.'; // @translate
         $msg .= ' ';
@@ -429,8 +449,14 @@ class LoginController extends OmekaLoginController
      */
     protected function notifyLog($user): void
     {
+        /**
+         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
+         */
+        $settings = $this->settings();
+
         $ip = $this->getAddress();
-        $logs = $this->settings()->get('lockout_logs', []);
+
+        $logs = $settings->get('lockout_logs', []);
 
         if (isset($logs[$ip][$user])) {
             ++$logs[$ip][$user];
@@ -438,7 +464,7 @@ class LoginController extends OmekaLoginController
             $logs[$ip][$user] = 1;
         }
 
-        $this->settings()->set('lockout_logs', $logs);
+        $settings->set('lockout_logs', $logs);
     }
 
     /**
@@ -448,16 +474,21 @@ class LoginController extends OmekaLoginController
      */
     protected function notifyEmail($user): void
     {
+        /**
+         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
+         */
+        $settings = $this->settings();
+
         $ip = $this->getAddress();
         $whitelisted = $this->isIpWhitelisted($ip);
 
-        $retries = $this->settings()->get('lockout_retries', []);
+        $retries = $settings->get('lockout_retries', []);
 
         // Check if we are at the right number to do notification.
         if (isset($retries[$ip])
             && (
-                ($retries[$ip] / $this->settings()->get('lockout_allowed_retries', 1))
-                    % $this->settings()->get('lockout_notify_email_after', 1)
+                ($retries[$ip] / $settings->get('lockout_allowed_retries', 1))
+                    % $settings->get('lockout_notify_email_after', 1)
             ) != 0
         ) {
             return;
@@ -466,10 +497,10 @@ class LoginController extends OmekaLoginController
         // Format message. First current lockout duration.
         // Longer lockout.
         if (! isset($retries[$ip])) {
-            $count = $this->settings()->get('lockout_allowed_retries')
-                * $this->settings()->get('lockout_allowed_lockouts');
-            $lockouts = $this->settings()->get('lockout_allowed_lockouts');
-            $time = round($this->settings()->get('lockout_long_duration') / 3600);
+            $count = $settings->get('lockout_allowed_retries')
+                * $settings->get('lockout_allowed_lockouts');
+            $lockouts = $settings->get('lockout_allowed_lockouts');
+            $time = round($settings->get('lockout_long_duration') / 3600);
             $when = $time <= 1
                 ? sprintf('%d hour', $time) // @translate
                 : sprintf('%d hours', $time); // @translate
@@ -477,8 +508,8 @@ class LoginController extends OmekaLoginController
         // Normal lockout.
         else {
             $count = $retries[$ip];
-            $lockouts = floor($count / $this->settings()->get('lockout_allowed_retries'));
-            $time = round($this->settings()->get('lockout_lockout_duration') / 60);
+            $lockouts = floor($count / $settings->get('lockout_allowed_retries'));
+            $time = round($settings->get('lockout_lockout_duration') / 60);
             $when = $time <= 1
                 ? sprintf('%d minute', $time) // @translate
                 : sprintf('%d minutes', $time); // @translate
@@ -507,12 +538,17 @@ class LoginController extends OmekaLoginController
          * Admin email is the default sender in Omeka Mailer, but it can be
          * replaced by a no-reply sender via module EasyAdmin.
          *
+         * The method $mailer->createMessage() does not allow to by-pass default
+         * options, in particular "from".
+         *
          * @see \Omeka\Service\MailerFactory::__invoke()
          *
          * @var \Omeka\Stdlib\Mailer $mailer
+         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
+         *
+         * @todo Use \Common\Mvc\Controller\Plugin\SendEmail.
          */
 
-        $settings = $this->settings();
         $adminEmail = $settings->get('administrator_email');
         $adminName = $settings->get('administrator_name')
             ?: $settings->get('easyadmin_administrator_name');
@@ -528,6 +564,7 @@ class LoginController extends OmekaLoginController
         $mailer = $this->mailer();
         $message = $mailer->createMessage();
         $message
+            // Use (string), not null, for quick process (avoid to parse email).
             ->setFrom($senderEmail, (string) $senderName)
             ->addTo($adminEmail, (string) $adminName)
             ->setSubject($subject)

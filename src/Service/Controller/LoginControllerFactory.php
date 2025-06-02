@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Lockout\Service\Controller;
 
 use Interop\Container\ContainerInterface;

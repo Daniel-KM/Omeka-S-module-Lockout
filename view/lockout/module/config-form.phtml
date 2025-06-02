@@ -1,0 +1,122 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Lockout\Form\ConfigForm $form
+ * @var int $lockout_total
+ * @var array $lockouts
+ * @var string $client_type_message
+ * @var bool $client_type_warning
+ * @var array $logs
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$formRow = $plugins->get('formRow');
+$translatePlural = $plugins->get('translatePlural');
+
+$this->headStyle()->appendStyle(<<<'CSS'
+    .lockout-log th {
+        font-weight: bold;
+    }
+    .lockout-log td,
+    .lockout-log th {
+        padding: 1px 5px 1px 5px;
+    }
+    td.lockout-ip {
+        font-family:  "Courier New", Courier, monospace;
+        vertical-align: top;
+    }
+    td.lockout-max {
+        width: 100%;
+    }
+    CSS);
+$form->prepare();
+?>
+
+<h3><?= $translate('Statistics') ?></h3>
+
+<p><?php
+$activeLockouts = count($lockouts);
+if (empty($activeLockouts)):
+    echo $translate('No active lockout.');
+else:
+    echo sprintf($translate($translatePlural(
+        '%d IP is currently blocked from trying to log in.',
+        '%d IPs are currently blocked from trying to log in.',
+        $activeLockouts)), $activeLockouts);
+    echo $formRow($form->get('lockout_clear_current_lockouts'));
+endif;
+?></p>
+
+<p><?php
+if (empty($lockout_total)):
+    echo $translate('No lockouts yet.');
+else:
+    echo sprintf($translate($translatePlural(
+        '%d lockout since last reset.',
+        '%d lockouts since last reset.',
+        $lockout_total)), $lockout_total);
+    echo $formRow($form->get('lockout_clear_total_lockouts'));
+endif;
+?></p>
+
+<h3><?= $translate('Options') ?></h3>
+<h4><?= $translate('Lockout') ?></h4>
+<?= $formRow($form->get('lockout_allowed_retries')) ?>
+<?= $formRow($form->get('lockout_lockout_duration')) ?>
+<?= $formRow($form->get('lockout_allowed_lockouts')) ?>
+<?= $formRow($form->get('lockout_long_duration')) ?>
+<?= $formRow($form->get('lockout_valid_duration')) ?>
+<?= $formRow($form->get('lockout_whitelist')) ?>
+
+<h4><?= $translate('Site connection') ?></h4>
+<?= $client_type_message ?>
+<?= $formRow($form->get('lockout_client_type')) ?>
+<?php if ($client_type_warning): ?>
+<p>
+<strong><?= $translate('Current setting appears to be invalid.') ?></strong>
+<?= $translate('Please make sure it is correct.') ?>
+<?= sprintf(
+    $translate('Further information can be found <a href="%s" title="README">here</a>.'),
+    'https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout') ?>
+<?php endif; ?>
+<?php //= $formRow($form->get('lockout_cookies')) ?>
+
+<h4><?= $translate('Notification') ?></h4>
+<?= $formRow($form->get('lockout_lockout_notify')) ?>
+<?= $formRow($form->get('lockout_notify_email_after')) ?>
+
+<h3><?= $translate('Lockout log') ?></h3>
+<?php if (empty($logs)): ?>
+<p><?= $translate('No log currently.') ?></p>
+<?php else:
+echo $formRow($form->get('lockout_clear_logs')) ?>
+<div class="lockout-log">
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th scope="col"><?= $translate('IP') ?></th>
+                <th scope="col"><?= $translate('Tried to log in as') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($logs as $ip => $arr): ?>
+            <tr>
+                <td class="lockout-ip"><?= $ip ?></td>
+                <td class="lockout-max">
+                <?php $next = false;
+                foreach ($arr as $user => $count):
+                    if ($next):
+                        echo ', ';
+                    else:
+                        $next = true;
+                    endif;
+                    echo $user . ' (' . sprintf($translate($translatePlural('%d lockout', '%d lockouts', $count)), $count) . ')';
+                endforeach;
+                ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>

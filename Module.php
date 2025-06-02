@@ -1,9 +1,10 @@
 <?php declare(strict_types=1);
+
 namespace Lockout;
 
 /*
  * Copyright Johan Eenfeldt, 2008-2012
- * Copyright Daniel Berthereau, 2017-2023
+ * Copyright Daniel Berthereau, 2017-2025
  *
  * Licenced under the GNU GPL:
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +25,7 @@ namespace Lockout;
 use Laminas\Mvc\Controller\AbstractController;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use Lockout\Form\Config as ConfigForm;
+use Lockout\Form\ConfigForm;
 use Omeka\Module\AbstractModule;
 
 /**
@@ -109,7 +110,7 @@ class Module extends AbstractModule
         $vars['client_type_warning'] = $clientTypeGuess != $settings->get('lockout_client_type', $defaultSettings['lockout_client_type']);
         $vars['logs'] = $settings->get('lockout_logs', []);
 
-        return $renderer->render('lockout/module/config', $vars);
+        return $renderer->render('lockout/module/config-form', $vars);
     }
 
     public function handleConfigForm(AbstractController $controller)
@@ -186,7 +187,10 @@ class Module extends AbstractModule
 
         // Not found. Did we get proxy type from option?
         // If so, try to fall back to direct address.
-        if (empty($type_name) && $type == self::PROXY_ADDR && isset($_SERVER[self::DIRECT_ADDR])) {
+        if (empty($typeName)
+            && $type == self::PROXY_ADDR
+            && isset($_SERVER[self::DIRECT_ADDR])
+        ) {
             // NOTE: Even though we fall back to direct address -- meaning you
             // can get a mostly working plugin when set to PROXY mode while in
             // fact directly connected to Internet it is not safe!
