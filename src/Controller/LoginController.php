@@ -526,12 +526,33 @@ class LoginController extends OmekaLoginController
             $body .= sprintf('IP was blocked for %s.', $when); // @translate
         }
 
-        $adminEmail = $this->settings()->get('administrator_email');
+        /**
+         * Admin email is the default sender in Omeka Mailer, but it can be
+         * replaced by a no-reply sender via module EasyAdmin.
+         *
+         * @see \Omeka\Service\MailerFactory::__invoke()
+         *
+         * @var \Omeka\Stdlib\Mailer $mailer
+         */
+
+        $settings = $this->settings();
+        $adminEmail = $settings->get('administrator_email');
+        $adminName = $settings->get('administrator_name')
+            ?: $settings->get('easyadmin_administrator_name');
+
+        $senderEmail = $settings->get('easyadmin_no_reply_email');
+        if ($senderEmail) {
+            $senderName = $settings->get('easyadmin_no_reply_name');
+        } else {
+            $senderEmail = $adminEmail;
+            $senderName = $adminName;
+        }
 
         $mailer = $this->mailer();
         $message = $mailer->createMessage();
         $message
-            ->addTo($adminEmail)
+            ->setFrom($senderEmail, (string) $senderName)
+            ->addTo($adminEmail, (string) $adminName)
             ->setSubject($subject)
             ->setBody($body);
         $mailer->send($message);
