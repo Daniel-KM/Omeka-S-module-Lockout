@@ -385,6 +385,7 @@ class LoginController extends OmekaLoginController
     {
         $now = time();
         $ip = $this->getAddress();
+        $settings = $this->settings();
         $lockouts = $settings->get('lockout_lockouts', []);
 
         $msg = 'Error: Too many failed login attempts.'; // @translate
