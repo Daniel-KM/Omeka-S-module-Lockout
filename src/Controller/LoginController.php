@@ -106,7 +106,7 @@ class LoginController extends OmekaLoginController
         $settings = $this->settings();
 
         $now = time();
-        if (is_null($lockouts)) {
+        if ($lockouts === null) {
             $lockouts = $settings->get('lockout_lockouts', []);
         }
 
@@ -119,10 +119,10 @@ class LoginController extends OmekaLoginController
         $settings->set('lockout_lockouts', $lockouts);
 
         // Remove retries that are no longer valid.
-        if (is_null($valids)) {
+        if ($valids === null) {
             $valids = $settings->get('lockout_valids', []);
         }
-        if (is_null($retries)) {
+        if ($retries === null) {
             $retries = $settings->get('lockout_retries', []);
         }
         if (!is_array($valids) || !is_array($retries)) {
@@ -269,7 +269,7 @@ class LoginController extends OmekaLoginController
      */
     protected function isIpWhitelisted($ip = null)
     {
-        if (is_null($ip)) {
+        if ($ip === null) {
             $ip = $this->getAddress();
         }
         return in_array($ip, $this->settings()->get('lockout_whitelist', []));
