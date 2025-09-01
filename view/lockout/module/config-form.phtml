@@ -40,10 +40,10 @@ $activeLockouts = count($lockouts);
 if (empty($activeLockouts)):
     echo $translate('No active lockout.');
 else:
-    echo sprintf($translate($translatePlural(
+    echo sprintf($translatePlural(
         '%d IP is currently blocked from trying to log in.',
         '%d IPs are currently blocked from trying to log in.',
-        $activeLockouts)), $activeLockouts);
+        $activeLockouts), $activeLockouts);
     echo $formRow($form->get('lockout_clear_current_lockouts'));
 endif;
 ?></p>
@@ -52,10 +52,10 @@ endif;
 if (empty($lockout_total)):
     echo $translate('No lockouts yet.');
 else:
-    echo sprintf($translate($translatePlural(
+    echo sprintf($translatePlural(
         '%d lockout since last reset.',
         '%d lockouts since last reset.',
-        $lockout_total)), $lockout_total);
+        $lockout_total), $lockout_total);
     echo $formRow($form->get('lockout_clear_total_lockouts'));
 endif;
 ?></p>
@@ -111,7 +111,7 @@ echo $formRow($form->get('lockout_clear_logs')) ?>
                     else:
                         $next = true;
                     endif;
-                    echo $user . ' (' . sprintf($translate($translatePlural('%d lockout', '%d lockouts', $count)), $count) . ')';
+                    echo $user . ' (' . sprintf($translatePlural('%d lockout', '%d lockouts', $count), $count) . ')';
                 endforeach;
                 ?></td>
             </tr>
