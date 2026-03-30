@@ -59,7 +59,7 @@ class LoginController extends OmekaLoginController
                     return $this->redirect()->toRoute('admin');
                 }
                 $this->messenger()->addError('Email or password is invalid'); // @translate
-                $this->updateLockout($validatedData['email']);
+                $this->updateLockout((string) ($validatedData['email'] ?? ''));
                 $result = $this->checkLimitLogin();
                 if ($result === false) {
                     $this->disableForm($form);
@@ -191,9 +191,34 @@ class LoginController extends OmekaLoginController
      * A note on whitelist: retries and statistics are still counted and
      * notifications done as usual, but no lockout is done.
      *
+     * Concurrent failed attempts from the same IP can race on the shared
+     * setting rows. The whole read-modify-write is wrapped in a transaction
+     * with row-level locks (SELECT ... FOR UPDATE) on the lockout settings.
+     *
      * @param string $user
      */
     protected function updateLockout($user): void
+    {
+        // Detect whether the update led to an actual lockout so that the
+        // notifications (which may contact a slow SMTP) run outside the
+        // row-level lock.
+        $triggeredLockout = false;
+        $this->withSettingsLock(
+            ['lockout_lockouts', 'lockout_valids', 'lockout_retries', 'lockout_lockouts_total'],
+            function () use ($user, &$triggeredLockout) {
+                $triggeredLockout = $this->doUpdateLockout($user);
+            }
+        );
+        if ($triggeredLockout) {
+            $this->notifyLockout($user);
+        }
+    }
+
+    /**
+     * Returns true when a lockout has just been triggered so the caller can run
+     * notifications outside the shared row lock.
+     */
+    protected function doUpdateLockout(string $user): bool
     {
         /**
          * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
@@ -205,8 +230,8 @@ class LoginController extends OmekaLoginController
 
         // If currently locked-out, do not add to retries.
         $lockouts = $settings->get('lockout_lockouts', []);
-        if (is_array($lockouts) && isset($lockouts[$ip]) && $now < $lockouts[$ip]) {
-            return;
+        if (isset($lockouts[$ip]) && $now < $lockouts[$ip]) {
+            return false;
         }
 
         // Get the arrays with retries and retries-valid information.
@@ -227,7 +252,7 @@ class LoginController extends OmekaLoginController
             // Not lockout (yet!). Do housecleaning (which also saves
             // retry/valid values).
             $this->cleanupLockout($retries, null, $valids);
-            return;
+            return false;
         }
 
         // Lockout!.
@@ -257,12 +282,12 @@ class LoginController extends OmekaLoginController
         // Do housecleaning and save values.
         $this->cleanupLockout($retries, $lockouts, $valids);
 
-        // Do any notification.
-        $this->notifyLockout($user);
-
-        // Increase statistics.
-        $total = $settings->get('lockout_lockouts_total', 0);
+        // Increase statistics. Coerce to int to recover from DB rows that might
+        // have drifted to other scalar types across upgrades.
+        $total = (int) $settings->get('lockout_lockouts_total', 0);
         $settings->set('lockout_lockouts_total', ++$total);
+
+        return true;
     }
 
     /**
@@ -289,6 +314,50 @@ class LoginController extends OmekaLoginController
     {
         $value = (int) $this->settings()->get($name);
         return $value > 0 ? $value : $default;
+    }
+
+    /**
+     * Run a callback with row-level locks on the given setting rows.
+     *
+     * Wraps the callback in a Doctrine transaction and acquires row-level locks
+     * on the listed setting rows via SELECT ... FOR UPDATE so two concurrent
+     * failed-login requests cannot race on the shared counters.
+     *
+     * The setting rows must already exist (created at install).
+     */
+    protected function withSettingsLock(array $settingNames, callable $fn): void
+    {
+        $connection = $this->entityManager->getConnection();
+
+        // Ensure every listed row exists so SELECT ... FOR UPDATE actually
+        // locks something even on a fresh install before the first set().
+        $names = array_values(array_unique($settingNames));
+        sort($names);
+        foreach ($names as $name) {
+            // Integer counters need a scalar seed; every other lockout_*
+            // setting is an array. The column is typed json_array.
+            $seed = substr($name, -6) === '_total' ? '0' : '[]';
+            $connection->executeStatement(
+                'INSERT IGNORE INTO setting (id, value) VALUES (?, ?)',
+                [$name, $seed]
+            );
+        }
+
+        $connection->beginTransaction();
+        try {
+            $placeholders = implode(',', array_fill(0, count($names), '?'));
+            $connection->executeQuery(
+                "SELECT id FROM setting WHERE id IN ($placeholders) FOR UPDATE",
+                $names
+            );
+            $fn();
+            $connection->commit();
+        } catch (\Throwable $e) {
+            if ($connection->isTransactionActive()) {
+                $connection->rollBack();
+            }
+            throw $e;
+        }
     }
 
     /**
