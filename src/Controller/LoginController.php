@@ -103,7 +103,7 @@ class LoginController extends OmekaLoginController
      * @param array $lockouts
      * @param array $valids
      */
-    protected function cleanupLockout(array $retries = null, array $lockouts = null, array $valids = null): void
+    protected function cleanupLockout(?array $retries = null, ?array $lockouts = null, ?array $valids = null): void
     {
         /**
          * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
