@@ -120,31 +120,33 @@ class LoginController extends OmekaLoginController
         $settings = $this->settings();
 
         $now = time();
+        $originalLockouts = $settings->get('lockout_lockouts', []);
         if ($lockouts === null) {
-            $lockouts = $settings->get('lockout_lockouts', []);
+            $lockouts = $originalLockouts;
         }
 
         // Remove old lockouts.
         foreach ($lockouts as $ip => $lockout) {
-            if ($lockout < $now) {
+            if ($lockout <= $now) {
                 unset($lockouts[$ip]);
             }
         }
-        $settings->set('lockout_lockouts', $lockouts);
+        if ($lockouts !== $originalLockouts) {
+            $settings->set('lockout_lockouts', $lockouts);
+        }
 
         // Remove retries that are no longer valid.
+        $originalValids = $settings->get('lockout_valids', []);
+        $originalRetries = $settings->get('lockout_retries', []);
         if ($valids === null) {
-            $valids = $settings->get('lockout_valids', []);
+            $valids = $originalValids;
         }
         if ($retries === null) {
-            $retries = $settings->get('lockout_retries', []);
-        }
-        if (!is_array($valids) || !is_array($retries)) {
-            return;
+            $retries = $originalRetries;
         }
 
         foreach ($valids as $ip => $lockout) {
-            if ($lockout < $now) {
+            if ($lockout <= $now) {
                 unset($valids[$ip]);
                 unset($retries[$ip]);
             }
@@ -157,8 +159,12 @@ class LoginController extends OmekaLoginController
             }
         }
 
-        $settings->set('lockout_valids', $valids);
-        $settings->set('lockout_retries', $retries);
+        if ($valids !== $originalValids) {
+            $settings->set('lockout_valids', $valids);
+        }
+        if ($retries !== $originalRetries) {
+            $settings->set('lockout_retries', $retries);
+        }
     }
 
     /**
@@ -166,7 +172,7 @@ class LoginController extends OmekaLoginController
      *
      * @return bool
      */
-    protected function isLockout()
+    protected function isLockout(): bool
     {
         $ip = $this->getAddress();
         // Whitelisted ips are never locked out (statistics and notifications
@@ -177,9 +183,7 @@ class LoginController extends OmekaLoginController
 
         // Lockout active?
         $lockouts = $this->settings()->get('lockout_lockouts', []);
-        return is_array($lockouts)
-            && isset($lockouts[$ip])
-            && time() < $lockouts[$ip];
+        return isset($lockouts[$ip]) && time() < $lockouts[$ip];
     }
 
     /**
@@ -216,7 +220,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function updateLockout($user): void
+    protected function updateLockout(string $user): void
     {
         // Detect whether the update led to an actual lockout so that the
         // notifications (which may contact a slow SMTP) run outside the
@@ -322,7 +326,7 @@ class LoginController extends OmekaLoginController
      * @param string $ip
      * @return bool
      */
-    protected function isIpWhitelisted($ip = null)
+    protected function isIpWhitelisted(?string $ip = null): bool
     {
         if ($ip === null) {
             $ip = $this->getAddress();
@@ -397,7 +401,7 @@ class LoginController extends OmekaLoginController
      * @param string $typeName Direct address or proxy address.
      * @return string
      */
-    protected function getAddress($typeName = '')
+    protected function getAddress(string $typeName = ''): string
     {
         $type = $typeName;
         if (empty($type)) {
@@ -459,7 +463,7 @@ class LoginController extends OmekaLoginController
     /**
      * Add a warning for the retries remaining.
      */
-    protected function warnRemainingAttempts()
+    protected function warnRemainingAttempts(): string
     {
         /**
          * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
@@ -498,7 +502,7 @@ class LoginController extends OmekaLoginController
      *
      * @return string
      */
-    protected function errorMsg()
+    protected function errorMsg(): string
     {
         $now = time();
         $ip = $this->getAddress();
@@ -546,7 +550,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function notifyLockout($user): void
+    protected function notifyLockout(string $user): void
     {
         $args = $this->settings()->get('lockout_lockout_notify', []);
         if (empty($args)) {
@@ -570,7 +574,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function notifyLog($user): void
+    protected function notifyLog(string $user): void
     {
         /**
          * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
@@ -614,7 +618,7 @@ class LoginController extends OmekaLoginController
      *
      * @param string $user
      */
-    protected function notifyEmail($user): void
+    protected function notifyEmail(string $user): void
     {
         /**
          * @var \Omeka\Mvc\Controller\Plugin\Settings $settings

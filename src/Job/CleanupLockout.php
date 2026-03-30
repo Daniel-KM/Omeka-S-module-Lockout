@@ -54,18 +54,23 @@ class CleanupLockout extends AbstractJob
         $now = time();
 
         // Lockouts.
-        $lockouts = $settings->get('lockout_lockouts', []) ?: [];
+        $originalLockouts = $settings->get('lockout_lockouts', []) ?: [];
+        $lockouts = $originalLockouts;
         $lockoutsBefore = count($lockouts);
         foreach ($lockouts as $ip => $expiry) {
             if ($expiry <= $now) {
                 unset($lockouts[$ip]);
             }
         }
-        $settings->set('lockout_lockouts', $lockouts);
+        if ($lockouts !== $originalLockouts) {
+            $settings->set('lockout_lockouts', $lockouts);
+        }
 
         // Retries / valids.
-        $valids = $settings->get('lockout_valids', []) ?: [];
-        $retries = $settings->get('lockout_retries', []) ?: [];
+        $originalValids = $settings->get('lockout_valids', []) ?: [];
+        $originalRetries = $settings->get('lockout_retries', []) ?: [];
+        $valids = $originalValids;
+        $retries = $originalRetries;
         $retriesBefore = count($retries);
         foreach ($valids as $ip => $expiry) {
             if ($expiry <= $now) {
@@ -78,12 +83,17 @@ class CleanupLockout extends AbstractJob
                 unset($retries[$ip]);
             }
         }
-        $settings->set('lockout_valids', $valids);
-        $settings->set('lockout_retries', $retries);
+        if ($valids !== $originalValids) {
+            $settings->set('lockout_valids', $valids);
+        }
+        if ($retries !== $originalRetries) {
+            $settings->set('lockout_retries', $retries);
+        }
 
         // Logs: drop entries for IPs that no longer have any active retry or
         // lockout. Bound the total size as a defensive cap.
-        $logs = $settings->get('lockout_logs', []) ?: [];
+        $originalLogs = $settings->get('lockout_logs', []) ?: [];
+        $logs = $originalLogs;
         $logsBefore = count($logs);
         foreach (array_keys($logs) as $ip) {
             if (!isset($retries[$ip]) && !isset($lockouts[$ip])) {
@@ -94,7 +104,9 @@ class CleanupLockout extends AbstractJob
         if ($maxIps > 0 && count($logs) > $maxIps) {
             $logs = array_slice($logs, -$maxIps, null, true);
         }
-        $settings->set('lockout_logs', $logs);
+        if ($logs !== $originalLogs) {
+            $settings->set('lockout_logs', $logs);
+        }
 
         $logger->info(sprintf(
             'Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d', // @translate
