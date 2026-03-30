@@ -1,0 +1,41 @@
+{
+    "name": "daniel-km/omeka-s-module-lockout",
+    "type": "omeka-s-module",
+    "description": "Module for Omeka S: Limit rate of login attempts for each IP to avoid brute-force attacks.",
+    "keywords": [
+        "Omeka S",
+        "Omeka S module",
+        "login",
+        "security",
+        "authentication"
+    ],
+    "license": "CECILL-2.1",
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/-/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "_require (not set until Omeka S merges PR #2432)": {
+        "omeka/omeka-s": "^3.0 || ^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lockout\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LockoutTest\\": "tests/LockoutTest/"
+        }
+    },
+    "extra": {
+        "installer-name": "Lockout",
+        "configurable": true
+    }
+}
