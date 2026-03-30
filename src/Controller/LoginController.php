@@ -169,8 +169,10 @@ class LoginController extends OmekaLoginController
     protected function isLockout()
     {
         $ip = $this->getAddress();
+        // Whitelisted ips are never locked out (statistics and notifications
+        // are still counted in updateLockout, but the form must stay open).
         if ($this->isIpWhitelisted($ip)) {
-            return true;
+            return false;
         }
 
         // Lockout active?
@@ -188,8 +190,15 @@ class LoginController extends OmekaLoginController
     protected function resetLockout(): void
     {
         $ip = $this->getAddress();
-        $lockouts = $this->settings()->get('lockout_lockouts', []);
-        unset($lockouts[$ip]);
+        $this->withSettingsLock(['lockout_lockouts'], function () use ($ip) {
+            $settings = $this->settings();
+            $lockouts = $settings->get('lockout_lockouts', []);
+            if (!isset($lockouts[$ip])) {
+                return;
+            }
+            unset($lockouts[$ip]);
+            $settings->set('lockout_lockouts', $lockouts);
+        });
     }
 
     /**
@@ -460,14 +469,9 @@ class LoginController extends OmekaLoginController
         $now = time();
         $ip = $this->getAddress();
 
-        $retries = $settings->get('lockout_retries');
-        $valids = $settings->get('lockout_valids');
+        $retries = $settings->get('lockout_retries', []);
+        $valids = $settings->get('lockout_valids', []);
 
-        // Should we show retries remaining?
-        // No retries at all.
-        if (!is_array($retries) || !is_array($valids)) {
-            return '';
-        }
         // No valid retries.
         if (!isset($retries[$ip]) || !isset($valids[$ip]) || $now > $valids[$ip]) {
             return '';
@@ -505,7 +509,7 @@ class LoginController extends OmekaLoginController
         $msg .= ' ';
 
         // Huh? No timeout active?
-        if (!is_array($lockouts) || !isset($lockouts[$ip]) || $now >= $lockouts[$ip]) {
+        if (!isset($lockouts[$ip]) || $now >= $lockouts[$ip]) {
             $msg .= 'Please try again later.'; // @translate
         } else {
             $when = ceil(($lockouts[$ip] - $now) / 60);
@@ -672,7 +676,7 @@ class LoginController extends OmekaLoginController
 
         $body = sprintf('%d failed login attempts (%d lockout(s)) from IP: %s.', // @translate
             $count, $lockouts, $ip) . "\r\n\r\n";
-        if (empty($user)) {
+        if (!empty($user)) {
             $body .= sprintf('Last user attempted: %s.', $user) // @translate
                 . "\r\n\r\n";
         }
