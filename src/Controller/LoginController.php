@@ -654,7 +654,16 @@ class LoginController extends OmekaLoginController
                 : sprintf('%d minutes', $time); // @translate
         }
 
-        $site = @$_SERVER['SERVER_NAME'] ?: sprintf('Server (%s)', @$_SERVER['SERVER_ADDR']); // @translate
+        $serverName = $_SERVER['SERVER_NAME'] ?? '';
+        $serverAddr = $_SERVER['SERVER_ADDR'] ?? '';
+        if ($serverName !== '') {
+            $site = $serverName;
+        } elseif ($serverAddr !== '') {
+            $site = sprintf('Server (%s)', $serverAddr); // @translate
+        } else {
+            $site = $this->settings()->get('installation_title')
+                ?: 'Omeka S'; // @translate
+        }
         if ($whitelisted) {
             $subject = sprintf('[%s] Failed login attempts from whitelisted IP.', $site); // @translate
         } else {
@@ -700,14 +709,23 @@ class LoginController extends OmekaLoginController
             $senderName = $adminName;
         }
 
-        $mailer = $this->mailer();
-        $message = $mailer->createMessage();
-        $message
-            // Use (string), not null, for quick process (avoid to parse email).
-            ->setFrom($senderEmail, (string) $senderName)
-            ->addTo($adminEmail, (string) $adminName)
-            ->setSubject($subject)
-            ->setBody($body);
-        $mailer->send($message);
+        try {
+            $mailer = $this->mailer();
+            $message = $mailer->createMessage();
+            $message
+                // Use (string), not null, for quick process (avoid email
+                // parse).
+                ->setFrom($senderEmail, (string) $senderName)
+                ->addTo($adminEmail, (string) $adminName)
+                ->setSubject($subject)
+                ->setBody($body);
+            $mailer->send($message);
+        } catch (\Throwable $e) {
+            // Notification failure must never break the login flow.
+            $this->logger()->err(sprintf(
+                'Lockout notification email failed: %s', // @translate
+                $e->getMessage()
+            ));
+        }
     }
 }
