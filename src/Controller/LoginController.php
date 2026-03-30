@@ -219,20 +219,20 @@ class LoginController extends OmekaLoginController
         } else {
             $retries[$ip] = 1;
         }
-        $valids[$ip] = $now + $settings->get('lockout_valid_duration');
+        $valids[$ip] = $now + $this->settingInt('lockout_valid_duration', 43200);
 
         // Lockout?
-        $allowedRetries = $settings->get('lockout_allowed_retries');
+        $allowedRetries = $this->settingInt('lockout_allowed_retries', 4);
         if ($retries[$ip] % $allowedRetries !== 0) {
-            // Not lockout (yet!).
-            // Do housecleaning (which also saves retry/valid values).
+            // Not lockout (yet!). Do housecleaning (which also saves
+            // retry/valid values).
             $this->cleanupLockout($retries, null, $valids);
             return;
         }
 
         // Lockout!.
         $whitelisted = $this->isIpWhitelisted($ip);
-        $retriesLong = $allowedRetries * $settings->get('lockout_allowed_lockouts');
+        $retriesLong = $allowedRetries * $this->settingInt('lockout_allowed_lockouts', 4);
 
         // Note that retries and statistics are still counted and notifications
         // done as usual for whitelisted ips , but no lockout is done.
@@ -245,12 +245,12 @@ class LoginController extends OmekaLoginController
             // Setup lockout, reset retries as needed.
             if ($retries[$ip] >= $retriesLong) {
                 // Long lockout.
-                $lockouts[$ip] = $now + $settings->get('lockout_long_duration');
+                $lockouts[$ip] = $now + $this->settingInt('lockout_long_duration', 86400);
                 unset($retries[$ip]);
                 unset($valids[$ip]);
             } else {
                 // Normal lockout.
-                $lockouts[$ip] = $now + $settings->get('lockout_lockout_duration');
+                $lockouts[$ip] = $now + $this->settingInt('lockout_lockout_duration', 1200);
             }
         }
 
@@ -277,6 +277,18 @@ class LoginController extends OmekaLoginController
             $ip = $this->getAddress();
         }
         return in_array($ip, $this->settings()->get('lockout_whitelist', []));
+    }
+
+    /**
+     * Read an integer setting with a strictly positive fallback.
+     *
+     * Lockout durations and counters are used in modulos and as time offsets; a
+     * stored 0/null would silently break the algorithm.
+     */
+    protected function settingInt(string $name, int $default): int
+    {
+        $value = (int) $this->settings()->get($name);
+        return $value > 0 ? $value : $default;
     }
 
     /**
@@ -358,14 +370,14 @@ class LoginController extends OmekaLoginController
         if (!isset($retries[$ip]) || !isset($valids[$ip]) || $now > $valids[$ip]) {
             return '';
         }
+        $allowedRetries = $this->settingInt('lockout_allowed_retries', 4);
         // Already been locked out for these retries.
-        if (($retries[$ip] % $settings->get('lockout_allowed_retries')) == 0) {
+        if (($retries[$ip] % $allowedRetries) == 0) {
             return '';
         }
 
         $remaining = max(
-            $settings->get('lockout_allowed_retries')
-                - ($retries[$ip] % $settings->get('lockout_allowed_retries')),
+            $allowedRetries - ($retries[$ip] % $allowedRetries),
             0);
 
         $message = $remaining <= 1
@@ -489,23 +501,24 @@ class LoginController extends OmekaLoginController
 
         $retries = $settings->get('lockout_retries', []);
 
+        $allowedRetries = $this->settingInt('lockout_allowed_retries', 4);
+        $notifyAfter = $this->settingInt('lockout_notify_email_after', 1);
+
         // Check if we are at the right number to do notification.
         if (isset($retries[$ip])
             && (
-                ($retries[$ip] / $settings->get('lockout_allowed_retries', 1))
-                    % $settings->get('lockout_notify_email_after', 1)
+                intdiv($retries[$ip], $allowedRetries) % $notifyAfter
             ) != 0
         ) {
             return;
         }
 
-        // Format message. First current lockout duration.
-        // Longer lockout.
+        // Format message. First current lockout duration. Longer lockout.
         if (! isset($retries[$ip])) {
-            $count = $settings->get('lockout_allowed_retries')
-                * $settings->get('lockout_allowed_lockouts');
-            $lockouts = $settings->get('lockout_allowed_lockouts');
-            $time = round($settings->get('lockout_long_duration') / 3600);
+            $allowedLockouts = $this->settingInt('lockout_allowed_lockouts', 4);
+            $count = $allowedRetries * $allowedLockouts;
+            $lockouts = $allowedLockouts;
+            $time = (int) round($this->settingInt('lockout_long_duration', 86400) / 3600);
             $when = $time <= 1
                 ? sprintf('%d hour', $time) // @translate
                 : sprintf('%d hours', $time); // @translate
@@ -513,8 +526,8 @@ class LoginController extends OmekaLoginController
         // Normal lockout.
         else {
             $count = $retries[$ip];
-            $lockouts = floor($count / $settings->get('lockout_allowed_retries'));
-            $time = round($settings->get('lockout_lockout_duration') / 60);
+            $lockouts = intdiv($count, $allowedRetries);
+            $time = (int) round($this->settingInt('lockout_lockout_duration', 1200) / 60);
             $when = $time <= 1
                 ? sprintf('%d minute', $time) // @translate
                 : sprintf('%d minutes', $time); // @translate
