@@ -268,6 +268,13 @@ class LoginController extends OmekaLoginController
         // Lockout!.
         $whitelisted = $this->isIpWhitelisted($ip);
         $retriesLong = $allowedRetries * $this->settingInt('lockout_allowed_lockouts', 4);
+        $this->logger()->notice(sprintf(
+            'Lockout: ip %s, user "%s", retries %d, whitelisted %s', // @translate
+            $ip,
+            mb_substr((string) $user, 0, 190),
+            $retries[$ip],
+            $whitelisted ? 'yes' : 'no'
+        ));
 
         // Note that retries and statistics are still counted and notifications
         // done as usual for whitelisted ips , but no lockout is done.
