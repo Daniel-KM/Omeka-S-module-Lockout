@@ -557,13 +557,32 @@ class LoginController extends OmekaLoginController
         $settings = $this->settings();
 
         $ip = $this->getAddress();
+        // Truncate to keep the serialized blob bounded against attacker-fed
+        // identifiers.
+        $user = mb_substr((string) $user, 0, 190);
 
         $logs = $settings->get('lockout_logs', []);
+        if (!is_array($logs)) {
+            $logs = [];
+        }
 
         if (isset($logs[$ip][$user])) {
             ++$logs[$ip][$user];
         } else {
             $logs[$ip][$user] = 1;
+        }
+
+        // Bound total memory: keep at most 1000 IPs and 50 distinct users per
+        // IP. Drop the entries with the lowest count first.
+        $maxIps = 1000;
+        $maxUsersPerIp = 50;
+        if (count($logs[$ip]) > $maxUsersPerIp) {
+            asort($logs[$ip]);
+            $logs[$ip] = array_slice($logs[$ip], -$maxUsersPerIp, null, true);
+        }
+        if (count($logs) > $maxIps) {
+            // Drop the oldest IPs (PHP arrays preserve insertion order).
+            $logs = array_slice($logs, -$maxIps, null, true);
         }
 
         $settings->set('lockout_logs', $logs);
