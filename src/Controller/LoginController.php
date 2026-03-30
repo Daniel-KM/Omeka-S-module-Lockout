@@ -37,12 +37,11 @@ class LoginController extends OmekaLoginController
             $form->setData($data);
             if ($form->isValid()) {
                 // Create a new session, avoiding the warning in case of error.
-                // Avoid warning:  session_regenerate_id(): Session object destruction failed. ID: user (path: /home/mdb/tmp) in /home/mdb/public_html/vendor/laminas/laminas-session/src/SessionManager.php on line 337
+                // Avoid warning: session_regenerate_id(): Session object destruction
+                // failed when session save handler has issues.
+                // See /vendor/laminas/laminas-session/src/SessionManager.php on line 337.
                 $sessionManager = Container::getDefaultManager();
-                $errorReporting = error_reporting();
-                error_reporting($errorReporting & ~E_DEPRECATED & ~E_WARNING);
-                $sessionManager->regenerateId();
-                error_reporting($errorReporting);
+                @$sessionManager->regenerateId();
                 $validatedData = $form->getData();
                 $adapter = $this->auth->getAdapter();
                 $adapter->setIdentity($validatedData['email']);
