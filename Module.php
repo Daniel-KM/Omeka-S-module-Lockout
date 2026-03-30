@@ -4,7 +4,7 @@ namespace Lockout;
 
 /*
  * Copyright Johan Eenfeldt, 2008-2012
- * Copyright Daniel Berthereau, 2017-2025
+ * Copyright Daniel Berthereau, 2017-2026
  *
  * Licenced under the GNU GPL:
  * This program is free software; you can redistribute it and/or modify
@@ -55,6 +55,13 @@ class Module extends AbstractModule
     public function uninstall(ServiceLocatorInterface $serviceLocator): void
     {
         $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'uninstall');
+    }
+
+    public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $serviceLocator): void
+    {
+        $filepath = __DIR__ . '/data/scripts/upgrade.php';
+        $services = $serviceLocator;
+        require_once $filepath;
     }
 
     protected function manageSettings($settings, $process, $key = 'config'): void
