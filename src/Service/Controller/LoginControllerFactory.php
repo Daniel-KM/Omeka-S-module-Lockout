@@ -2,9 +2,9 @@
 
 namespace Lockout\Service\Controller;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Lockout\Controller\LoginController;
+use Psr\Container\ContainerInterface;
 
 class LoginControllerFactory implements FactoryInterface
 {
