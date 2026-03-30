@@ -111,6 +111,18 @@ class ConfigForm extends Form
             ],
         ]);
 
+        $this->add([
+            'name' => 'lockout_trusted_proxies',
+            'type' => Element\Textarea::class,
+            'options' => [
+                'label' => 'Trusted reverse-proxy IPs', // @translate
+                'info' => 'Only honor X-Forwarded-For when the request comes from one of these IPs. Leave empty to ignore the header (safe default).', // @translate
+            ],
+            'attributes' => [
+                'placeholder' => 'One IP by line (ipv4 or ipv6)', // @translate
+            ],
+        ]);
+
         /*
         $this->add([
             'name' => 'lockout_cookies',

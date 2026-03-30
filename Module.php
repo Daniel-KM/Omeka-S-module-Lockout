@@ -86,6 +86,7 @@ class Module extends AbstractModule
             $data[$name] = $settings->get($name, $value);
         }
         $data['lockout_whitelist'] = implode("\n", $data['lockout_whitelist']);
+        $data['lockout_trusted_proxies'] = implode("\n", $data['lockout_trusted_proxies'] ?? []);
 
         $form->init();
         $form->setData($data);
@@ -156,6 +157,12 @@ class Module extends AbstractModule
         $params['lockout_notify_email_after'] = (int) $params['lockout_notify_email_after'];
         $params['lockout_lockout_notify'] = array_intersect($params['lockout_lockout_notify'], ['log', 'email']);
         $params['lockout_whitelist'] = array_filter(array_map('trim', explode("\n", $params['lockout_whitelist'])));
+        $params['lockout_trusted_proxies'] = array_values(array_filter(
+            array_map('trim', explode("\n", $params['lockout_trusted_proxies'] ?? '')),
+            function (string $ip): bool {
+                return $ip !== '' && filter_var($ip, FILTER_VALIDATE_IP) !== false;
+            }
+        ));
         if (!in_array($params['lockout_client_type'], [self::DIRECT_ADDR, self::PROXY_ADDR])) {
             $params['lockout_client_type'] = self::DIRECT_ADDR;
         }

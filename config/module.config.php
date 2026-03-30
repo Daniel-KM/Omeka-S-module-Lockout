@@ -33,6 +33,10 @@ return [
         'config' => [
             // Are we behind a proxy?
             'lockout_client_type' => self::DIRECT_ADDR,
+            // List of trusted reverse-proxy IPs whose X-Forwarded-For header is
+            // honored when client_type is set to PROXY_ADDR. An empty list
+            // disables proxy-header trust even in PROXY mode (safe default).
+            'lockout_trusted_proxies' => [],
 
             // Lock out after this many tries.
             'lockout_allowed_retries' => 4,

@@ -276,7 +276,7 @@ class LoginController extends OmekaLoginController
         if ($ip === null) {
             $ip = $this->getAddress();
         }
-        return in_array($ip, $this->settings()->get('lockout_whitelist', []));
+        return in_array($ip, (array) $this->settings()->get('lockout_whitelist', []), true);
     }
 
     /**
@@ -294,6 +294,11 @@ class LoginController extends OmekaLoginController
     /**
      * Get correct remote address.
      *
+     * When the proxy type is requested, the X-Forwarded-For header is only
+     * trusted if REMOTE_ADDR appears in the configured trusted proxies list.
+     * Otherwise, the direct address is used. This prevents IP spoofing when the
+     * server is directly exposed to the Internet.
+     *
      * @param string $typeName Direct address or proxy address.
      * @return string
      */
@@ -304,26 +309,37 @@ class LoginController extends OmekaLoginController
             $type = self::DIRECT_ADDR;
         }
 
+        $directAddr = $_SERVER[self::DIRECT_ADDR] ?? '';
+
+        if ($type === self::PROXY_ADDR) {
+            $trustedProxies = $this->settings()->get('lockout_trusted_proxies', []);
+            if (!is_array($trustedProxies) || !in_array($directAddr, $trustedProxies, true)) {
+                return $directAddr;
+            }
+            $forwarded = $_SERVER[self::PROXY_ADDR] ?? '';
+            if ($forwarded === '') {
+                return $directAddr;
+            }
+            // X-Forwarded-For is a comma-separated list; the leftmost
+            // non-trusted entry is the original client.
+            $chain = array_map('trim', explode(',', $forwarded));
+            foreach ($chain as $candidate) {
+                if ($candidate !== ''
+                    && filter_var($candidate, FILTER_VALIDATE_IP)
+                    && !in_array($candidate, $trustedProxies, true)
+                ) {
+                    return $candidate;
+                }
+            }
+            return $directAddr;
+        }
+
         if (isset($_SERVER[$type])) {
             return $_SERVER[$type];
         }
 
-        // Not found. Did we get proxy type from option?
-        // If so, try to fall back to direct address.
-        if (empty($typeName)
-            && $type == self::PROXY_ADDR
-            && isset($_SERVER[self::DIRECT_ADDR])
-        ) {
-            // NOTE: Even though we fall back to direct address -- meaning you
-            // can get a mostly working plugin when set to PROXY mode while in
-            // fact directly connected to Internet it is not safe!
-            //
-            // Client can itself send HTTP_X_FORWARDED_FOR header fooling us
-            // regarding which IP should be banned.
-            return $_SERVER[self::DIRECT_ADDR];
-        }
-
-        return '';
+        // Default fallback (no header for the requested type).
+        return $directAddr;
     }
 
     /**
