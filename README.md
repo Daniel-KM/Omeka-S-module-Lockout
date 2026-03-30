@@ -8,9 +8,6 @@ Lockout (module for Omeka S)
 [Lockout] is a module for [Omeka S] that limits the rate of login attempts for
 each IP (not by auth cookie) in order to avoid brute-force attacks.
 
-This module is a full rewrite of the plugin [Limit Login Attempts] for WordPress
-created by Johan Eenfeldt (johanee).
-
 
 Description
 -----------
@@ -44,25 +41,49 @@ The module uses standard actions and filters only.
 
 1. Login screen after failed login with retries remaining.
 
-  ![Login screen after failed login](https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_attempt.png)
+  ![Login screen after failed login](data/readme/lockout_attempt.png)
 
 2. Login screen during lockout.
 
-  ![Login screen during lockout](https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_blocked.png)
+  ![Login screen during lockout](data/readme/lockout_blocked.png)
 
 3. Administration interface in Omeka S
 
-  ![administration interface](https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/blob/master/data/readme/lockout_config.png)
+  ![administration interface](data/readme/lockout_config.png)
 
 
 Installation
 ------------
 
-Uncompress files in the module directory and rename module folder `Lockout`.
+This module has no dependance.
 
-Then install it like any other Omeka module and follow the config instructions.
+**Warning**: If your server is located behind a reverse proxy, make sure to set
+the option after install.
 
-If your server is located behind a reverse proxy, make sure to set the option.
+* From the zip
+
+Download the last release [Lockout.zip] from the list of releases (the master
+does not contain the dependency), and uncompress it in the `modules` directory.
+
+* From the source and for development:
+
+If the module was installed from the source, rename the name of the folder of
+the module to `Lockout`, and go to the root module, and run:
+
+```sh
+composer install --no-dev
+```
+
+See general end user documentation for [installing a module].
+
+- For test
+
+The module includes a comprehensive test suite with unit and functional tests.
+Run them from the root of Omeka:
+
+```sh
+vendor/bin/phpunit -c modules/Lockout/phpunit.xml --testdox
+```
 
 
 Frequently Asked Questions
@@ -157,8 +178,11 @@ Copyright
 ---------
 
 * Copyright Johan Eenfeldt, 2008-2012
-* Copyright Daniel Berthereau, 2017-2025
+* Copyright Daniel Berthereau, 2017-2026
 * Translations: see the [WordPress page]
+
+This module is a full rewrite of the plugin [Limit Login Attempts] for WordPress
+created by Johan Eenfeldt (johanee).
 
 Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress).
 
