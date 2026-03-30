@@ -79,6 +79,11 @@ class LoginController extends OmekaLoginController
 
     public function createPasswordAction()
     {
+        $this->cleanupLockout();
+        if ($this->isLockout()) {
+            $this->messenger()->addError($this->errorMsg());
+            return $this->redirect()->toRoute('login');
+        }
         $result = parent::createPasswordAction();
         if (is_object($result) && $result instanceof ViewModel) {
             $result->setTemplate('omeka/login/create-password');
@@ -88,6 +93,11 @@ class LoginController extends OmekaLoginController
 
     public function forgotPasswordAction()
     {
+        $this->cleanupLockout();
+        if ($this->isLockout()) {
+            $this->messenger()->addError($this->errorMsg());
+            return $this->redirect()->toRoute('login');
+        }
         $result = parent::forgotPasswordAction();
         if (is_object($result) && $result instanceof ViewModel) {
             $result->setTemplate('omeka/login/forgot-password');
