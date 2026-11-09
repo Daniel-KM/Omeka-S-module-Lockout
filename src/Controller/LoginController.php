@@ -403,10 +403,7 @@ class LoginController extends OmekaLoginController
      */
     protected function getAddress(string $typeName = ''): string
     {
-        $type = $typeName;
-        if (empty($type)) {
-            $type = self::DIRECT_ADDR;
-        }
+        $type = $typeName ?: $this->settings()->get('lockout_client_type') ?: self::DIRECT_ADDR;
 
         $directAddr = $_SERVER[self::DIRECT_ADDR] ?? '';
 
@@ -419,18 +416,20 @@ class LoginController extends OmekaLoginController
             if ($forwarded === '') {
                 return $directAddr;
             }
-            // X-Forwarded-For is a comma-separated list; the leftmost
-            // non-trusted entry is the original client.
-            $chain = array_map('trim', explode(',', $forwarded));
-            foreach ($chain as $candidate) {
-                if ($candidate !== ''
-                    && filter_var($candidate, FILTER_VALIDATE_IP)
-                    && !in_array($candidate, $trustedProxies, true)
-                ) {
-                    return $candidate;
+            // Each proxy appends the ip of its peer, so the client is the first
+            // ip from the right that is not a trusted proxy. The left part may
+            // be forged by the client.
+            $client = $directAddr;
+            foreach (array_reverse(array_map('trim', explode(',', $forwarded))) as $candidate) {
+                if (!filter_var($candidate, FILTER_VALIDATE_IP)) {
+                    break;
+                }
+                $client = $candidate;
+                if (!in_array($candidate, $trustedProxies, true)) {
+                    break;
                 }
             }
-            return $directAddr;
+            return $client;
         }
 
         if (isset($_SERVER[$type])) {
