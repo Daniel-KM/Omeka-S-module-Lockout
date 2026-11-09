@@ -72,9 +72,8 @@ endif;
 <h4><?= $translate('Site connection') ?></h4>
 <p><?= sprintf($translate('Your ip as seen by the module: %s.'), '<strong>' . $this->escapeHtml($client_ip) . '</strong>') ?></p>
 <?php if ($proxy_untrusted): ?>
-<p><strong><?= sprintf($translate('The request comes with proxy headers from %s, that is not a trusted proxy, so the headers are ignored and all visitors share the ip of the proxy. If it is the reverse proxy of the server, add it to the trusted proxies below or in the main settings.'), $this->escapeHtml($proxy_untrusted)) ?></strong></p>
+<p><strong><?= sprintf($translate('The request comes with proxy headers from %s, that is not a trusted proxy, so the headers are ignored and all visitors share the ip of the proxy. If it is the reverse proxy of the server, add it to the trusted reverse proxies of the main settings (section Security).'), $this->escapeHtml($proxy_untrusted)) ?></strong></p>
 <?php endif; ?>
-<?= $formRow($form->get('lockout_trusted_proxies')) ?>
 <?php //= $formRow($form->get('lockout_cookies')) ?>
 
 <h4><?= $translate('Notification') ?></h4>

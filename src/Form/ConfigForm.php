@@ -99,18 +99,6 @@ class ConfigForm extends Form
 
         // Site connection.
 
-        $this->add([
-            'name' => 'lockout_trusted_proxies',
-            'type' => Element\Textarea::class,
-            'options' => [
-                'label' => 'Trusted reverse proxies', // @translate
-                'info' => 'Ips or cidr ranges of the reverse proxies in front of the server, to use instead of the trusted reverse proxies of the main settings. The headers X-Forwarded-For and X-Real-IP are read only when the request comes from one of them. When both lists are empty, the headers are ignored.', // @translate
-            ],
-            'attributes' => [
-                'placeholder' => 'One ip or cidr range by line', // @translate
-            ],
-        ]);
-
         /*
         $this->add([
             'name' => 'lockout_cookies',

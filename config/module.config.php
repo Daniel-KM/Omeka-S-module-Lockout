@@ -31,10 +31,6 @@ return [
     ],
     'lockout' => [
         'config' => [
-            // Ips or cidr ranges of the trusted reverse proxies, to use instead
-            // of the main ones. When both lists are empty, the proxy headers are
-            // ignored.
-            'lockout_trusted_proxies' => [],
 
             // Lock out after this many tries.
             'lockout_allowed_retries' => 4,

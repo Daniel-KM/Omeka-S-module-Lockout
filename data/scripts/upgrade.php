@@ -11,11 +11,6 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 /** @var \Omeka\Settings\Settings $settings */
 $settings = $services->get('Omeka\Settings');
 
-// Initialize new settings introduced in 3.4.8.
-if ($settings->get('lockout_trusted_proxies') === null) {
-    $settings->set('lockout_trusted_proxies', []);
-}
-
 // The client type is replaced by the trusted proxies: the proxy headers are
 // read only when the request comes from a trusted proxy.
 $settings->delete('lockout_client_type');
@@ -42,4 +37,23 @@ foreach ($durationDefaults as $name => $default) {
 $logs = $settings->get('lockout_logs');
 if (is_array($logs) && count($logs) > 1000) {
     $settings->set('lockout_logs', array_slice($logs, -1000, null, true));
+}
+
+// The trusted proxies are managed in the main settings (module Common): merge
+// the list of the module into it.
+$moduleTrustedProxies = $settings->get('lockout_trusted_proxies');
+if ($moduleTrustedProxies !== null) {
+    $trustedProxies = array_values(array_unique(array_filter(array_merge(
+        (array) ($settings->get('trusted_proxies') ?: []),
+        is_array($moduleTrustedProxies) ? $moduleTrustedProxies : preg_split('/[\s,;]+/', (string) $moduleTrustedProxies)
+    ))));
+    $settings->set('trusted_proxies', $trustedProxies);
+    $settings->delete('lockout_trusted_proxies');
+    if ($trustedProxies) {
+        $messenger = $services->get('ControllerPluginManager')->get('messenger');
+        $messenger->addWarning(new \Omeka\Stdlib\Message(
+            'The trusted reverse proxies are now managed in the security section of the main settings and apply to all modules, including the ones that grant rights or lock out by ip. Check that each one is a reverse proxy of the server: %s.', // @translate
+            implode(', ', $trustedProxies)
+        ));
+    }
 }

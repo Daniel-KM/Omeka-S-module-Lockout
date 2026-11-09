@@ -403,9 +403,8 @@ class LoginController extends OmekaLoginController
     /**
      * Get the ip of the client, even behind a reverse proxy.
      *
-     * The trusted proxies of the module take precedence over the main ones.
      * The ip is used to lock out, so the proxy headers are ignored when no
-     * trusted proxy is set.
+     * trusted proxy is set in the main settings.
      */
     protected function getAddress(): string
     {
@@ -413,8 +412,7 @@ class LoginController extends OmekaLoginController
         if (!$this->clientIp) {
             return (string) ($_SERVER['REMOTE_ADDR'] ?? '');
         }
-        $trusted = $this->clientIp::normalizeTrustedProxies($this->settings()->get('lockout_trusted_proxies', []));
-        return $this->clientIp->getIp(null, $trusted ?: null, true);
+        return $this->clientIp->getIp(null, null, true);
     }
 
     /**
