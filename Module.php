@@ -95,10 +95,11 @@ class Module extends AbstractModule
         $form->init();
         $form->setData($data);
 
-        // Same resolution than the login controller.
-        $clientIp = $services->get('Omeka\ClientIp');
-        $trusted = $clientIp::normalizeTrustedProxies($data['lockout_trusted_proxies']);
-        $detected = $clientIp->detect(null, $trusted ?: null);
+        // Same resolution than the login controller. The service is missing
+        // while the module Common is not upgraded.
+        $clientIp = $services->has('Omeka\ClientIp') ? $services->get('Omeka\ClientIp') : null;
+        $trusted = $clientIp ? $clientIp::normalizeTrustedProxies($data['lockout_trusted_proxies']) : [];
+        $detected = $clientIp ? $clientIp->detect(null, $trusted ?: null) : ['status' => 'direct'];
 
         // Allow to display fieldsets in config form.
         $vars = [];
@@ -106,7 +107,7 @@ class Module extends AbstractModule
 
         $vars['lockout_total'] = $settings->get('lockout_lockouts_total', 0);
         $vars['lockouts'] = $settings->get('lockout_lockouts', []);
-        $vars['client_ip'] = $clientIp->getIp(null, $trusted ?: null, true);
+        $vars['client_ip'] = $clientIp ? $clientIp->getIp(null, $trusted ?: null, true) : (string) ($_SERVER['REMOTE_ADDR'] ?? '');
         $vars['proxy_untrusted'] = $detected['status'] === 'untrusted' ? $detected['peer'] : null;
         $vars['logs'] = $settings->get('lockout_logs', []);
 
@@ -156,7 +157,9 @@ class Module extends AbstractModule
         $params['lockout_notify_email_after'] = (int) $params['lockout_notify_email_after'];
         $params['lockout_lockout_notify'] = array_intersect($params['lockout_lockout_notify'], ['log', 'email']);
         $params['lockout_whitelist'] = array_filter(array_map('trim', explode("\n", $params['lockout_whitelist'])));
-        $params['lockout_trusted_proxies'] = $services->get('Omeka\ClientIp')::normalizeTrustedProxies($params['lockout_trusted_proxies'] ?? '');
+        $params['lockout_trusted_proxies'] = $services->has('Omeka\ClientIp')
+            ? $services->get('Omeka\ClientIp')::normalizeTrustedProxies($params['lockout_trusted_proxies'] ?? '')
+            : array_values(array_filter(array_map('trim', explode("\n", (string) ($params['lockout_trusted_proxies'] ?? '')))));
 
         $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
         foreach ($params as $name => $value) {

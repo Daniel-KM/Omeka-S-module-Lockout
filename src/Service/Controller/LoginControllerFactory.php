@@ -13,7 +13,8 @@ class LoginControllerFactory implements FactoryInterface
         return new LoginController(
             $services->get('Omeka\EntityManager'),
             $services->get('Omeka\AuthenticationService'),
-            $services->get('Omeka\ClientIp')
+            // Missing while the module Common is not upgraded.
+            $services->has('Omeka\ClientIp') ? $services->get('Omeka\ClientIp') : null
         );
     }
 }

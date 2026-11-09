@@ -12,7 +12,7 @@ use Omeka\Form\LoginForm;
 class LoginController extends OmekaLoginController
 {
     /**
-     * @var \Omeka\Stdlib\ClientIp|\Common\Stdlib\ClientIp
+     * @var \Omeka\Stdlib\ClientIp|\Common\Stdlib\ClientIp|null
      */
     protected $clientIp;
 
@@ -409,6 +409,10 @@ class LoginController extends OmekaLoginController
      */
     protected function getAddress(): string
     {
+        // The service is missing while the module Common is not upgraded.
+        if (!$this->clientIp) {
+            return (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+        }
         $trusted = $this->clientIp::normalizeTrustedProxies($this->settings()->get('lockout_trusted_proxies', []));
         return $this->clientIp->getIp(null, $trusted ?: null, true);
     }
