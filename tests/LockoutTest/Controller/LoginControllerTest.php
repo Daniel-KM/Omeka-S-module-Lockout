@@ -34,7 +34,7 @@ class LoginControllerTest extends AbstractHttpControllerTestCase
         'lockout_lockouts_total',
         'lockout_logs',
         'lockout_whitelist',
-        'lockout_trusted_proxies',
+        'trusted_proxies',
     ];
 
     /**
@@ -229,7 +229,7 @@ class LoginControllerTest extends AbstractHttpControllerTestCase
     public function testProxyHeaderIgnoredWithoutTrustedProxy(): void
     {
         $settings = $this->getApplication()->getServiceManager()->get('Omeka\Settings');
-        $settings->set('lockout_trusted_proxies', []);
+        $settings->set('trusted_proxies', []);
         // Lock out a fake "client" IP that comes only from the header.
         $settings->set('lockout_lockouts', ['1.2.3.4' => time() + 3600]);
 
@@ -241,5 +241,33 @@ class LoginControllerTest extends AbstractHttpControllerTestCase
         $this->assertNotQuery('input[name="email"][disabled]');
 
         unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+    }
+
+    /**
+     * Behind a trusted proxy, the client is the first ip from the right of
+     * X-Forwarded-For, so a forged left part does not lock or unlock anybody.
+     */
+    public function testProxyHeaderReadFromTheRight(): void
+    {
+        $settings = $this->getApplication()->getServiceManager()->get('Omeka\Settings');
+        $settings->set('trusted_proxies', ['127.0.0.1']);
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '1.2.3.4, 5.6.7.8';
+
+        // The forged ip is locked, but not the real client.
+        $settings->set('lockout_lockouts', ['1.2.3.4' => time() + 3600]);
+        $this->dispatch('/login');
+        $this->assertNotQuery('input[name="email"][disabled]');
+
+        // The real client is locked.
+        $this->reset();
+        $settings = $this->getApplication()->getServiceManager()->get('Omeka\Settings');
+        $settings->set('lockout_lockouts', ['5.6.7.8' => time() + 3600]);
+        $this->dispatch('/login');
+        $this->assertQuery('input[name="email"][disabled]');
+
+        unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+        $settings->set('trusted_proxies', []);
+        $settings->set('lockout_lockouts', []);
     }
 }
