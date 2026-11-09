@@ -189,7 +189,7 @@ Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress
 [Omeka S]: https://omeka.org/s
 [Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
 [Limit Login Attempts]: https://wordpress.org/plugins/limit-login-attempts
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/-/issues
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/-/work_items
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [WordPress page]: https://translate.wordpress.org/projects/wp-plugins/limit-login-attempts/contributors
 [GitLab]: https://gitlab.com/Daniel-KM
