@@ -2,6 +2,8 @@
 
 namespace Lockout\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\Session\Container;
 use Laminas\View\Model\ViewModel;
 use Omeka\Controller\LoginController as OmekaLoginController;
@@ -9,8 +11,16 @@ use Omeka\Form\LoginForm;
 
 class LoginController extends OmekaLoginController
 {
-    const DIRECT_ADDR = 'REMOTE_ADDR';
-    const PROXY_ADDR = 'HTTP_X_FORWARDED_FOR';
+    /**
+     * @var \Omeka\Stdlib\ClientIp|\Common\Stdlib\ClientIp
+     */
+    protected $clientIp;
+
+    public function __construct(EntityManager $entityManager, AuthenticationService $auth, $clientIp)
+    {
+        parent::__construct($entityManager, $auth);
+        $this->clientIp = $clientIp;
+    }
 
     /**
      * Manage the login.
@@ -391,53 +401,16 @@ class LoginController extends OmekaLoginController
     }
 
     /**
-     * Get correct remote address.
+     * Get the ip of the client, even behind a reverse proxy.
      *
-     * When the proxy type is requested, the X-Forwarded-For header is only
-     * trusted if REMOTE_ADDR appears in the configured trusted proxies list.
-     * Otherwise, the direct address is used. This prevents IP spoofing when the
-     * server is directly exposed to the Internet.
-     *
-     * @param string $typeName Direct address or proxy address.
-     * @return string
+     * The trusted proxies of the module take precedence over the main ones.
+     * The ip is used to lock out, so the proxy headers are ignored when no
+     * trusted proxy is set.
      */
-    protected function getAddress(string $typeName = ''): string
+    protected function getAddress(): string
     {
-        $type = $typeName ?: $this->settings()->get('lockout_client_type') ?: self::DIRECT_ADDR;
-
-        $directAddr = $_SERVER[self::DIRECT_ADDR] ?? '';
-
-        if ($type === self::PROXY_ADDR) {
-            $trustedProxies = $this->settings()->get('lockout_trusted_proxies', []);
-            if (!is_array($trustedProxies) || !in_array($directAddr, $trustedProxies, true)) {
-                return $directAddr;
-            }
-            $forwarded = $_SERVER[self::PROXY_ADDR] ?? '';
-            if ($forwarded === '') {
-                return $directAddr;
-            }
-            // Each proxy appends the ip of its peer, so the client is the first
-            // ip from the right that is not a trusted proxy. The left part may
-            // be forged by the client.
-            $client = $directAddr;
-            foreach (array_reverse(array_map('trim', explode(',', $forwarded))) as $candidate) {
-                if (!filter_var($candidate, FILTER_VALIDATE_IP)) {
-                    break;
-                }
-                $client = $candidate;
-                if (!in_array($candidate, $trustedProxies, true)) {
-                    break;
-                }
-            }
-            return $client;
-        }
-
-        if (isset($_SERVER[$type])) {
-            return $_SERVER[$type];
-        }
-
-        // Default fallback (no header for the requested type).
-        return $directAddr;
+        $trusted = $this->clientIp::normalizeTrustedProxies($this->settings()->get('lockout_trusted_proxies', []));
+        return $this->clientIp->getIp(null, $trusted ?: null, true);
     }
 
     /**

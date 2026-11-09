@@ -39,9 +39,6 @@ use Omeka\Module\AbstractModule;
  */
 class Module extends AbstractModule
 {
-    const DIRECT_ADDR = 'REMOTE_ADDR';
-    const PROXY_ADDR = 'HTTP_X_FORWARDED_FOR';
-
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -98,15 +95,10 @@ class Module extends AbstractModule
         $form->init();
         $form->setData($data);
 
-        $clientTypeGuess = $this->guessProxy();
-        if ($clientTypeGuess == self::DIRECT_ADDR) {
-            $clientTypeMessage = sprintf('It appears the site is reached directly (from your IP: %s).', // @translate
-                '<strong>' . $this->getAddress(self::DIRECT_ADDR) . '</strong>');
-        } else {
-            $clientTypeMessage = sprintf('It appears the site is reached through a proxy server (proxy IP: %s, your IP: %s).', // @translate
-                '<strong>' . $this->getAddress(self::PROXY_ADDR) . '</strong>',
-                '<strong>' . $this->getAddress(self::DIRECT_ADDR) . '</strong>');
-        }
+        // Same resolution than the login controller.
+        $clientIp = $services->get('Omeka\ClientIp');
+        $trusted = $clientIp::normalizeTrustedProxies($data['lockout_trusted_proxies']);
+        $detected = $clientIp->detect(null, $trusted ?: null);
 
         // Allow to display fieldsets in config form.
         $vars = [];
@@ -114,8 +106,8 @@ class Module extends AbstractModule
 
         $vars['lockout_total'] = $settings->get('lockout_lockouts_total', 0);
         $vars['lockouts'] = $settings->get('lockout_lockouts', []);
-        $vars['client_type_message'] = $clientTypeMessage;
-        $vars['client_type_warning'] = $clientTypeGuess != $settings->get('lockout_client_type', $defaultSettings['lockout_client_type']);
+        $vars['client_ip'] = $clientIp->getIp(null, $trusted ?: null, true);
+        $vars['proxy_untrusted'] = $detected['status'] === 'untrusted' ? $detected['peer'] : null;
         $vars['logs'] = $settings->get('lockout_logs', []);
 
         return $renderer->render('lockout/module/config-form', $vars);
@@ -164,15 +156,7 @@ class Module extends AbstractModule
         $params['lockout_notify_email_after'] = (int) $params['lockout_notify_email_after'];
         $params['lockout_lockout_notify'] = array_intersect($params['lockout_lockout_notify'], ['log', 'email']);
         $params['lockout_whitelist'] = array_filter(array_map('trim', explode("\n", $params['lockout_whitelist'])));
-        $params['lockout_trusted_proxies'] = array_values(array_filter(
-            array_map('trim', explode("\n", $params['lockout_trusted_proxies'] ?? '')),
-            function (string $ip): bool {
-                return $ip !== '' && filter_var($ip, FILTER_VALIDATE_IP) !== false;
-            }
-        ));
-        if (!in_array($params['lockout_client_type'], [self::DIRECT_ADDR, self::PROXY_ADDR])) {
-            $params['lockout_client_type'] = self::DIRECT_ADDR;
-        }
+        $params['lockout_trusted_proxies'] = $services->get('Omeka\ClientIp')::normalizeTrustedProxies($params['lockout_trusted_proxies'] ?? '');
 
         $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
         foreach ($params as $name => $value) {
@@ -180,50 +164,5 @@ class Module extends AbstractModule
                 $settings->set($name, $value);
             }
         }
-    }
-
-    /**
-     * Get correct remote address.
-     *
-     * @param string $typeName Direct address or proxy address.
-     * @return string
-     */
-    public function getAddress($typeName = '')
-    {
-        $type = $typeName;
-        if (empty($type)) {
-            $type = self::DIRECT_ADDR;
-        }
-
-        if (isset($_SERVER[$type])) {
-            return $_SERVER[$type];
-        }
-
-        // Not found. Did we get proxy type from option?
-        // If so, try to fall back to direct address.
-        if (empty($typeName)
-            && $type == self::PROXY_ADDR
-            && isset($_SERVER[self::DIRECT_ADDR])
-        ) {
-            // NOTE: Even though we fall back to direct address -- meaning you
-            // can get a mostly working plugin when set to PROXY mode while in
-            // fact directly connected to Internet it is not safe!
-            //
-            // Client can itself send HTTP_X_FORWARDED_FOR header fooling us
-            // regarding which IP should be banned.
-            return $_SERVER[self::DIRECT_ADDR];
-        }
-
-        return '';
-    }
-
-    /**
-     * Make a guess if we are behind a proxy or not.
-     */
-    public function guessProxy()
-    {
-        return isset($_SERVER[self::PROXY_ADDR])
-            ? self::PROXY_ADDR
-            : self::DIRECT_ADDR;
     }
 }

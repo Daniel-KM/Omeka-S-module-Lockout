@@ -4,8 +4,8 @@
  * @var \Lockout\Form\ConfigForm $form
  * @var int $lockout_total
  * @var array $lockouts
- * @var string $client_type_message
- * @var bool $client_type_warning
+ * @var string $client_ip
+ * @var string|null $proxy_untrusted
  * @var array $logs
  */
 
@@ -70,16 +70,11 @@ endif;
 <?= $formRow($form->get('lockout_whitelist')) ?>
 
 <h4><?= $translate('Site connection') ?></h4>
-<?= $client_type_message ?>
-<?= $formRow($form->get('lockout_client_type')) ?>
-<?php if ($client_type_warning): ?>
-<p>
-<strong><?= $translate('Current setting appears to be invalid.') ?></strong>
-<?= $translate('Please make sure it is correct.') ?>
-<?= sprintf(
-    $translate('Further information can be found <a href="%s" title="README">here</a>.'),
-    'https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout') ?>
+<p><?= sprintf($translate('Your ip as seen by the module: %s.'), '<strong>' . $this->escapeHtml($client_ip) . '</strong>') ?></p>
+<?php if ($proxy_untrusted): ?>
+<p><strong><?= sprintf($translate('The request comes with proxy headers from %s, that is not a trusted proxy, so the headers are ignored and all visitors share the ip of the proxy. If it is the reverse proxy of the server, add it to the trusted proxies below or in the main settings.'), $this->escapeHtml($proxy_untrusted)) ?></strong></p>
 <?php endif; ?>
+<?= $formRow($form->get('lockout_trusted_proxies')) ?>
 <?php //= $formRow($form->get('lockout_cookies')) ?>
 
 <h4><?= $translate('Notification') ?></h4>

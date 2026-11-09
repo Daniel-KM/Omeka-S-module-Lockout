@@ -12,7 +12,8 @@ class LoginControllerFactory implements FactoryInterface
     {
         return new LoginController(
             $services->get('Omeka\EntityManager'),
-            $services->get('Omeka\AuthenticationService')
+            $services->get('Omeka\AuthenticationService'),
+            $services->get('Omeka\ClientIp')
         );
     }
 }

@@ -100,26 +100,14 @@ class ConfigForm extends Form
         // Site connection.
 
         $this->add([
-            'name' => 'lockout_client_type',
-            'type' => Element\Radio::class,
-            'options' => [
-                'label' => 'Client type', // @translate
-                'value_options' => [
-                    \Lockout\Module::DIRECT_ADDR => 'Direct connection', // @translate
-                    \Lockout\Module::PROXY_ADDR => 'From behind a reverse proxy', // @translate
-                ],
-            ],
-        ]);
-
-        $this->add([
             'name' => 'lockout_trusted_proxies',
             'type' => Element\Textarea::class,
             'options' => [
-                'label' => 'Trusted reverse-proxy IPs', // @translate
-                'info' => 'Only honor X-Forwarded-For when the request comes from one of these IPs. Leave empty to ignore the header (safe default).', // @translate
+                'label' => 'Trusted reverse proxies', // @translate
+                'info' => 'Ips or cidr ranges of the reverse proxies in front of the server, to use instead of the trusted reverse proxies of the main settings. The headers X-Forwarded-For and X-Real-IP are read only when the request comes from one of them. When both lists are empty, the headers are ignored.', // @translate
             ],
             'attributes' => [
-                'placeholder' => 'One IP by line (ipv4 or ipv6)', // @translate
+                'placeholder' => 'One ip or cidr range by line', // @translate
             ],
         ]);
 

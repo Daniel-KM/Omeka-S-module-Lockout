@@ -16,6 +16,10 @@ if ($settings->get('lockout_trusted_proxies') === null) {
     $settings->set('lockout_trusted_proxies', []);
 }
 
+// The client type is replaced by the trusted proxies: the proxy headers are
+// read only when the request comes from a trusted proxy.
+$settings->delete('lockout_client_type');
+
 // Sanitize numeric settings: stored 0/null silently broke the algorithm before
 // the runtime fallbacks were added. Re-seed defaults when empty.
 $durationDefaults = [

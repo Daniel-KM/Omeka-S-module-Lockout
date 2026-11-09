@@ -31,11 +31,9 @@ return [
     ],
     'lockout' => [
         'config' => [
-            // Are we behind a proxy?
-            'lockout_client_type' => self::DIRECT_ADDR,
-            // List of trusted reverse-proxy IPs whose X-Forwarded-For header is
-            // honored when client_type is set to PROXY_ADDR. An empty list
-            // disables proxy-header trust even in PROXY mode (safe default).
+            // Ips or cidr ranges of the trusted reverse proxies, to use instead
+            // of the main ones. When both lists are empty, the proxy headers are
+            // ignored.
             'lockout_trusted_proxies' => [],
 
             // Lock out after this many tries.
