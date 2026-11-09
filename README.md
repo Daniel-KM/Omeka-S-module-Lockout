@@ -55,10 +55,11 @@ The module uses standard actions and filters only.
 Installation
 ------------
 
-This module has no dependance.
+This module requires the module [Common], that should be installed first.
 
 **Warning**: If your server is located behind a reverse proxy, make sure to set
-the option after install.
+the trusted reverse proxies after install, in the main settings (section
+Security).
 
 * From the zip
 
@@ -100,13 +101,16 @@ A reverse proxy is a server in between the site and the Internet (perhaps
 handling caching or load-balancing). This makes getting the correct client IP to
 block slightly more complicated.
 
-The option default to NOT being behind a proxy -- which should be by far the
-common case.
+The ip of the visitor is read in the headers X-Forwarded-For and X-Real-IP only
+when the request comes from a trusted reverse proxy, else anybody could write
+any ip in them to bypass the lockout or to lock out somebody else. The trusted
+proxies are set in the main settings (section Security). When the list is empty,
+the headers are ignored.
 
 ## How do I know if my site is behind a reverse proxy?
 
-You probably are not or you would know. We show a pretty good guess on the
-option page. Set the option using this unless you are sure you know better.
+The config page of the module displays your ip as seen by the module, and warns
+when proxy headers come from a server that is not a trusted proxy.
 
 ## Can I whitelist my IP so I don't get locked out?
 
@@ -168,12 +172,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-Contacts
---------
-
-* Daniel Berthereau (see [Daniel-KM] on GitLab)
-
-
 Copyright
 ---------
 
@@ -189,6 +187,7 @@ Thanks to Michael Skerwiderski for reverse proxy handling suggestions (WordPress
 
 [Lockout]: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout
 [Omeka S]: https://omeka.org/s
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
 [Limit Login Attempts]: https://wordpress.org/plugins/limit-login-attempts
 [module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout/-/issues
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
