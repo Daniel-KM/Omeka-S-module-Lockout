@@ -661,7 +661,7 @@ class LoginController extends OmekaLoginController
                 . "\r\n\r\n";
         }
         if ($whitelisted) {
-            $body .= sprintf('IP was NOT blocked because of whitelist.'); // @translate
+            $body .= sprintf('IP was not blocked because of whitelist.'); // @translate
         } else {
             $body .= sprintf('IP was blocked for %s.', $when); // @translate
         }
