@@ -131,10 +131,18 @@ class ConfigForm extends Form
             ],
         ]);
 
+        // The reset checkboxes are displayed only when there is something to
+        // reset, and an unchecked multicheckbox is not submitted. The other
+        // elements, including the csrf one added by Omeka, keep their filters.
         $inputFilter = $this->getInputFilter();
-        foreach ($this as $element) {
+        foreach ([
+            'lockout_clear_current_lockouts',
+            'lockout_clear_total_lockouts',
+            'lockout_clear_logs',
+            'lockout_lockout_notify',
+        ] as $name) {
             $inputFilter->add([
-                'name' => $element->getName(),
+                'name' => $name,
                 'required' => false,
             ]);
         }

@@ -153,7 +153,8 @@ class Module extends AbstractModule
         $params['lockout_long_duration'] = (int) $params['lockout_long_duration'];
         $params['lockout_cookies'] = (bool) $params['lockout_cookies'];
         $params['lockout_notify_email_after'] = (int) $params['lockout_notify_email_after'];
-        $params['lockout_lockout_notify'] = array_intersect($params['lockout_lockout_notify'], ['log', 'email']);
+        // An unchecked multicheckbox is not submitted.
+        $params['lockout_lockout_notify'] = array_values(array_intersect((array) ($params['lockout_lockout_notify'] ?? []), ['log', 'email']));
         $params['lockout_whitelist'] = array_filter(array_map('trim', explode("\n", $params['lockout_whitelist'])));
 
         $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];

@@ -12,6 +12,7 @@
 $plugins = $this->getHelperPluginManager();
 $translate = $plugins->get('translate');
 $formRow = $plugins->get('formRow');
+$formElement = $plugins->get('formElement');
 $translatePlural = $plugins->get('translatePlural');
 
 $this->headStyle()->appendStyle(<<<'CSS'
@@ -62,6 +63,7 @@ endif;
 
 <h3><?= $translate('Options') ?></h3>
 <h4><?= $translate('Lockout') ?></h4>
+<?= $formElement($form->get('csrf')) ?>
 <?= $formRow($form->get('lockout_allowed_retries')) ?>
 <?= $formRow($form->get('lockout_lockout_duration')) ?>
 <?= $formRow($form->get('lockout_allowed_lockouts')) ?>
