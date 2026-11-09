@@ -22,10 +22,32 @@ namespace Lockout;
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+// Common may be installed but not registered in autoloader, in particular
+// during upgrade. So dynamically register all classes of the module.
+if (!defined('COMMON_PSR4_FALLBACK')) {
+    foreach ([
+        OMEKA_PATH . '/modules/Common/src',
+        OMEKA_PATH . '/composer-addons/modules/Common/src',
+        dirname(__DIR__) . '/Common/src',
+    ] as $commonSrc) {
+        if (file_exists($commonSrc . '/TraitModule.php')) {
+            define('COMMON_PSR4_FALLBACK', $commonSrc);
+            spl_autoload_register(static function ($class): void {
+                if (str_starts_with($class, 'Common\\')) {
+                    $file = COMMON_PSR4_FALLBACK . '/' . strtr(substr($class, 7), '\\', '/') . '.php';
+                    if (file_exists($file)) {
+                        require_once $file;
+                    }
+                }
+            });
+            break;
+        }
+    }
+}
+
+use Common\TraitModule;
 use Laminas\Mvc\Controller\AbstractController;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use Lockout\Form\ConfigForm;
 use Omeka\Module\AbstractModule;
 
 /**
@@ -34,134 +56,89 @@ use Omeka\Module\AbstractModule;
  * Limit rate of login attempts for each IP to avoid brute-force attacks.
  *
  * @copyright Johan Eenfeldt, 2008-2012
- * @copyright Daniel Berthereau, 2017-2023
+ * @copyright Daniel Berthereau, 2017-2026
  * @license Gnu/Gpl v3
  */
 class Module extends AbstractModule
 {
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
+    use TraitModule;
 
-    public function install(ServiceLocatorInterface $serviceLocator): void
-    {
-        $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'install');
-    }
+    const NAMESPACE = __NAMESPACE__;
 
-    public function uninstall(ServiceLocatorInterface $serviceLocator): void
+    protected function preInstall(): void
     {
-        $this->manageSettings($serviceLocator->get('Omeka\Settings'), 'uninstall');
-    }
+        $services = $this->getServiceLocator();
+        $translator = $services->get('MvcTranslator');
 
-    public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $serviceLocator): void
-    {
-        $filepath = __DIR__ . '/data/scripts/upgrade.php';
-        $services = $serviceLocator;
-        require_once $filepath;
-    }
-
-    protected function manageSettings($settings, $process, $key = 'config'): void
-    {
-        $config = require __DIR__ . '/config/module.config.php';
-        $defaultSettings = $config[strtolower(__NAMESPACE__)][$key];
-        foreach ($defaultSettings as $name => $value) {
-            switch ($process) {
-                case 'install':
-                    $settings->set($name, $value);
-                    break;
-                case 'uninstall':
-                    $settings->delete($name);
-                    break;
-            }
+        if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.96')) {
+            $message = new \Omeka\Stdlib\Message(
+                $translator->translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+                'Common', '3.4.96'
+            );
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
         }
     }
 
+    /**
+     * Display the current lockouts and the log with the options.
+     */
     public function getConfigForm(PhpRenderer $renderer)
     {
         $services = $this->getServiceLocator();
-        $config = $services->get('Config');
         $settings = $services->get('Omeka\Settings');
-        $form = $services->get('FormElementManager')->get(ConfigForm::class);
 
-        $data = [];
-        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
-        foreach ($defaultSettings as $name => $value) {
-            $data[$name] = $settings->get($name, $value);
+        if ($this->invalidConfigForm) {
+            $form = $this->invalidConfigForm;
+        } else {
+            $this->initDataToPopulate($settings, 'config');
+            $form = $services->get('FormElementManager')->get(Form\ConfigForm::class);
+            $form->init();
+            $form->setData($this->prepareDataToPopulate($settings, 'config'));
         }
-        $data['lockout_whitelist'] = implode("\n", $data['lockout_whitelist']);
-
-        $form->init();
-        $form->setData($data);
+        $form->prepare();
 
         // Same resolution than the login controller. The service is missing
         // while the module Common is not upgraded.
         $clientIp = $services->has('Omeka\ClientIp') ? $services->get('Omeka\ClientIp') : null;
         $detected = $clientIp ? $clientIp->detect() : ['status' => 'direct'];
 
-        // Allow to display fieldsets in config form.
-        $vars = [];
-        $vars['form'] = $form;
+        $this->appendConfigApplyAsset($renderer);
 
-        $vars['lockout_total'] = $settings->get('lockout_lockouts_total', 0);
-        $vars['lockouts'] = $settings->get('lockout_lockouts', []);
-        $vars['client_ip'] = $clientIp ? $clientIp->getIp(null, null, true) : (string) ($_SERVER['REMOTE_ADDR'] ?? '');
-        $vars['proxy_untrusted'] = $detected['status'] === 'untrusted' ? $detected['peer'] : null;
-        $vars['logs'] = $settings->get('lockout_logs', []);
-
-        return $renderer->render('lockout/module/config-form', $vars);
+        return $renderer->render('lockout/module/config-form', [
+            'form' => $form,
+            'lockout_total' => $settings->get('lockout_lockouts_total', 0),
+            'lockouts' => $settings->get('lockout_lockouts', []),
+            'client_ip' => $clientIp ? $clientIp->getIp(null, null, true) : (string) ($_SERVER['REMOTE_ADDR'] ?? ''),
+            'proxy_untrusted' => $detected['status'] === 'untrusted' ? $detected['peer'] : null,
+            'logs' => $settings->get('lockout_logs', []),
+        ]);
     }
 
+    /**
+     * Save the options, then process the resets, that are not settings.
+     */
     public function handleConfigForm(AbstractController $controller)
     {
-        $services = $this->getServiceLocator();
-        $config = $services->get('Config');
-        $settings = $services->get('Omeka\Settings');
-
-        $params = $controller->getRequest()->getPost();
-
-        $form = $services->get('FormElementManager')->get(ConfigForm::class);
-        $form->init();
-        $form->setData($params);
-        if (!$form->isValid()) {
-            $controller->messenger()->addErrors($form->getMessages());
+        if (!$this->handleConfigFormAuto($controller)) {
             return false;
         }
 
-        // TODO Move the post-checks into the form.
-
-        if (!empty($params['lockout_clear_current_lockouts'])) {
-            $params['lockout_lockouts'] = [];
+        $settings = $this->getServiceLocator()->get('Omeka\Settings');
+        $post = $controller->getRequest()->getPost();
+        if (!empty($post['lockout_clear_current_lockouts'])) {
+            $settings->set('lockout_lockouts', []);
             $controller->messenger()->addSuccess('Cleared current lockouts.'); // @translate
         }
-
-        if (!empty($params['lockout_clear_total_lockouts'])) {
-            $params['lockout_lockouts_total'] = 0;
+        if (!empty($post['lockout_clear_total_lockouts'])) {
+            $settings->set('lockout_lockouts_total', 0);
             $controller->messenger()->addSuccess('Reset lockout count.'); // @translate
         }
-
-        if (!empty($params['lockout_clear_logs'])) {
-            $params['lockout_logs'] = [];
+        if (!empty($post['lockout_clear_logs'])) {
+            $settings->set('lockout_logs', []);
             $controller->messenger()->addSuccess('Cleared IP log.'); // @translate
         }
 
-        // Clean params.
-        $params['lockout_allowed_retries'] = (int) $params['lockout_allowed_retries'];
-        $params['lockout_lockout_duration'] = (int) $params['lockout_lockout_duration'];
-        $params['lockout_valid_duration'] = (int) $params['lockout_valid_duration'];
-        $params['lockout_allowed_lockouts'] = (int) $params['lockout_allowed_lockouts'];
-        $params['lockout_long_duration'] = (int) $params['lockout_long_duration'];
-        $params['lockout_cookies'] = (bool) $params['lockout_cookies'];
-        $params['lockout_notify_email_after'] = (int) $params['lockout_notify_email_after'];
-        // An unchecked multicheckbox is not submitted.
-        $params['lockout_lockout_notify'] = array_values(array_intersect((array) ($params['lockout_lockout_notify'] ?? []), ['log', 'email']));
-        $params['lockout_whitelist'] = array_filter(array_map('trim', explode("\n", $params['lockout_whitelist'])));
-
-        $defaultSettings = $config[strtolower(__NAMESPACE__)]['config'];
-        foreach ($params as $name => $value) {
-            if (array_key_exists($name, $defaultSettings)) {
-                $settings->set($name, $value);
-            }
-        }
+        $this->redirectToConfigFormOnApply($controller);
+        return true;
     }
 }

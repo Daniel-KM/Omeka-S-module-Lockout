@@ -22,7 +22,8 @@
         "forum": "https://forum.omeka.org/"
     },
     "_require (not set until Omeka S merges PR #2432)": {
-        "omeka/omeka-s": "^3.0 || ^4.0"
+        "omeka/omeka-s": "^4.0",
+        "daniel-km/omeka-s-module-common": "*"
     },
     "autoload": {
         "psr-4": {

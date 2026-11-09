@@ -291,13 +291,15 @@ class LoginController extends OmekaLoginController
         // Lockout!.
         $whitelisted = $this->isIpWhitelisted($ip);
         $retriesLong = $allowedRetries * $this->settingInt('lockout_allowed_lockouts', 4);
-        $this->logger()->notice(sprintf(
-            'Lockout: ip %s, user "%s", retries %d, whitelisted %s', // @translate
-            $ip,
-            mb_substr((string) $user, 0, 190),
-            $retries[$ip],
-            $whitelisted ? 'yes' : 'no'
-        ));
+        $this->logger()->notice(
+            'Lockout: ip {ip}, user "{user}", retries {retries}, whitelisted {whitelisted}', // @translate
+            [
+                'ip' => $ip,
+                'user' => mb_substr((string) $user, 0, 190),
+                'retries' => $retries[$ip],
+                'whitelisted' => $whitelisted ? 'yes' : 'no',
+            ]
+        );
 
         // Note that retries and statistics are still counted and notifications
         // done as usual for whitelisted ips , but no lockout is done.
@@ -664,50 +666,18 @@ class LoginController extends OmekaLoginController
             $body .= sprintf('IP was blocked for %s.', $when); // @translate
         }
 
-        /**
-         * Admin email is the default sender in Omeka Mailer, but it can be
-         * replaced by a no-reply sender via module EasyAdmin.
-         *
-         * The method $mailer->createMessage() does not allow to by-pass default
-         * options, in particular "from".
-         *
-         * @see \Omeka\Service\MailerFactory::__invoke()
-         *
-         * @var \Omeka\Stdlib\Mailer $mailer
-         * @var \Omeka\Mvc\Controller\Plugin\Settings $settings
-         *
-         * @todo Use \Common\Mvc\Controller\Plugin\SendEmail.
-         */
-
+        // The sender is the no-reply email of the module EasyAdmin, else the
+        // administrator. The spam check is skipped: the body contains the user
+        // name attempted, so an attacker could prevent the notification. A
+        // failure is logged and never breaks the login flow.
         $adminEmail = $settings->get('administrator_email');
         $adminName = $settings->get('administrator_name')
             ?: $settings->get('easyadmin_administrator_name');
-
-        $senderEmail = $settings->get('easyadmin_no_reply_email');
-        if ($senderEmail) {
-            $senderName = $settings->get('easyadmin_no_reply_name');
-        } else {
-            $senderEmail = $adminEmail;
-            $senderName = $adminName;
+        // The plugin is missing while the module Common is not upgraded.
+        if (!$this->getPluginManager()->has('sendEmail')) {
+            $this->logger()->err('Lockout notification email not sent: the module Common is not available.'); // @translate
+            return;
         }
-
-        try {
-            $mailer = $this->mailer();
-            $message = $mailer->createMessage();
-            $message
-                // Use (string), not null, for quick process (avoid email
-                // parse).
-                ->setFrom($senderEmail, (string) $senderName)
-                ->addTo($adminEmail, (string) $adminName)
-                ->setSubject($subject)
-                ->setBody($body);
-            $mailer->send($message);
-        } catch (\Throwable $e) {
-            // Notification failure must never break the login flow.
-            $this->logger()->err(sprintf(
-                'Lockout notification email failed: %s', // @translate
-                $e->getMessage()
-            ));
-        }
+        $this->sendEmail()($body, $subject, [$adminEmail => (string) $adminName], null, null, null, null, false);
     }
 }

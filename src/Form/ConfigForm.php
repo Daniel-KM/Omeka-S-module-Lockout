@@ -4,6 +4,7 @@ namespace Lockout\Form;
 
 use Laminas\Form\Element;
 use Laminas\Form\Form;
+use Omeka\Form\Element as OmekaElement;
 
 class ConfigForm extends Form
 {
@@ -48,7 +49,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_allowed_retries',
-            'type' => Element\Text::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Allowed retries', // @translate
             ],
@@ -56,7 +57,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_lockout_duration',
-            'type' => Element\Text::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Lockout duration (seconds)', // @translate
             ],
@@ -64,7 +65,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_allowed_lockouts',
-            'type' => Element\Text::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Allowed lockouts before long lockout', // @translate
             ],
@@ -72,7 +73,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_long_duration',
-            'type' => Element\Text::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Long lock out (seconds)', // @translate
             ],
@@ -80,7 +81,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_valid_duration',
-            'type' => Element\Text::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Valid duration (seconds)', // @translate
             ],
@@ -88,7 +89,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_whitelist',
-            'type' => Element\Textarea::class,
+            'type' => OmekaElement\ArrayTextarea::class,
             'options' => [
                 'label' => 'Whitelist of IPs', // @translate
             ],
@@ -125,7 +126,7 @@ class ConfigForm extends Form
 
         $this->add([
             'name' => 'lockout_notify_email_after',
-            'type' => Element\Text::class,
+            'type' => Element\Number::class,
             'options' => [
                 'label' => 'Email to admin after attempts', // @translate
             ],
@@ -139,11 +140,41 @@ class ConfigForm extends Form
             'lockout_clear_current_lockouts',
             'lockout_clear_total_lockouts',
             'lockout_clear_logs',
-            'lockout_lockout_notify',
         ] as $name) {
             $inputFilter->add([
                 'name' => $name,
                 'required' => false,
+            ]);
+        }
+        $inputFilter->add([
+            'name' => 'lockout_lockout_notify',
+            'required' => false,
+            'filters' => [
+                [
+                    'name' => \Laminas\Filter\Callback::class,
+                    'options' => [
+                        'callback' => fn ($value): array => array_values(array_intersect((array) $value, ['log', 'email'])),
+                    ],
+                ],
+            ],
+        ]);
+        foreach ([
+            'lockout_allowed_retries',
+            'lockout_lockout_duration',
+            'lockout_allowed_lockouts',
+            'lockout_long_duration',
+            'lockout_valid_duration',
+            'lockout_notify_email_after',
+        ] as $name) {
+            $inputFilter->add([
+                'name' => $name,
+                'required' => true,
+                'filters' => [
+                    ['name' => \Laminas\Filter\ToInt::class],
+                ],
+                'validators' => [
+                    ['name' => \Laminas\Validator\GreaterThan::class, 'options' => ['min' => 0]],
+                ],
             ]);
         }
     }

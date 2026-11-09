@@ -5,11 +5,23 @@ namespace Lockout;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 
 /**
+ * @var Module $this
  * @var ServiceLocatorInterface $services
  */
 
 /** @var \Omeka\Settings\Settings $settings */
 $settings = $services->get('Omeka\Settings');
+$messenger = $services->get('ControllerPluginManager')->get('messenger');
+$translator = $services->get('MvcTranslator');
+
+if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActiveVersion('Common', '3.4.96')) {
+    $message = new \Omeka\Stdlib\Message(
+        $translator->translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+        'Common', '3.4.96'
+    );
+    $messenger->addError($message);
+    throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $translator->translate('Missing requirement. Unable to upgrade.')); // @translate
+}
 
 // The client type is replaced by the trusted proxies: the proxy headers are
 // read only when the request comes from a trusted proxy.
@@ -50,7 +62,6 @@ if ($moduleTrustedProxies !== null) {
     $settings->set('trusted_proxies', $trustedProxies);
     $settings->delete('lockout_trusted_proxies');
     if ($trustedProxies) {
-        $messenger = $services->get('ControllerPluginManager')->get('messenger');
         $messenger->addWarning(new \Omeka\Stdlib\Message(
             'The trusted reverse proxies are now managed in the security section of the main settings and apply to all modules, including the ones that grant rights or lock out by ip. Check that each one is a reverse proxy of the server: %s.', // @translate
             implode(', ', $trustedProxies)
