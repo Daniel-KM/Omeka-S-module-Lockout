@@ -1,13 +1,8 @@
-# Limit Login Attempts German Translation
-# Copyright (C) 2009 Johan Eenfeldt
-# This file is distributed under the same license as the Wordpress package.
-# Johan Eenfeldt <johan.eenfeldt@kostdoktorn.se>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 11:40+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 11:43+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: German <michael@skerwiderski.de>\n"
@@ -18,287 +13,257 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d Saat"
-msgstr[1] "%d Saat"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "%1$s modülü %2$s veya daha yeni bir sürüme güncellenmelidir."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d Dakika"
-msgstr[1] "%d Dakika"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Bir gereksinim eksik. Güncelleme yapılamıyor."
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s]  Hatalı giriş denemeleri bilgisi."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s]  Hatalı giriş denemeleri bilgisi."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d başarısız giriş denemesi. Aynı IP adresi ile yapılan deneme: %s."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "Denemede kullanılan isim: %s."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "%s no'lu IP engellendi."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s]  Hatalı giriş denemeleri bilgisi."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "Lütfen daha sonra tekrar deneyin."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "Lütfen %d saat sonra tekrar deneyin."
-msgstr[1] "Lütfen %d saat sonra tekrar deneyin."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "Lütfen %d dakika sonra tekrar deneyin."
-msgstr[1] "Lütfen %d dakika sonra tekrar deneyin."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "%d kez daha giriş yapmayı deneyebilirsiniz."
-msgstr[1] "%d kez daha giriş yapmayı deneyebilirsiniz."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "Hata: Yanlış kullanıcı adı veya şifre."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr "IP"
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "İsim ve deneme sayısı"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d giriş denemesi"
-msgstr[1] "%d giriş denemesi"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "IP denemesi yapanların bilgileri silindi."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "Giriş denemeleri sayacı sıfırlandı."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "Giriş denemeleri silindi."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "Seçenekler değiştirildi"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "Sizin IP adresiniz: %s (bu IP ile site gezilebilir)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr ""
-"Proxy sunucusu kullanıyorsunuz (proxy IP: %s) %s IP adresinizle ile site "
-"gezilebilir."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "Seçenekler geçersiz."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr ""
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr ""
-"Girdilerin doğru olduğundan emin olun, daha fazla bilgi için <a href=\"%s\" "
-"title=\"README\">bakınız</a>."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Limit Login Attempts Ayarlar"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "İstatistik"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Tüm giriş denemeleri"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "Etkin kilitleme yok."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Sayacı Sıfırla"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "En son sıfırlamadan sonra gerçekleşen giriş denemesi sayısı %d."
-msgstr[1] "En son sıfırlamadan sonra gerçekleşen giriş denemesi sayısı %d."
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "Henüz giriş denemesi yok."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Aktif giriş denemesi"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Giriş denemelerini düzenleyin"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "%d no'lu IP halen engelleniyor."
-msgstr[1] "%d no'lu IP halen engelleniyor."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Tercihler"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "Giriş denemeleri"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "Müsaade edilen giriş denemesi sayınızı yazınız."
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "Dakika sonra yeniden giriş denemesi yapılabilsin."
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "Defadan fazla giriş denemesi yapılamasın."
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "(Saat içinde)"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "Sıfırlamaya kadar yapılabilecek giriş denemesi sayınızı yazınız."
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "Site bağlantınız"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "Direk bağlantı"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "Modülün gördüğü IP adresiniz: %s."
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "Bir proxy (vekil, aracı sunucu) arkasından"
-
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Çerezler kullanılarak giriş yapılabilsin"
-
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Evet"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "Hayır"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
 msgstr ""
-"Giriş denemeleri bildirilsin (Yazacağınız sayı giriş denemesini değil, her "
-"IP no'su adına ayrı bir kullanıcıyı ifade eder)"
+"İstek, güvenilir bir vekil sunucu olmayan %s kaynağından vekil sunucu "
+"başlıkları içeriyor; bu nedenle başlıklar yok sayılıyor ve tüm ziyaretçiler "
+"vekil sunucunun IP adresini paylaşıyor. Bu, sunucunun ters vekil sunucusuysa "
+"genel ayarlarda (Güvenlik bölümü) güvenilir ters vekil sunuculara ekleyin."
 
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "IP kayıtları dahil"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Bildirim"
 
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Site yöneticisi"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "giriş denemesi olduğunda e-posta ile bilgilendirilsin."
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "KAYDET"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "Giriş denemesi kayıtları"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Kayıtları Sil"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Şu anda günlük yok."
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Limit Login Attempts"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "İsim ve deneme sayısı"
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
-msgstr "Her IP için giriş deneme sayısı (çerezler dahil)."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
+msgstr ""
+"Güvenilir ters vekil sunucular artık genel ayarların Güvenlik bölümünde "
+"yönetiliyor ve IP adresine göre yetki veren veya kilitleyenler dahil tüm "
+"modüllere uygulanıyor. Her birinin sunucunun ters vekil sunucusu olduğunu "
+"doğrulayın: %s."
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "Giriş denemeleri silindi."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "Giriş denemeleri sayacı sıfırlandı."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>HATA</strong>: Çok fazla sayıda başarısız giriş denemesi."
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "IP denemesi yapanların bilgileri silindi."
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP No"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr ""
+"Lockout temizliği: kilitlemeler %d → %d, denemeler %d → %d, günlükler %d → %d"
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr ""
-#~ "<strong>NOT:</strong> Eklenti sadece Wordpress 2.7 ve daha sonrası ile "
-#~ "çalışır."
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Geçerli kilitlemeleri temizle"
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>Seçenekler geçersiz</strong>. Girdilerin doğru olduğundan emin "
-#~ "olun, daha fazla bilgi için <a href=\"%s\" title=\"FAQ\">bakınız.</a>"
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Sayacı sıfırla"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "IP günlüğünü temizle"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "İzin verilen denemeler"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Kilitleme süresi (saniye)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Uzun kilitlemeden önce izin verilen kilitlemeler"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Uzun kilitleme (saniye)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Geçerlilik süresi (saniye)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "IP adresleri beyaz listesi"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "Her satıra bir IP adresi (ipv4 veya ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr ""
+"Giriş denemeleri bildirilsin (Yazacağınız sayı giriş denemesini değil, her IP "
+"no'su adına ayrı bir kullanıcıyı ifade eder)"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "IP kayıtları dahil"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "Denemelerden sonra yöneticiye e-posta"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: ip {ip}, kullanıcı “{user}”, denemeler {retries}, beyaz liste "
+"{whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "%d deneme hakkı kaldı."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "%d deneme hakkı kaldı."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Hata: Çok fazla başarısız giriş denemesi."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "Lütfen daha sonra tekrar deneyin."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Lütfen %d saat sonra tekrar deneyin."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Lütfen %d saat sonra tekrar deneyin."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Lütfen %d dakika sonra tekrar deneyin."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Lütfen %d dakika sonra tekrar deneyin."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d saat"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d saat"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d dakika"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d dakika"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Sunucu (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s]  Hatalı giriş denemeleri bilgisi."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s]  Hatalı giriş denemeleri bilgisi."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%3$s IP adresinden %1$d başarısız giriş denemesi (%2$d kilitleme)."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "Denemede kullanılan isim: %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "IP adresi beyaz listede olduğu için engellenmedi."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "%s no'lu IP engellendi."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr "Lockout bildirim e-postası gönderilmedi: Common modülü kullanılamıyor."

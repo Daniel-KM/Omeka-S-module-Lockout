@@ -1,13 +1,8 @@
-# Limit Login Attempts German Translation
-# Copyright (C) 2009 Johan Eenfeldt
-# This file is distributed under the same license as the Wordpress package.
-# Johan Eenfeldt <johan.eenfeldt@kostdoktorn.se>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 10:50+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 11:05+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: Catalan <rbuj@wanadoo.es>\n"
@@ -18,273 +13,259 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d hora"
-msgstr[1] "%d hores"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "El mòdul %1$s s’ha d’actualitzar a la versió %2$s o posterior."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minut"
-msgstr[1] "%d minuts"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Falta un requisit. No es pot actualitzar."
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s] Massa intents d'accés fallits from whitelisted IP."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s] Massa intents d'accés fallits."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d intents d'accedir fallits (%d bloqueig(s)) de de l'IP: %s."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "Últim intent d'usuari: %s."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "La IP ha estat bloquejada per %s."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "Error: Massa intents d'accedir fallits."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "Si us plau torneu-ho a intentar més tard."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "Si us plau torneu-ho a provar d'aquí a %d hora."
-msgstr[1] "Si us plau torneu-ho a provar d'aquí a %d hores."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "Si us plau torneu-ho a provar d'aquí a %d minut."
-msgstr[1] "Si us plau torneu-ho a provar d'aquí a %d minuts."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "%d intent restant."
-msgstr[1] "%d intents restants."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "Error: Nom d'usuari o contrasenya incorrectes."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr ""
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "Heu tractat d'accedir com"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d bloqueig"
-msgstr[1] "%d bloqueigs"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "Netejat el registre IP."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "Restablir contador de bloqueig."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "Netejats els bloqueigs actuals."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "Opcions canviades"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr ""
-"Pel que sembla, al lloc s'arriba directament (a partir de la vostra IP: %s)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr ""
-"Pel que sembla, al lloc s'arriba a través d'un servidor intermediari (proxy "
-"IP: %s, la vostra IP: %s)."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "La configuració actual sembla ser incorrecta."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr "Si us plau, assegureu-vos que és correcta."
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr "Podeu trobar més informació <a href=\"%s\" title=\"README\">aquí</a>."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Preferències del límit d'intents d'identificació"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "Estadístiques"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Bloqueigs totals"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "No hi ha cap bloqueig actiu."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Restablir contador"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "%d bloqueig des de l'ultim restabliment."
-msgstr[1] "%d bloqueigs des de l'ultim restabliment."
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "Encara sense bloqueigs"
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Bloqueigs actius"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Restablir bloqueigs"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "La IP %d actualment està bloquejada al tractar d'iniciar la sessió."
-msgstr[1] "La IP %d actualment està bloquejada al tractar d'iniciar la sessió."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Opcions"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "Bloqueig"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "reintents permesos"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "minuts a bloquejar"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "bloqueigs incrementen el temps a"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "hores"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "hores fins que es restableixen els reintents"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "Lloc de connexió"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "Connexió directa"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "La vostra adreça IP vista pel mòdul: %s."
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "Des de darrere d'un proxy reverse"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"La sol·licitud inclou capçaleres de servidor intermediari procedents de %s, "
+"que no és un servidor intermediari de confiança; per tant, s’ignoren i tots "
+"els visitants comparteixen l’adreça IP del servidor intermediari. Si és el "
+"servidor intermediari invers del servidor, afegiu-lo als servidors "
+"intermediaris inversos de confiança a la configuració general (secció "
+"Seguretat)."
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Manejar galletes d'identificació"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Notificació"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Si"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "No"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "Notificar al bloquejar"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "Registre IP"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Enviar després un correu a l'administrador"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "Bloqueigs"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "Canviar opcions"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "Registre de bloqueigs"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Netejar registre"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Actualment no hi ha registres."
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Límit d'intents d'identificació"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "Heu tractat d'accedir com"
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
-"Limitar la taxa d'intents d'accés, per mitjà de galetes, per a cada IP."
+"Els servidors intermediaris inversos de confiança es gestionen ara a la "
+"secció Seguretat de la configuració general i s’apliquen a tots els mòduls, "
+"inclosos els que concedeixen drets o bloquegen per adreça IP. Comproveu que "
+"cadascun sigui un servidor intermediari invers del servidor: %s."
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "Netejats els bloqueigs actuals."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "Restablir contador de bloqueig."
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP|Adreça d'internet"
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "Netejat el registre IP."
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr ""
-#~ "<strong>NOTA:</strong> Només funciona amb Wordpress 2.7 i posteriors"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr ""
+"Neteja de Lockout: bloquejos %d → %d, intents %d → %d, registres %d → %d"
+
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Elimina els bloquejos actuals"
+
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Reinicia el comptador"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "Buida el registre d’IP"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "Intents permesos"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Durada del bloqueig (segons)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Bloquejos permesos abans d’un bloqueig llarg"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Bloqueig llarg (segons)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Durada de validesa (segons)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "Llista blanca d’adreces IP"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "Una adreça IP per línia (ipv4 o ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "Notificar al bloquejar"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "Registre IP"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "Correu a l’administrador després dels intents"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: ip {ip}, usuari «{user}», intents {retries}, llista blanca "
+"{whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "Queda %d intent."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "Queden %d intents."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Error: Massa intents d'accedir fallits."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "Si us plau torneu-ho a intentar més tard."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Torneu-ho a provar d’aquí a %d hora."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Torneu-ho a provar d’aquí a %d hores."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Torneu-ho a provar d’aquí a %d minut."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Torneu-ho a provar d’aquí a %d minuts."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d hora"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d hores"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d minut"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d minuts"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Servidor (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] Massa intents d'accés fallits from whitelisted IP."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] Massa intents d'accés fallits."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d intents d'accedir fallits (%d bloqueig(s)) de de l'IP: %s."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "Últim intent d'usuari: %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "L’adreça IP no s’ha bloquejat perquè és a la llista blanca."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "La IP ha estat bloquejada per %s."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr ""
+"No s’ha enviat el correu de notificació de Lockout: el mòdul Common no està "
+"disponible."

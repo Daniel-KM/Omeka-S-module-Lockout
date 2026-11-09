@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-26 00:00+0000\n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,244 +17,245 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: view/lockout/module/config.phtml:21
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr ""
+
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr ""
+
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr ""
 
-#: view/lockout/module/config.phtml:26
+#: view/lockout/module/config-form.phtml:42
 msgid "No active lockout."
 msgstr ""
 
-#: view/lockout/module/config.phtml:38
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr ""
 
-#: view/lockout/module/config.phtml:49
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr ""
 
-#: view/lockout/module/config.phtml:57
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr ""
 
-#: view/lockout/module/config.phtml:62
-msgid "Current setting appears to be invalid."
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
 msgstr ""
 
-#: view/lockout/module/config.phtml:63
-msgid "Please make sure it is correct."
-msgstr ""
-
-#: view/lockout/module/config.phtml:65
+#: view/lockout/module/config-form.phtml:77
 #, php-format
 msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
+"The request comes with proxy headers from %s, that is not a trusted proxy, "
+"so the headers are ignored and all visitors share the ip of the proxy. If it "
+"is the reverse proxy of the server, add it to the trusted reverse proxies of "
+"the main settings (section Security)."
 msgstr ""
 
-#: view/lockout/module/config.phtml:70
+#: view/lockout/module/config-form.phtml:81
 msgid "Notification"
 msgstr ""
 
-#: view/lockout/module/config.phtml:74
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr ""
 
-#: view/lockout/module/config.phtml:76
+#: view/lockout/module/config-form.phtml:87
 msgid "No log currently."
 msgstr ""
 
-#: view/lockout/module/config.phtml:83
+#: view/lockout/module/config-form.phtml:94
 msgid "IP"
 msgstr ""
 
-#: view/lockout/module/config.phtml:84
+#: view/lockout/module/config-form.phtml:95
 msgid "Tried to log in as"
 msgstr ""
 
-#: Module.php:94
-#, php-format
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr ""
-
-#: Module.php:97
+#: data/scripts/upgrade.php:66
 #, php-format
 msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
 
-#: Module.php:135
+#: Module.php:130
 msgid "Cleared current lockouts."
 msgstr ""
 
-#: Module.php:140
+#: Module.php:134
 msgid "Reset lockout count."
 msgstr ""
 
-#: Module.php:145
+#: Module.php:138
 msgid "Cleared IP log."
 msgstr ""
 
-#: src/Form/Config.php:16
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr ""
+
+#: src/Form/ConfigForm.php:19
 msgid "Clear current lockouts"
 msgstr ""
 
-#: src/Form/Config.php:27
+#: src/Form/ConfigForm.php:30
 msgid "Reset counter"
 msgstr ""
 
-#: src/Form/Config.php:38
+#: src/Form/ConfigForm.php:41
 msgid "Clear IP log"
 msgstr ""
 
-#: src/Form/Config.php:51
+#: src/Form/ConfigForm.php:54
 msgid "Allowed retries"
 msgstr ""
 
-#: src/Form/Config.php:59
+#: src/Form/ConfigForm.php:62
 msgid "Lockout duration (seconds)"
 msgstr ""
 
-#: src/Form/Config.php:67
+#: src/Form/ConfigForm.php:70
 msgid "Allowed lockouts before long lockout"
 msgstr ""
 
-#: src/Form/Config.php:75
+#: src/Form/ConfigForm.php:78
 msgid "Long lock out (seconds)"
 msgstr ""
 
-#: src/Form/Config.php:83
+#: src/Form/ConfigForm.php:86
 msgid "Valid duration (seconds)"
 msgstr ""
 
-#: src/Form/Config.php:91
+#: src/Form/ConfigForm.php:94
 msgid "Whitelist of IPs"
 msgstr ""
 
-#: src/Form/Config.php:94
+#: src/Form/ConfigForm.php:97
 msgid "One IP by line (ipv4 or ipv6)"
 msgstr ""
 
-#: src/Form/Config.php:104
-msgid "Client type"
-msgstr ""
-
-#: src/Form/Config.php:106
-msgid "Direct connection"
-msgstr ""
-
-#: src/Form/Config.php:107
-msgid "From behind a reverse proxy"
-msgstr ""
-
-#: src/Form/Config.php:128
+#: src/Form/ConfigForm.php:119
 msgid "Notify on lockout"
 msgstr ""
 
-#: src/Form/Config.php:130
+#: src/Form/ConfigForm.php:121
 msgid "Log IP"
 msgstr ""
 
-#: src/Form/Config.php:140
+#: src/Form/ConfigForm.php:131
 msgid "Email to admin after attempts"
 msgstr ""
 
-#: src/Controller/LoginController.php:371
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+
+#: src/Controller/LoginController.php:470
 #, php-format
 msgid "%d attempt remaining."
 msgstr ""
 
-#: src/Controller/LoginController.php:372
+#: src/Controller/LoginController.php:471
 #, php-format
 msgid "%d attempts remaining."
 msgstr ""
 
-#: src/Controller/LoginController.php:388
+#: src/Controller/LoginController.php:488
 msgid "Error: Too many failed login attempts."
 msgstr ""
 
-#: src/Controller/LoginController.php:393
+#: src/Controller/LoginController.php:493
 msgid "Please try again later."
 msgstr ""
 
-#: src/Controller/LoginController.php:399
+#: src/Controller/LoginController.php:499
 #, php-format
 msgid "Please try again in %d hour."
 msgstr ""
 
-#: src/Controller/LoginController.php:400
+#: src/Controller/LoginController.php:500
 #, php-format
 msgid "Please try again in %d hours."
 msgstr ""
 
-#: src/Controller/LoginController.php:403
+#: src/Controller/LoginController.php:503
 #, php-format
 msgid "Please try again in %d minute."
 msgstr ""
 
-#: src/Controller/LoginController.php:404
+#: src/Controller/LoginController.php:504
 #, php-format
 msgid "Please try again in %d minutes."
 msgstr ""
 
-#: src/Controller/LoginController.php:497
+#: src/Controller/LoginController.php:628
 #, php-format
 msgid "%d hour"
 msgstr ""
 
-#: src/Controller/LoginController.php:498
+#: src/Controller/LoginController.php:629
 #, php-format
 msgid "%d hours"
 msgstr ""
 
-#: src/Controller/LoginController.php:506
+#: src/Controller/LoginController.php:637
 #, php-format
 msgid "%d minute"
 msgstr ""
 
-#: src/Controller/LoginController.php:507
+#: src/Controller/LoginController.php:638
 #, php-format
 msgid "%d minutes"
 msgstr ""
 
-#: src/Controller/LoginController.php:510
-msgid "SERVER_ADDR"
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
 msgstr ""
 
-#: src/Controller/LoginController.php:512
+#: src/Controller/LoginController.php:652
 #, php-format
 msgid "[%s] Failed login attempts from whitelisted IP."
 msgstr ""
 
-#: src/Controller/LoginController.php:514
+#: src/Controller/LoginController.php:654
 #, php-format
 msgid "[%s] Too many failed login attempts."
 msgstr ""
 
-#: src/Controller/LoginController.php:517
+#: src/Controller/LoginController.php:657
 #, php-format
 msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
 msgstr ""
 
-#: src/Controller/LoginController.php:520
+#: src/Controller/LoginController.php:660
 #, php-format
 msgid "Last user attempted: %s."
 msgstr ""
 
-#: src/Controller/LoginController.php:524
-msgid "IP was NOT blocked because of whitelist."
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
 msgstr ""
 
-#: src/Controller/LoginController.php:526
+#: src/Controller/LoginController.php:666
 #, php-format
 msgid "IP was blocked for %s."
 msgstr ""
 
-#: src/Controller/LoginController.php:590
-#: src/Controller/LoginController.php:602
-msgid "Too many retries."
-msgstr ""
-
-#: src/Controller/LoginController.php:767
-msgid "<strong>ERROR</strong>: Incorrect username or password."
+#: src/Controller/LoginController.php:678
+msgid ""
+"Lockout notification email not sent: the module Common is not available."
 msgstr ""

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 11:07+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: mostafa.s1990@gmail.com\n"
@@ -16,288 +16,252 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: limit-login-attempts.php:522
-#, fuzzy
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "ساعت"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "ماژول %1$s باید به نسخه %2$s یا بالاتر به‌روزرسانی شود."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] ""
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "یک پیش‌نیاز موجود نیست. به‌روزرسانی ممکن نیست."
 
-#: limit-login-attempts.php:534
-#, fuzzy
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s]  حملات زیاد برای ورود ناموفق"
-
-#: limit-login-attempts.php:538
-#, fuzzy
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s]  حملات زیاد برای ورود ناموفق"
-
-#: limit-login-attempts.php:543
-#, fuzzy
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d حملات ورود ناموفق  (%d تحریم(s)) از آی پی: %s"
-
-#: limit-login-attempts.php:547
-#, fuzzy
-msgid "Last user attempted: %s."
-msgstr "آخرین حملات کاربر: %s"
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-#, fuzzy
-msgid "IP was blocked for %s."
-msgstr "آی پی شما برای %s قفل شده است"
-
-#: limit-login-attempts.php:615
-#, fuzzy
-msgid "Error: Too many failed login attempts."
-msgstr "[%s]  حملات زیاد برای ورود ناموفق"
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "لطفا بعدا امتحان کنید."
-
-#: limit-login-attempts.php:626
-#, fuzzy
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "لطفا بعدا امتحان کنید."
-
-#: limit-login-attempts.php:628
-#, fuzzy
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "لطفا بعدا امتحان کنید."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] ""
-
-#: limit-login-attempts.php:728
-#, fuzzy
-msgid "Error: Incorrect username or password."
-msgstr "<strong>خطا</strong>: نام کاربری یا رمز عبور اشتباه است."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr ""
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "برای ورود سعی کنید"
-
-#: limit-login-attempts.php:901
-#, fuzzy
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "تحریم"
-
-#: limit-login-attempts.php:930
-#, fuzzy
-msgid "Cleared IP log."
-msgstr "گزارش آی پی ها پاک شده"
-
-#: limit-login-attempts.php:938
-#, fuzzy
-msgid "Reset lockout count."
-msgstr "ریست کردن تعداد بن شدگان"
-
-#: limit-login-attempts.php:946
-#, fuzzy
-msgid "Cleared current lockouts."
-msgstr "پاک کردن تعداد بن شدگان"
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "تنظیمات ذخیره شد"
-
-#: limit-login-attempts.php:993
-#, fuzzy
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "به نظر میرسد این سایت از یک پروکسی سرور رسیده است (از آی پی شما: %s)"
-
-#: limit-login-attempts.php:995
-#, fuzzy
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr "به نظر میرسد این سایت از یک پروکسی سرور رسیده است (از آی پی شما: %s)"
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr ""
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr ""
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr ""
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "تنظیمات محافظت از حملات ورودی"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "وضعیت"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "کل تحریم ها"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "هیچ مسدودسازی فعالی وجود ندارد."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "ریست کردن شمارنده"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] ""
-
-#: limit-login-attempts.php:1022
-#, fuzzy
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
-msgstr "هم اکنون کاربر تحریمی وجود ندارد"
+msgstr "هنوز هیچ مسدودسازی‌ای وجود ندارد."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "فعال کردن تحریم ها"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "بازگردانی تحریمی ها"
-
-#: limit-login-attempts.php:1030
-#, fuzzy
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "در حال حاظر آی پی شما %d برای ورود به سایت مسدود شده است"
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "تنظیمات"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "تحریم"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "اجازه retries"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "دقیقه تحریم"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "افزایش زمان تحریم برای بن شدگان"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "ساعت"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "ریست کردن ساعت بازنشانی ها"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "اتصال سایت"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "هدایت اتصال"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "نشانی IP شما از دید ماژول: %s."
 
-#: limit-login-attempts.php:1061
-#, fuzzy
-msgid "From behind a reverse proxy"
-msgstr "از قبل با پروکسی استفاده شده است"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"درخواست دارای سرآیندهای پراکسی از %s است که پراکسی مورد اعتماد نیست؛ بنابراین "
+"سرآیندها نادیده گرفته می‌شوند و همه بازدیدکنندگان نشانی IP پراکسی را به اشتراک "
+"می‌گذارند. اگر این پراکسی معکوس سرور است، آن را در تنظیمات عمومی (بخش امنیت) "
+"به پراکسی‌های معکوس مورد اعتماد اضافه کنید."
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "به کار گرفتن کوکی ها برای ورود"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "اعلان"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "بله"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "خیر"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "آگاهی از تحریم"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "گزارش آی پی"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "رایانامه به مدیر"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "تحریم"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "ذخیره تغییرات"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "گزارش تحریم"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "پاک کردن گزارش"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "در حال حاضر گزارشی وجود ندارد."
 
-#. Plugin Name of the plugin/theme
-#, fuzzy
-msgid "Limit Login Attempts"
-msgstr "تنظیمات محافظت از حملات ورودی"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "برای ورود سعی کنید"
+
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
+"پراکسی‌های معکوس مورد اعتماد اکنون در بخش امنیت تنظیمات عمومی مدیریت می‌شوند و "
+"برای همه ماژول‌ها اعمال می‌شوند، از جمله ماژول‌هایی که بر اساس نشانی IP دسترسی "
+"می‌دهند یا مسدود می‌کنند. بررسی کنید که هر یک پراکسی معکوس سرور باشد: %s."
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "مسدودسازی‌های فعلی پاک شدند."
+
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "شمارنده مسدودسازی بازنشانی شد."
+
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "گزارش IP پاک شد."
+
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr "پاک‌سازی Lockout: مسدودسازی‌ها %d → %d، تلاش‌ها %d → %d، گزارش‌ها %d → %d"
+
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "پاک کردن مسدودسازی‌های فعلی"
+
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "بازنشانی شمارنده"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "پاک کردن گزارش IP"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "تلاش‌های مجاز"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "مدت مسدودسازی (ثانیه)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "مسدودسازی‌های مجاز پیش از مسدودسازی طولانی"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "مسدودسازی طولانی (ثانیه)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "مدت اعتبار (ثانیه)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "فهرست سفید نشانی‌های IP"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "در هر خط یک نشانی IP (ipv4 یا ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "آگاهی از تحریم"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "گزارش آی پی"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "ایمیل به مدیر پس از تلاش‌ها"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
 msgstr ""
+"Lockout: ip {ip}، کاربر «{user}»، تلاش‌ها {retries}، فهرست سفید {whitelisted}"
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr ""
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "%d تلاش باقی مانده است."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr ""
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "%d تلاش باقی مانده است."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>خطا</strong>: تلاش نا موفق برای ورود به سایت."
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "خطا: تلاش‌های ناموفق برای ورود بیش از حد مجاز است."
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr "<strong>نکته:</strong> فقط در وردپرس 2.7 یا بالاتر"
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "لطفا بعدا امتحان کنید."
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>تنظیمات فعلی معتبر نیست</strong>لطفا درستی را چک کنید. اطلاعات "
-#~ "تکمیلی میتواند در بر داشته باشد در <a href=\"%s\" title=\"FAQ\">اینجا</a>"
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "لطفاً %d ساعت دیگر دوباره تلاش کنید."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "لطفاً %d ساعت دیگر دوباره تلاش کنید."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "لطفاً %d دقیقه دیگر دوباره تلاش کنید."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "لطفاً %d دقیقه دیگر دوباره تلاش کنید."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d ساعت"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d ساعت"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d دقیقه"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d دقیقه"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "سرور (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] تلاش‌های ناموفق برای ورود از یک IP در فهرست سفید."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] تلاش‌های ناموفق برای ورود بیش از حد مجاز است."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d تلاش ناموفق برای ورود (%d مسدودسازی) از IP: %s."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "آخرین کاربر تلاش‌کننده: %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "نشانی IP به دلیل وجود در فهرست سفید مسدود نشد."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "IP به مدت %s مسدود شد."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr "ایمیل اعلان Lockout ارسال نشد: ماژول Common در دسترس نیست."

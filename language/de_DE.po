@@ -1,13 +1,8 @@
-# Limit Login Attempts German Translation
-# Copyright (C) 2009 Johan Eenfeldt
-# This file is distributed under the same license as the Wordpress package.
-# Johan Eenfeldt <johan.eenfeldt@kostdoktorn.se>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 10:56+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 11:04+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: German <michael@skerwiderski.de>\n"
@@ -18,288 +13,258 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d Stunde"
-msgstr[1] "%d Stunden"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "Das Modul %1$s muss auf Version %2$s oder höher aktualisiert werden."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d Minute"
-msgstr[1] "%d Minuten"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Fehlende Voraussetzung. Aktualisierung nicht möglich."
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s] Zu viele ungültige Anmeldeversuche from whitelisted IP."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s] Zu viele ungültige Anmeldeversuche."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d ungültige Anmeldeversuche (%d Sperrung(en)) von IP: %s."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "Letzter Anmeldeversuch erfolgte mit dem Benutzernamen: %s."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "IP wurde gesperrt für %s."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s] Zu viele ungültige Anmeldeversuche."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "Bitte versuchen Sie es sp&auml;ter noch einmal."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "Bitte versuchen Sie es in %d Stunde noch einmal."
-msgstr[1] "Bitte versuchen Sie es in %d Stunden noch einmal."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "Bitte versuchen Sie es in %d Minute noch einmal."
-msgstr[1] "Bitte versuchen Sie es in %d Minuten noch einmal."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "Es ist noch %d Anmeldeversuch m&ouml;glich."
-msgstr[1] "Es sind noch <strong>%d</strong> Anmeldeversuche m&ouml;glich."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "Fehler: Ung&uuml;ltiger Benutzername oder Passwort."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr ""
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "Anmeldeversuch als"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d Sperrung"
-msgstr[1] "%d Sperrungen"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "Protokoll wurde gel&ouml;scht."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "Anzahl Sperrungen zur&uuml;cksetzen."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "Sperrungen wurden deaktiviert."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "Einstellungen wurden ge&auml;ndert"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr ""
-"Der Zugriff auf diese Webseite erfolgt auf direktem Weg (von Ihrer IP: %s)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr ""
-"Der Zugriff auf diese Webseite erfolgt über einen Proxy Server (IP des Proxy "
-"Servers: %s, Ihre IP: %s)."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr ""
-"Die aktuellen Einstellungen sind u.U. nicht korrekt, bzw. nicht konsistent."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr ""
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr ""
-" Weitere Infos zu den Einstellungen finden Sie <a href=\"%s\" title=\"README"
-"\">hier</a>."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Limit Login Attempts Einstellungen"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "Statistik"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Bisher vorgenommene Sperrungen"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "Keine aktive Sperre."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Z&auml;hler zur&uuml;cksetzen"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "%d Sperrung seit letztem Zur&uuml;cksetzen."
-msgstr[1] "%d Sperrungen seit letztem Zur&uuml;cksetzen."
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "Derzeit sind keine Sperrungen aktiv."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Aktive Sperrungen"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Sperrungen aufheben"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "%d IP ist derzeit f&uuml;r Anmeldeversuche gesperrt."
-msgstr[1] "%d IP ist derzeit f&uuml;r Anmeldeversuche gesperrt."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Einstellungen"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "Sperrung"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "erlaubte Anmeldeversuche"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr ""
-"Minuten Sperrung nach &Uuml;berschreiten der zul&auml;ssigen Anmeldeversuche"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "Sperrungen erh&ouml;hen die insgesamte Sperrzeit um"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "Stunden"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "Stunden bis fehlgeschlagene Anmeldeversuche zur&uuml;ckgesetzt werden"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "Verbindungsweg zu dieser Webseite"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "Direkte Verbindung"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "Ihre IP-Adresse, wie sie das Modul sieht: %s."
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "&Uuml;ber einen Reverse Proxy Server"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"Die Anfrage enthält Proxy-Header von %s, das kein vertrauenswürdiger Proxy "
+"ist. Die Header werden daher ignoriert und alle Besucher teilen sich die IP-"
+"Adresse des Proxys. Wenn es der Reverse-Proxy des Servers ist, fügen Sie ihn "
+"in den allgemeinen Einstellungen (Abschnitt Sicherheit) zu den "
+"vertrauenswürdigen Reverse-Proxys hinzu."
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Anmeldungen via Cockies ber&uuml;cksichtigen"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Benachrichtigung"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Ja"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "Nein"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "Benachrichtigung im Falle einer Sperrung"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "IP protokollieren"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Email an den Administrator nach"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "Sperrungen"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "Einstellungen speichern"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "Protokoll der durchgef&uuml;hrten Sperrungen"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Protokoll zur&uuml;cksetzen"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Derzeit kein Protokoll."
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Limit Login Attempts"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "Anmeldeversuch als"
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
-"Limit rate of login attempts, including by way of cookies, for each IP."
+"Die vertrauenswürdigen Reverse-Proxys werden jetzt im Abschnitt Sicherheit "
+"der allgemeinen Einstellungen verwaltet und gelten für alle Module, auch für "
+"jene, die Rechte nach IP-Adresse vergeben oder sperren. Prüfen Sie, ob jeder "
+"davon ein Reverse-Proxy des Servers ist: %s."
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "Sperrungen wurden deaktiviert."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "Anzahl Sperrungen zur&uuml;cksetzen."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>FEHLER</strong>: Zuviele ung&uuml;ltige Anmeldeversuche."
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "Protokoll wurde gel&ouml;scht."
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr ""
+"Lockout-Bereinigung: Sperren %d → %d, Versuche %d → %d, Protokolle %d → %d"
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr "<strong>Hinweis:</strong> Erst ab Wordpress 2.7 verwendbar"
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Aktuelle Sperren aufheben"
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>Die aktuellen Einstellungen sind u.U. nicht korrekt, bzw. nicht "
-#~ "konsistent</strong>. Weitere Infos zu den Einstellungen finden Sie <a "
-#~ "href=\"%s\" title=\"FAQ\">hier</a>"
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Zähler zurücksetzen"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "IP-Protokoll löschen"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "Erlaubte Versuche"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Sperrdauer (Sekunden)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Erlaubte Sperren vor einer langen Sperre"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Lange Sperre (Sekunden)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Gültigkeitsdauer (Sekunden)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "Positivliste der IP-Adressen"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "Eine IP-Adresse pro Zeile (IPv4 oder IPv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "Benachrichtigung im Falle einer Sperrung"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "IP protokollieren"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "E-Mail an den Administrator nach Versuchen"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: IP {ip}, Benutzer „{user}“, Versuche {retries}, Positivliste "
+"{whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "%d Versuch verbleibend."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "%d Versuche verbleibend."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Fehler: Zu viele ungültige Anmeldeversuche."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "Bitte versuchen Sie es sp&auml;ter noch einmal."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Bitte versuchen Sie es in %d Stunde erneut."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Bitte versuchen Sie es in %d Stunden erneut."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Bitte versuchen Sie es in %d Minute erneut."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Bitte versuchen Sie es in %d Minuten erneut."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d Stunde"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d Stunden"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d Minute"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d Minuten"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Server (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] Zu viele ungültige Anmeldeversuche from whitelisted IP."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] Zu viele ungültige Anmeldeversuche."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d ungültige Anmeldeversuche (%d Sperrung(en)) von IP: %s."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "Letzter Anmeldeversuch erfolgte mit dem Benutzernamen: %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "Die IP-Adresse wurde wegen der Positivliste nicht gesperrt."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "IP wurde gesperrt für %s."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr ""
+"Die Benachrichtigung von Lockout wurde nicht gesendet: Das Modul Common ist "
+"nicht verfügbar."

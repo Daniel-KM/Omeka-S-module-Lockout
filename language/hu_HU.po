@@ -1,13 +1,8 @@
-# Limit Login Attempts German Translation
-# Copyright (C) 2009 Johan Eenfeldt
-# This file is distributed under the same license as the Wordpress package.
-# Johan Eenfeldt <johan.eenfeldt@kostdoktorn.se>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 11:18+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 11:20+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: Hungarian <balint@vereskuti.info>\n"
@@ -18,283 +13,257 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d óra"
-msgstr[1] "%d óra"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "A(z) %1$s modult a(z) %2$s vagy újabb verzióra kell frissíteni."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d perc"
-msgstr[1] "%d perc"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Hiányzó követelmény. A frissítés nem lehetséges."
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s] Túl sok hibás bejelentkezési kísérlet from whitelisted IP."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s] Túl sok hibás bejelentkezési kísérlet."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d hibás bejelentkezési kísérlet (%d kizárás) %s IP-címről."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "Az utolsó helyes bejelentkezés %s felhasználónévvel."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "Az IP-cím %s időre kizárásra került."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s] Túl sok hibás bejelentkezési kísérlet."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "Próbáljs meg később."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "Próbálja meg %d óra múlva."
-msgstr[1] "Próbálja meg %d óra múlva."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "Próbálja meg %d perc múlva."
-msgstr[1] "Próbálja meg %d perc múlva."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "Még %d bejelentkezési lehetőség maradt."
-msgstr[1] "Még %d bejelentkezési lehetőség maradt."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "HIBA: Érvénytelen felhasználónév vagy jelszó."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr "IP"
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "Bejelentkezés mint"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d kizárás"
-msgstr[1] "%d kizárás"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "IP log törölve."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "Kizárási számláló nullázása."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "A kizárások feloldásra kerültek."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "A beállítások megváltoztatásra kerültek"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "Az oldal direkt módon került elérésre (%s IP-címről)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr ""
-"Az oldal proxy-n keresztül került elérésre (proxy IP: %s, saját IP: %s)."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "Helytelenek az aktuális beállítások."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr ""
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr ""
-"További információk <a href=\"%s\" title=\"README\">itt</a> érhetők el."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "A Limit Login Attempts beállításai"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "Statisztikák"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Eddigi kizárások"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "Nincs aktív zárolás."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Számláló nullázása"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "%d kizárás az előző nullázás óta."
-msgstr[1] "%d kizárás az előző nullázás óta."
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "Jelenleg nincs aktív kizárás."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Aktív kizárás(ok)"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Kizárások feloldása"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "%d IP, melyről bejelentkezni próbál jelenleg kizárva!"
-msgstr[1] "%d IP, melyről bejelentkezni próbál jelenleg kizárva!"
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Beállítások"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "Kizárás"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "engedélyezett bejelentkezési lehetőség"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "perc kizárás az engedélyezett lehetőségek elérése után"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "kizárás ennyivel emeli meg a teljes kizárási időt: "
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "óra"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "óra teljen el a hibás bejelentkezések visszaállításáig"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "Oldal elérése"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "direkt-elérés"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "Az Ön IP-címe a modul szerint: %s."
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "elérés Reverse Proxy Serveren keresztül."
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"A kérés proxyfejléceket tartalmaz a következőtől: %s, amely nem megbízható "
+"proxy, ezért a fejléceket a rendszer figyelmen kívül hagyja, és minden "
+"látogató a proxy IP-címén osztozik. Ha ez a szerver fordított proxyja, adja "
+"hozzá a megbízható fordított proxykhoz az általános beállításokban (Biztonság "
+"szakasz)."
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Cookie-n keresztüli bejelentkezés"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Értesítés"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Igen"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "Nem"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "Értesítés kizárásról"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "IP logok mentése"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Email az adminisztrátornak "
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "darab kizárás után"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "Beállítások mentése"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "Kizárási napló"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Log törlése"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Jelenleg nincs napló."
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Limit Login Attempts"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "Bejelentkezés mint"
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
-msgstr "Bejelentkezések felügyelete - akár cookie-kon kereszütl minden IP-re."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
+msgstr ""
+"A megbízható fordított proxyk kezelése mostantól az általános beállítások "
+"Biztonság szakaszában történik, és minden modulra érvényes, azokra is, "
+"amelyek IP-cím alapján adnak jogosultságot vagy zárolnak. Ellenőrizze, hogy "
+"mindegyik a szerver fordított proxyja-e: %s."
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "A kizárások feloldásra kerültek."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "Kizárási számláló nullázása."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>HIBA</strong>: Túl sok hibás bejeletkezési kísérlet."
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "IP log törölve."
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr ""
+"Lockout tisztítása: zárolások %d → %d, kísérletek %d → %d, naplók %d → %d"
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr ""
-#~ "<strong>Figyelmeztetés:</strong> Csak a Wordpress 2.7, és annál újabb "
-#~ "verziókkal működik!"
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Jelenlegi zárolások törlése"
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>Helytelenek az aktuális beállítások</strong>. További információk "
-#~ "<a href=\"%s\" title=\"FAQ\">itt</a> érhetők el."
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Számláló nullázása"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "IP-napló törlése"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "Engedélyezett kísérletek"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Zárolás időtartama (másodperc)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Engedélyezett zárolások a hosszú zárolás előtt"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Hosszú zárolás (másodperc)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Érvényességi idő (másodperc)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "IP-címek engedélyezési listája"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "Soronként egy IP-cím (ipv4 vagy ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "Értesítés kizárásról"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "IP logok mentése"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "E-mail a rendszergazdának a kísérletek után"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: ip {ip}, felhasználó „{user}”, kísérletek {retries}, engedélyezési "
+"listán {whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "%d kísérlet maradt."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "%d kísérlet maradt."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Hiba: Túl sok hibás bejelentkezési kísérlet."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "Próbáljs meg később."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Próbálja újra %d óra múlva."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Próbálja újra %d óra múlva."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Próbálja újra %d perc múlva."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Próbálja újra %d perc múlva."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d óra"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d óra"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d perc"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d perc"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Szerver (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] Túl sok hibás bejelentkezési kísérlet from whitelisted IP."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] Túl sok hibás bejelentkezési kísérlet."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d hibás bejelentkezési kísérlet (%d kizárás) %s IP-címről."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "Az utolsó helyes bejelentkezés %s felhasználónévvel."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "Az IP-cím az engedélyezési lista miatt nem lett zárolva."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "Az IP-cím %s időre kizárásra került."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr ""
+"A Lockout értesítő e-mailje nem lett elküldve: a Common modul nem érhető el."

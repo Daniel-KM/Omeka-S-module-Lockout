@@ -1,13 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Johan Eenfeldt
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: Limit Login Attempts v1.5\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 11:43+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 11:46+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: 小弟的大發現 <bigexplorations@bigexplorations.com.tw>\n"
@@ -18,274 +13,250 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d 小時"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "模組 %1$s 必須升級至 %2$s 或更新版本。"
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d 分鐘"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "缺少必要條件，無法升級。"
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s] 嘗試過多次的失敗登入 from whitelisted IP."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s] 嘗試過多次的失敗登入."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "登入失敗嘗試次數: %d (%d 鎖定) 來自 IP: %s."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "最後一位使用者嘗試: %s."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "IP已被封鎖。 原因： %s."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s] 嘗試過多次的失敗登入."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "請稍候再試."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "請在%d小時後再重試。"
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "請在%d分鐘後再重試。"
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "嘗試次數剩%d次."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "錯誤: 帳號或密碼錯誤."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr "IP"
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "嘗試登入為"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d 次鎖定"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "清除IP紀錄."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "重設鎖定計數器."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "目前鎖定次數已重設."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "設定已儲存"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "網站與您的電腦(IP: %s)似乎是直接連線."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr "網站似乎是透過代理伺服器(IP:%s)再與您的電腦(IP: %s)連線."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "目前設定有些問題."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr "請再次檢查."
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr "更多資訊可以在 <a href=\"%s\" title=\"README\">這邊</a>找到."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Limit Login Attempts 設定"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "數據"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "總共鎖定次數"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "目前沒有封鎖。"
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "重設計數器"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "自從上次重設，已有%d次鎖定。"
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "未有任何鎖定紀錄."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "解除鎖定"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "還原鎖定"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "IP: %d嘗試登入，但目前已被阻擋."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "選項"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "鎖定"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "允許嘗試次數"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "分鐘鎖定"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "次鎖定後，將鎖定時間增加為"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "小時"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "小時直到重設登入嘗試"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "網站連結"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "直接連線"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "模組看到的您的 IP 位址：%s。"
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "透過代理伺服器"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"此請求包含來自 %s 的代理標頭，但它不是受信任的代理，因此標頭會被忽略，所有訪客"
+"都會共用該代理的 IP 位址。如果這是伺服器的反向代理，請在一般設定（安全性區段）"
+"中將其加入受信任的反向代理。"
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "控管Cookie登入"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "通知"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "是"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "否"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "鎖定的提醒"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "紀錄 IP"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Email 給管理員當超過"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "鎖定次數"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "儲存設定"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "鎖定紀錄"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "清除記錄"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "目前沒有記錄。"
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Limit Login Attempts"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "嘗試登入為"
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
-"限制登入嘗試比率(包含Cookies 和 IP) [外掛中文化： <a href=\"http://blog."
-"bigexplorations.com.tw/\" target=\"_blank\" title=\"小弟的大發現\">Denny "
-"Huang</a>]"
+"受信任的反向代理現在於一般設定的安全性區段中管理，並適用於所有模組，包括依 IP "
+"位址授予權限或封鎖的模組。請確認每一項都是伺服器的反向代理：%s。"
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "目前鎖定次數已重設."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "重設鎖定計數器."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>錯誤</strong>: 嘗試過多次失敗登入"
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "清除IP紀錄."
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP|網路位址"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr "Lockout 清理：封鎖 %d → %d，嘗試 %d → %d，記錄 %d → %d"
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr "<strong>注意:</strong> 只在 Wordpress 2.7 或以後版本有效"
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "清除目前的封鎖"
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>目前設定有些問題</strong>. 請再次檢查. 更多資訊可以在 <a href=\"%s"
-#~ "\" title=\"FAQ\">這邊</a>找到"
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "重設計數器"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "清除 IP 記錄"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "允許的嘗試次數"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "封鎖時間（秒）"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "長時間封鎖前允許的封鎖次數"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "長時間封鎖（秒）"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "有效時間（秒）"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "IP 位址白名單"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "每行一個 IP 位址（ipv4 或 ipv6）"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "鎖定的提醒"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "紀錄 IP"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "嘗試後寄送電子郵件給管理員"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout：ip {ip}，使用者「{user}」，嘗試 {retries}，白名單 {whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "還剩 %d 次嘗試。"
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "還剩 %d 次嘗試。"
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "錯誤：登入失敗次數過多。"
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "請稍候再試."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "請在 %d 小時後再試。"
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "請在 %d 小時後再試。"
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "請在 %d 分鐘後再試。"
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "請在 %d 分鐘後再試。"
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d 小時"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d 小時"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d 分鐘"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d 分鐘"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "伺服器（%s）"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] 嘗試過多次的失敗登入 from whitelisted IP."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] 嘗試過多次的失敗登入."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "登入失敗嘗試次數: %d (%d 鎖定) 來自 IP: %s."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "最後一位使用者嘗試: %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "IP 位址因在白名單中而未被封鎖。"
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "IP已被封鎖。 原因： %s."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr "未寄送 Lockout 通知郵件：Common 模組無法使用。"

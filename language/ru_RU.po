@@ -1,13 +1,8 @@
-# Limit Login Attempts German Translation
-# Copyright (C) 2009 Johan Eenfeldt
-# This file is distributed under the same license as the Wordpress package.
-# Johan Eenfeldt <johan.eenfeldt@kostdoktorn.se>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 12:00+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 12:03+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: Catalan <rbuj@wanadoo.es>\n"
@@ -18,283 +13,255 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "Модуль %1$s необходимо обновить до версии %2$s или новее."
+
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Отсутствует необходимое условие. Обновление невозможно."
+
+#: view/lockout/module/config-form.phtml:37
+msgid "Statistics"
+msgstr "Статистика"
+
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "Активных блокировок нет."
+
+#: view/lockout/module/config-form.phtml:54
+msgid "No lockouts yet."
+msgstr "Пока без изоляций."
+
+#: view/lockout/module/config-form.phtml:65
+msgid "Lockout"
+msgstr "Изоляция"
+
+#: view/lockout/module/config-form.phtml:74
+msgid "Site connection"
+msgstr "Подключение к сайту"
+
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "Ваш IP-адрес с точки зрения модуля: %s."
+
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"Запрос содержит заголовки прокси от %s, который не является доверенным "
+"прокси, поэтому заголовки игнорируются и все посетители используют IP-адрес "
+"прокси. Если это обратный прокси сервера, добавьте его в список доверенных "
+"обратных прокси в общих настройках (раздел «Безопасность»)."
+
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Уведомление"
+
+#: view/lockout/module/config-form.phtml:85
+msgid "Lockout log"
+msgstr "Лог изоляций"
+
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Журнал пока пуст."
+
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
+
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "Пытался войти как"
+
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
+msgstr ""
+"Доверенные обратные прокси теперь настраиваются в разделе «Безопасность» "
+"общих настроек и применяются ко всем модулям, включая те, что предоставляют "
+"права или блокируют по IP-адресу. Убедитесь, что каждый из них является "
+"обратным прокси сервера: %s."
+
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "Существующие изоляции очищены."
+
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "Сброс счетчика изоляций."
+
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "Чистый IP лог."
+
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr "Очистка Lockout: блокировки %d → %d, попытки %d → %d, журналы %d → %d"
+
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Снять текущие блокировки"
+
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Сбросить счётчик"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "Очистить журнал IP"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "Разрешённые попытки"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Длительность блокировки (секунды)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Разрешённые блокировки до длительной блокировки"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Длительная блокировка (секунды)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Срок действия (секунды)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "Белый список IP-адресов"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "Один IP-адрес в строке (ipv4 или ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "Сообщать об изоляциях"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "Записывать IP"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "Письмо администратору после попыток"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: ip {ip}, пользователь «{user}», попытки {retries}, белый список "
+"{whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "Осталось попыток: %d."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "Осталось попыток: %d."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Ошибка: превышен максимальный лимит попыток авторизации."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "Пожалуйста попробуйте позже."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Повторите попытку через %d ч."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Повторите попытку через %d ч."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Повторите попытку через %d мин."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Повторите попытку через %d мин."
+
+#: src/Controller/LoginController.php:628
+#, php-format
 msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d час"
-msgstr[1] "%d часов"
+msgstr "%d ч."
 
-#: limit-login-attempts.php:528
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d ч."
+
+#: src/Controller/LoginController.php:637
+#, php-format
 msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d минута"
-msgstr[1] "%d минут"
+msgstr "%d мин."
 
-#: limit-login-attempts.php:534
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d мин."
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Сервер (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
 msgid "[%s] Failed login attempts from whitelisted IP."
 msgstr ""
 "[%s] Превышен максимальный лимит попыток авторизации from whitelisted IP."
 
-#: limit-login-attempts.php:538
+#: src/Controller/LoginController.php:654
+#, php-format
 msgid "[%s] Too many failed login attempts."
 msgstr "[%s] Превышен максимальный лимит попыток авторизации."
 
-#: limit-login-attempts.php:543
+#: src/Controller/LoginController.php:657
+#, php-format
 msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
 msgstr "%d неудачных попыток авторизации (%d изоляция(ий)) с адреса IP: %s."
 
-#: limit-login-attempts.php:547
+#: src/Controller/LoginController.php:660
+#, php-format
 msgid "Last user attempted: %s."
 msgstr "Последняя попытка пользователя: %s."
 
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "IP-адрес не заблокирован, так как он в белом списке."
 
-#: limit-login-attempts.php:553
+#: src/Controller/LoginController.php:666
+#, php-format
 msgid "IP was blocked for %s."
 msgstr "IP заблокирован для %s."
 
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s] Превышен максимальный лимит попыток авторизации."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "Пожалуйста попробуйте позже."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "Пожалуйста попробуйте через %d час."
-msgstr[1] " Пожалуйста попробуйте через %d часов."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "Пожалуйста попробуйте через %d минуту."
-msgstr[1] "Пожалуйста попробуйте через %d минут."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "Осталось %d попыток."
-msgstr[1] "Осталось %d попыток."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "Ошибка: Неверное имя пользователя или пароль."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr "IP"
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "Пытался войти как"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d изоляция"
-msgstr[1] "%d изоляций"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "Чистый IP лог."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "Сброс счетчика изоляций."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "Существующие изоляции очищены."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "Опции изменены"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "Сайт доступен напрямую (с вашего IP: %s)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr "Сайт досупен через прокси-сервер (proxy IP: %s, ваш IP: %s)."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "Данные настройки недействительны."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr "Пожалуйста проверьте их."
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr ""
-"Дополнительная информация доступна <a href=\"%s\" title=\"README\">здесь</a>."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Ограничение попыток авторизации"
-
-#: limit-login-attempts.php:1012
-msgid "Statistics"
-msgstr "Статистика"
-
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Всего изоляций"
-
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Сброс счетчика"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "%d изоляция с последнего сброса счетчика."
-msgstr[1] "%d  изоляций с последнего сброса счетчика."
-
-#: limit-login-attempts.php:1022
-msgid "No lockouts yet."
-msgstr "Пока без изоляций."
-
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Активные изоляции"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Восстановить изоляции"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "IP %d в данный момент заблокирован от попыток авторизации."
-msgstr[1] "IP %d в данный момент заблокирован от попыток авторизации."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Опции"
-
-#: limit-login-attempts.php:1041
-msgid "Lockout"
-msgstr "Изоляция"
-
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "разрешено дополнительных попыток"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "изоляция в минутах"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "изоляций повысят время изоляции до"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "часов"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "часов до сброса количества попыток"
-
-#: limit-login-attempts.php:1050
-msgid "Site connection"
-msgstr "Подключение к сайту"
-
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "Прямое подключение"
-
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "За прокси (reverse proxy)"
-
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Обрабатывать кукис логина"
-
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Да"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "Нет"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "Сообщать об изоляциях"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "Записывать IP"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Отправлять имейл админу после"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "изоляций"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "Изменить настройки"
-
-#: limit-login-attempts.php:1089
-msgid "Lockout log"
-msgstr "Лог изоляций"
-
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Очистить лог"
-
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Ограничение попыток авторизации"
-
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
-
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
-msgstr "Лимит количества попыток авторизации, включая поддержку куки, по IP."
-
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
-
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
-
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>ВНИМАНИЕ</strong>: превышен лимит попыток авторизации."
-
-#~ msgid "IP|Internet address"
-#~ msgstr "IP|Интернет-адрес"
-
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr ""
-#~ "<strong>Внимание:</strong> Работает только в версии Wordpress 2.7 или выше"
-
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>Данные настройки недействительны</strong>. Пожалуйста проверьте "
-#~ "их. Дополнительная информация доступна <a href=\"%s\" title=\"FAQ"
-#~ "\">здесь</a>"
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr "Письмо-уведомление Lockout не отправлено: модуль Common недоступен."

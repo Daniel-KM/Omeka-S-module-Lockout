@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.3\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 10:42+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: \n"
@@ -14,295 +14,254 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d hodina"
-msgstr[1] "%d hodin"
-msgstr[2] "%d hodin"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "Modul %1$s je nutné aktualizovat na verzi %2$s nebo novější."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minuta"
-msgstr[1] "%d minuty"
-msgstr[2] "%d minut"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Chybí požadavek. Aktualizace není možná."
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s] Příliš mnoho chybných pokusů o přihlášení from whitelisted IP."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s] Příliš mnoho chybných pokusů o přihlášení."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d špatných pokusů o přihlášení (zablokováno %d krát) z IP: %s."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "Poslední chybující uživatel: %s."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr ""
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "IP adresa byla zablokována na %s."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s] Příliš mnoho chybných pokusů o přihlášení."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "Prosím, opakujte akci později."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "Prosím, opakujte akci za %d hodinu."
-msgstr[1] "Prosím, opakujte akci za %d hodiny."
-msgstr[2] "Prosím, opakujte akci za %d hodin."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "Prosím, opakujte akci za %d minutu."
-msgstr[1] "Prosím, opakujte akci za %d minuty."
-msgstr[2] "Prosím, opakujte akci za %d minut."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "%d zbývající pokusů."
-msgstr[1] "%d zbývající pokusy."
-msgstr[2] "%d zbývajících pokusů."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "CHYBA: Špatné uživatelské jméno nebo heslo."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr ""
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "Pokus o přihlášení jako"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d uzamčení"
-msgstr[1] "%d uzamčení"
-msgstr[2] "%d uzamčení"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "IP log smazán."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "aktuální blokování bylo resetováno."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "Aktuální blokování bylo promazáno."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "Nastavení změněno"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "Zdá se, že web je přímo dosažitelný (z Vaší IP: %s)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr ""
-"Zdá se, že web je dosažitelný přes proxy server (IP proxy: %s, Vaše IP: %s)."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "Aktuální nastavení je zřejmě chybné."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr "Prosím, ujistěte se o jeho správnosti."
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr ""
-"Další informace jsou k nalezení <a href=\"%s\" title=\"README\">zde</a> "
-"(anglicky)."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Nastavení Limit Login Attempts"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Celkem blokováno"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "Žádné aktivní blokování."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Reset počítadla"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "%d blokování od posledního resetu."
-msgstr[1] "%d blokování od posledního resetu."
-msgstr[2] "%d blokování od posledního resetu."
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "Dosud nebylo nic blokováno."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Aktivní blokování"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Smazat blokování"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] "IP %d je aktuálně blokována z důvodu chybného přihlášení."
-msgstr[1] "IP %d je aktuálně blokována z důvodu chybného přihlášení."
-msgstr[2] "IP %d je aktuálně blokována z důvodu chybného přihlášení."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Nastavení"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "Blokování"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "povolených pokusů"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "minut blokován"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "- počet blokovaných pokusů, po kterém se zvýší čas blokování na"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "hodin"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "- počet hodin, po kterém jsou chybné pokusy o přihlášení resetovány"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "Připojení webu"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "Přímé připojení"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "Vaše IP adresa z pohledu modulu: %s."
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "Za proxy serverem"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"Požadavek obsahuje hlavičky proxy od %s, který není důvěryhodný proxy server, "
+"proto jsou hlavičky ignorovány a všichni návštěvníci sdílejí IP adresu proxy. "
+"Pokud jde o reverzní proxy serveru, přidejte ji mezi důvěryhodné reverzní "
+"proxy v obecném nastavení (sekce Zabezpečení)."
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Pracovat s přihlašovacím cookie"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Oznámení"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Ano"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "Ne"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "Upozornění na blokování"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "Logovat IP"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "Poslat e-mail administrátorovi po"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "pokusech"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "Změnit nastavení"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "Log blokování"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Smazat log"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Momentálně žádný záznam."
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Limit Login Attempts"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "Pokus o přihlášení jako"
 
-# Popis rozšíření v seznamu pluginů - z nějakého důvodu nefunguje
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
-"Omezení pokusů o přihlášení, mimo jiné prostřednictvím cookies, pro každou "
-"IP."
+"Důvěryhodné reverzní proxy se nyní spravují v sekci Zabezpečení obecného "
+"nastavení a platí pro všechny moduly, včetně těch, které udělují práva nebo "
+"blokují podle IP adresy. Ověřte, že každá z nich je reverzní proxy serveru: "
+"%s."
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "Aktuální blokování bylo promazáno."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "aktuální blokování bylo resetováno."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr "<strong>CHYBA:</strong> Příliš mnoho chybných pokusů o přihlášení"
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "IP log smazán."
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP|Internetové adresy"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr "Vyčištění Lockout: blokování %d → %d, pokusy %d → %d, záznamy %d → %d"
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr ""
-#~ "<strong>POZNÁMKA:</strong> Funguje pouze ve verzi Wordpress 2.7 a vyšší"
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Zrušit aktuální blokování"
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>Aktuální nastavení je zřejmě chybné.</strong> Prosím, ujistěte se "
-#~ "o jeho správnosti. Další informace jsou k nalezení <a href=\"%s\" title="
-#~ "\"FAQ\">zde</a> (anglicky)."
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Vynulovat počítadlo"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "Vymazat záznam IP"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "Povolené pokusy"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Délka blokování (sekundy)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Povolená blokování před dlouhým blokováním"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Dlouhé blokování (sekundy)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Doba platnosti (sekundy)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "Seznam povolených IP adres"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "Jedna IP adresa na řádek (ipv4 nebo ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "Upozornění na blokování"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "Logovat IP"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "E-mail správci po pokusech"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: ip {ip}, uživatel „{user}“, pokusy {retries}, na seznamu povolených "
+"{whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "Zbývající pokusy: %d."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "Zbývající pokusy: %d."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Chyba: Příliš mnoho chybných pokusů o přihlášení."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "Prosím, opakujte akci později."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Zkuste to znovu za %d h."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Zkuste to znovu za %d h."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Zkuste to znovu za %d min."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Zkuste to znovu za %d min."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d h"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d h"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d min"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d min"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Server (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] Příliš mnoho chybných pokusů o přihlášení from whitelisted IP."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] Příliš mnoho chybných pokusů o přihlášení."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d špatných pokusů o přihlášení (zablokováno %d krát) z IP: %s."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "Poslední chybující uživatel: %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "IP adresa nebyla zablokována, protože je na seznamu povolených."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "IP adresa byla zablokována na %s."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr "Oznamovací e-mail Lockout nebyl odeslán: modul Common není k dispozici."

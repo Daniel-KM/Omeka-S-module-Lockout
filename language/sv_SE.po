@@ -1,13 +1,8 @@
-# Limit Login Attempts Swedish Translation
-# Copyright (C) 2009 Johan Eenfeldt
-# This file is distributed under the same license as the Wordpress package.
-# Johan Eenfeldt <johan.eenfeldt@kostdoktorn.se>, 2009.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: limit-login-attempts 1.2\n"
-"Report-Msgid-Bugs-To: https://gitlab.com/Daniel-KM/Omeka-S-module-Lockout\n"
-"POT-Creation-Date: 2017-06-08 11:36+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-09 00:00+0000\n"
 "PO-Revision-Date: 2017-06-08 11:38+0200\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: Swedish\n"
@@ -18,284 +13,255 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: limit-login-attempts.php:522
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d timme"
-msgstr[1] "%d timmar"
+#: data/scripts/upgrade.php:19 Module.php:75
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr "Modulen %1$s måste uppdateras till version %2$s eller senare."
 
-#: limit-login-attempts.php:528
-msgid "%d minute"
-msgid_plural "%d minutes"
-msgstr[0] "%d minut"
-msgstr[1] "%d minuter"
+#: data/scripts/upgrade.php:23
+msgid "Missing requirement. Unable to upgrade."
+msgstr "Krav saknas. Det går inte att uppdatera."
 
-#: limit-login-attempts.php:534
-msgid "[%s] Failed login attempts from whitelisted IP."
-msgstr "[%s] För många misslyckade inloggningar från IP i vitlista."
-
-#: limit-login-attempts.php:538
-msgid "[%s] Too many failed login attempts."
-msgstr "[%s] För många misslyckade inloggningar."
-
-#: limit-login-attempts.php:543
-msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
-msgstr "%d misslyckade inloggningar (blockad %d gång(er)) från IP: %s."
-
-#: limit-login-attempts.php:547
-msgid "Last user attempted: %s."
-msgstr "Misslyckades senast med användare : %s."
-
-#: limit-login-attempts.php:551
-msgid "IP was NOT blocked because of external whitelist."
-msgstr "IP blockerades INTE på grund av extern vitlista."
-
-#: limit-login-attempts.php:553
-msgid "IP was blocked for %s."
-msgstr "IP blockerades i %s."
-
-#: limit-login-attempts.php:615
-msgid "Error: Too many failed login attempts."
-msgstr "[%s] För många misslyckade inloggningar."
-
-#: limit-login-attempts.php:619
-msgid "Please try again later."
-msgstr "F&ouml;rs&ouml;k igen senare."
-
-#: limit-login-attempts.php:626
-msgid "Please try again in %d hour."
-msgid_plural "Please try again in %d hours."
-msgstr[0] "F&ouml;rs&ouml;k igen om %d timme."
-msgstr[1] "F&ouml;rs&ouml;k igen om %d timmar."
-
-#: limit-login-attempts.php:628
-msgid "Please try again in %d minute."
-msgid_plural "Please try again in %d minutes."
-msgstr[0] "F&ouml;rs&ouml;k igen om %d minut."
-msgstr[1] "F&ouml;rs&ouml;k igen om %d minuter."
-
-#: limit-login-attempts.php:657
-msgid "%d attempt remaining."
-msgid_plural "%d attempts remaining."
-msgstr[0] "%d f&ouml;rs&ouml;k &aring;terst&aring;r."
-msgstr[1] "%d f&ouml;rs&ouml;k &aring;terst&aring;r."
-
-#: limit-login-attempts.php:728
-msgid "Error: Incorrect username or password."
-msgstr "Fel: Felaktigt anv&auml;ndarnamn eller l&ouml;senord."
-
-#: limit-login-attempts.php:896
-msgctxt "Internet address"
-msgid "IP"
-msgstr "IP"
-
-#: limit-login-attempts.php:896
-msgid "Tried to log in as"
-msgstr "F&ouml;rs&ouml;kte logga in som"
-
-#: limit-login-attempts.php:901
-msgid "%d lockout"
-msgid_plural "%d lockouts"
-msgstr[0] "%d blockering"
-msgstr[1] "%d blockeringar"
-
-#: limit-login-attempts.php:930
-msgid "Cleared IP log."
-msgstr "Rensade IP loggen."
-
-#: limit-login-attempts.php:938
-msgid "Reset lockout count."
-msgstr "Nollst&auml;llde r&auml;knaren f&ouml;r blockeringar."
-
-#: limit-login-attempts.php:946
-msgid "Cleared current lockouts."
-msgstr "Tog bort aktuella blockeringar."
-
-#: limit-login-attempts.php:975
-msgid "Options changed"
-msgstr "Inst&auml;llningar &auml;ndrade"
-
-#: limit-login-attempts.php:993
-msgid "It appears the site is reached directly (from your IP: %s)."
-msgstr "Sajten tycks vara direktansluten (från din IP: %s)."
-
-#: limit-login-attempts.php:995
-msgid ""
-"It appears the site is reached through a proxy server (proxy IP: %s, your "
-"IP: %s)."
-msgstr "Sajten tycks ansluta genom en proxy server (proxy IP: %s, din IP: %s)."
-
-#: limit-login-attempts.php:1003
-msgid "Current setting appears to be invalid."
-msgstr "Nuvarande inställningar kan vara fel."
-
-#: limit-login-attempts.php:1003
-msgid "Please make sure it  is correct."
-msgstr "Säkerställ att de är korrekta."
-
-#: limit-login-attempts.php:1003
-msgid ""
-"Further information can be found <a href=\"%s\" title=\"README\">here</a>."
-msgstr "Mer information kan hittas <a href=\"%s\" title=\"README\">här</a>."
-
-#: limit-login-attempts.php:1011
-msgid "Limit Login Attempts Settings"
-msgstr "Limit Login Attempts Inst&auml;llningar"
-
-#: limit-login-attempts.php:1012
+#: view/lockout/module/config-form.phtml:37
 msgid "Statistics"
 msgstr "Statistik"
 
-#: limit-login-attempts.php:1017
-msgid "Total lockouts"
-msgstr "Antal blockeringar"
+#: view/lockout/module/config-form.phtml:42
+msgid "No active lockout."
+msgstr "Ingen aktiv spärr."
 
-#: limit-login-attempts.php:1020
-msgid "Reset Counter"
-msgstr "Nollst&auml;ll r&auml;knare"
-
-#: limit-login-attempts.php:1021
-msgid "%d lockout since last reset."
-msgid_plural "%d lockouts since last reset."
-msgstr[0] "%d blockering sedan r&auml;knaren nollst&auml;lldes."
-msgstr[1] "%d blockeringar sedan r&auml;knaren nollst&auml;lldes."
-
-#: limit-login-attempts.php:1022
+#: view/lockout/module/config-form.phtml:54
 msgid "No lockouts yet."
 msgstr "Inga blockeringar har skett &auml;nnu."
 
-#: limit-login-attempts.php:1027
-msgid "Active lockouts"
-msgstr "Aktiva blockeringar"
-
-#: limit-login-attempts.php:1029
-msgid "Restore Lockouts"
-msgstr "Ta bort blockeringar"
-
-#: limit-login-attempts.php:1030
-msgid "%d IP is currently blocked from trying to log in."
-msgid_plural "%d IPs are currently blocked from trying to log in."
-msgstr[0] ""
-"%d IP &auml;r f&ouml;r n&auml;rvarande blockerade fr&aring;n att logga in."
-msgstr[1] ""
-"%d IP &auml;r f&ouml;r n&auml;rvarande blockerade fr&aring;n att logga in."
-
-#: limit-login-attempts.php:1036
-msgid "Options"
-msgstr "Inst&auml;llningar"
-
-#: limit-login-attempts.php:1041
+#: view/lockout/module/config-form.phtml:65
 msgid "Lockout"
 msgstr "Blockering"
 
-#: limit-login-attempts.php:1043
-msgid "allowed retries"
-msgstr "till&aring;tna misslyckanden"
-
-#: limit-login-attempts.php:1044
-msgid "minutes lockout"
-msgstr "minuters blockering"
-
-#: limit-login-attempts.php:1045
-msgid "lockouts increase lockout time to"
-msgstr "blockeringar &ouml;kar tiden till"
-
-#: limit-login-attempts.php:1045
-msgid "hours"
-msgstr "timmar"
-
-#: limit-login-attempts.php:1046
-msgid "hours until retries are reset"
-msgstr "timmar tills misslyckanden nollst&auml;lls"
-
-#: limit-login-attempts.php:1050
+#: view/lockout/module/config-form.phtml:74
 msgid "Site connection"
 msgstr "Sajten ansluter"
 
-#: limit-login-attempts.php:1056
-msgid "Direct connection"
-msgstr "Direktansluten"
+#: view/lockout/module/config-form.phtml:75
+#, php-format
+msgid "Your ip as seen by the module: %s."
+msgstr "Din IP-adress enligt modulen: %s."
 
-#: limit-login-attempts.php:1061
-msgid "From behind a reverse proxy"
-msgstr "Bakom en reverse proxy"
+#: view/lockout/module/config-form.phtml:77
+#, php-format
+msgid ""
+"The request comes with proxy headers from %s, that is not a trusted proxy, so "
+"the headers are ignored and all visitors share the ip of the proxy. If it is "
+"the reverse proxy of the server, add it to the trusted reverse proxies of the "
+"main settings (section Security)."
+msgstr ""
+"Begäran innehåller proxyrubriker från %s, som inte är en betrodd proxy. "
+"Rubrikerna ignoreras därför och alla besökare delar proxyns IP-adress. Om det "
+"är serverns omvända proxy lägger du till den bland de betrodda omvända "
+"proxyerna i de allmänna inställningarna (avsnittet Säkerhet)."
 
-#: limit-login-attempts.php:1067
-msgid "Handle cookie login"
-msgstr "Hantera inloggning med kakor"
+#: view/lockout/module/config-form.phtml:81
+msgid "Notification"
+msgstr "Avisering"
 
-#: limit-login-attempts.php:1069
-msgid "Yes"
-msgstr "Ja"
-
-#: limit-login-attempts.php:1069
-msgid "No"
-msgstr "Nej"
-
-#: limit-login-attempts.php:1073
-msgid "Notify on lockout"
-msgstr "Notifiera om blockering"
-
-#: limit-login-attempts.php:1075
-msgid "Log IP"
-msgstr "Logga IP"
-
-#: limit-login-attempts.php:1076
-msgid "Email to admin after"
-msgstr "E-post till administrat&ouml;r efter"
-
-#: limit-login-attempts.php:1076
-msgid "lockouts"
-msgstr "blockeringar"
-
-#: limit-login-attempts.php:1081
-msgid "Change Options"
-msgstr "&Auml;ndra Inst&auml;llningar"
-
-#: limit-login-attempts.php:1089
+#: view/lockout/module/config-form.phtml:85
 msgid "Lockout log"
 msgstr "Log &ouml;ver blockeringar"
 
-#: limit-login-attempts.php:1094
-msgid "Clear Log"
-msgstr "Rensa Log"
+#: view/lockout/module/config-form.phtml:87
+msgid "No log currently."
+msgstr "Ingen logg för närvarande."
 
-#. Plugin Name of the plugin/theme
-msgid "Limit Login Attempts"
-msgstr "Limit Login Attempts"
+#: view/lockout/module/config-form.phtml:94
+msgid "IP"
+msgstr "IP"
 
-#. Plugin URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se/limit-login-attempts"
-msgstr "http://devel.kostdoktorn.se/limit-login-attempts"
+#: view/lockout/module/config-form.phtml:95
+msgid "Tried to log in as"
+msgstr "F&ouml;rs&ouml;kte logga in som"
 
-#. Description of the plugin/theme
-msgid "Limit rate of login attempts, including by way of cookies, for each IP."
+#: data/scripts/upgrade.php:66
+#, php-format
+msgid ""
+"The trusted reverse proxies are now managed in the security section of the "
+"main settings and apply to all modules, including the ones that grant rights "
+"or lock out by ip. Check that each one is a reverse proxy of the server: %s."
 msgstr ""
-"Limit rate of login attempts, including by way of cookies, for each IP."
+"De betrodda omvända proxyerna hanteras nu i avsnittet Säkerhet i de allmänna "
+"inställningarna och gäller alla moduler, även de som ger rättigheter eller "
+"spärrar efter IP-adress. Kontrollera att var och en är en omvänd proxy för "
+"servern: %s."
 
-#. Author of the plugin/theme
-msgid "Johan Eenfeldt"
-msgstr "Johan Eenfeldt"
+#: Module.php:130
+msgid "Cleared current lockouts."
+msgstr "Tog bort aktuella blockeringar."
 
-#. Author URI of the plugin/theme
-msgid "http://devel.kostdoktorn.se"
-msgstr "http://devel.kostdoktorn.se"
+#: Module.php:134
+msgid "Reset lockout count."
+msgstr "Nollst&auml;llde r&auml;knaren f&ouml;r blockeringar."
 
-#~ msgid "<strong>ERROR</strong>: Too many failed login attempts."
-#~ msgstr ""
-#~ "<strong>Fel</strong>: F&ouml;r m&aring;nga misslyckade f&ouml;rs&ouml;k."
+#: Module.php:138
+msgid "Cleared IP log."
+msgstr "Rensade IP loggen."
 
-#~ msgid ""
-#~ "<strong>Current setting appears to be invalid</strong>. Please make sure "
-#~ "it is correct. Further information can be found <a href=\"%s\" title=\"FAQ"
-#~ "\">here</a>"
-#~ msgstr ""
-#~ "<strong>Nuvarande inställningar kan vara fel</strong>. Säkerställ att de "
-#~ "är korrekta. Mer information kan hittas <a href=\"%s\" title=\"FAQ\">här</"
-#~ "a>"
+#: src/Job/CleanupLockout.php:112
+#, php-format
+msgid "Lockout cleanup: lockouts %d → %d, retries %d → %d, logs %d → %d"
+msgstr "Rensning av Lockout: spärrar %d → %d, försök %d → %d, loggar %d → %d"
 
-#~ msgid "IP|Internet address"
-#~ msgstr "IP"
+#: src/Form/ConfigForm.php:19
+msgid "Clear current lockouts"
+msgstr "Ta bort aktuella spärrar"
 
-#~ msgid "<strong>NOTE:</strong> Only works in Wordpress 2.7 or later"
-#~ msgstr "<strong>OBS:</strong> Fungerar endast i WordPress 2.7 eller senare"
+#: src/Form/ConfigForm.php:30
+msgid "Reset counter"
+msgstr "Återställ räknaren"
+
+#: src/Form/ConfigForm.php:41
+msgid "Clear IP log"
+msgstr "Rensa IP-loggen"
+
+#: src/Form/ConfigForm.php:54
+msgid "Allowed retries"
+msgstr "Tillåtna försök"
+
+#: src/Form/ConfigForm.php:62
+msgid "Lockout duration (seconds)"
+msgstr "Spärrtid (sekunder)"
+
+#: src/Form/ConfigForm.php:70
+msgid "Allowed lockouts before long lockout"
+msgstr "Tillåtna spärrar före en lång spärr"
+
+#: src/Form/ConfigForm.php:78
+msgid "Long lock out (seconds)"
+msgstr "Lång spärr (sekunder)"
+
+#: src/Form/ConfigForm.php:86
+msgid "Valid duration (seconds)"
+msgstr "Giltighetstid (sekunder)"
+
+#: src/Form/ConfigForm.php:94
+msgid "Whitelist of IPs"
+msgstr "Vitlista för IP-adresser"
+
+#: src/Form/ConfigForm.php:97
+msgid "One IP by line (ipv4 or ipv6)"
+msgstr "En IP-adress per rad (ipv4 eller ipv6)"
+
+#: src/Form/ConfigForm.php:119
+msgid "Notify on lockout"
+msgstr "Notifiera om blockering"
+
+#: src/Form/ConfigForm.php:121
+msgid "Log IP"
+msgstr "Logga IP"
+
+#: src/Form/ConfigForm.php:131
+msgid "Email to admin after attempts"
+msgstr "E-post till administratören efter försök"
+
+#: src/Controller/LoginController.php:295
+msgid ""
+"Lockout: ip {ip}, user \"{user}\", retries {retries}, whitelisted "
+"{whitelisted}"
+msgstr ""
+"Lockout: ip {ip}, användare ”{user}”, försök {retries}, vitlistad "
+"{whitelisted}"
+
+#: src/Controller/LoginController.php:470
+#, php-format
+msgid "%d attempt remaining."
+msgstr "%d försök återstår."
+
+#: src/Controller/LoginController.php:471
+#, php-format
+msgid "%d attempts remaining."
+msgstr "%d försök återstår."
+
+#: src/Controller/LoginController.php:488
+msgid "Error: Too many failed login attempts."
+msgstr "Fel: För många misslyckade inloggningar."
+
+#: src/Controller/LoginController.php:493
+msgid "Please try again later."
+msgstr "F&ouml;rs&ouml;k igen senare."
+
+#: src/Controller/LoginController.php:499
+#, php-format
+msgid "Please try again in %d hour."
+msgstr "Försök igen om %d timme."
+
+#: src/Controller/LoginController.php:500
+#, php-format
+msgid "Please try again in %d hours."
+msgstr "Försök igen om %d timmar."
+
+#: src/Controller/LoginController.php:503
+#, php-format
+msgid "Please try again in %d minute."
+msgstr "Försök igen om %d minut."
+
+#: src/Controller/LoginController.php:504
+#, php-format
+msgid "Please try again in %d minutes."
+msgstr "Försök igen om %d minuter."
+
+#: src/Controller/LoginController.php:628
+#, php-format
+msgid "%d hour"
+msgstr "%d timme"
+
+#: src/Controller/LoginController.php:629
+#, php-format
+msgid "%d hours"
+msgstr "%d timmar"
+
+#: src/Controller/LoginController.php:637
+#, php-format
+msgid "%d minute"
+msgstr "%d minut"
+
+#: src/Controller/LoginController.php:638
+#, php-format
+msgid "%d minutes"
+msgstr "%d minuter"
+
+#: src/Controller/LoginController.php:646
+#, php-format
+msgid "Server (%s)"
+msgstr "Server (%s)"
+
+#: src/Controller/LoginController.php:652
+#, php-format
+msgid "[%s] Failed login attempts from whitelisted IP."
+msgstr "[%s] För många misslyckade inloggningar från IP i vitlista."
+
+#: src/Controller/LoginController.php:654
+#, php-format
+msgid "[%s] Too many failed login attempts."
+msgstr "[%s] För många misslyckade inloggningar."
+
+#: src/Controller/LoginController.php:657
+#, php-format
+msgid "%d failed login attempts (%d lockout(s)) from IP: %s."
+msgstr "%d misslyckade inloggningar (blockad %d gång(er)) från IP: %s."
+
+#: src/Controller/LoginController.php:660
+#, php-format
+msgid "Last user attempted: %s."
+msgstr "Misslyckades senast med användare : %s."
+
+#: src/Controller/LoginController.php:664
+msgid "IP was not blocked because of whitelist."
+msgstr "IP-adressen spärrades inte på grund av vitlistan."
+
+#: src/Controller/LoginController.php:666
+#, php-format
+msgid "IP was blocked for %s."
+msgstr "IP blockerades i %s."
+
+#: src/Controller/LoginController.php:678
+msgid "Lockout notification email not sent: the module Common is not available."
+msgstr ""
+"Aviseringen från Lockout skickades inte: modulen Common är inte tillgänglig."
